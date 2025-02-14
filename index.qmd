@@ -209,7 +209,7 @@ rug(x)
 
 ## KDE with Bounded Data - A Priori Information
 
--   Regarding the use of boundary kernels, @SCOTT:1992, Page 149, notes:
+-   Regarding the use of boundary kernels, @SCOTT:1992, p 149, notes:
 
     > "*While boundary kernels can be very useful, there are potentially serious problems with real data. There are an infinite number of boundary kernels reflecting the spectrum of possible design constraints, and these kernels are not interchangeable. Severe artifacts can be introduced by any one of them in inappropriate situations. Very careful examination is required to avoid being victimized by the particular boundary kernel chosen. Artifacts can unfortunately be introduced by the choice of the support interval for the boundary kernel.*"
 
@@ -321,13 +321,15 @@ rug(x)
 
 ## Conditional KDE
 
--   The conditional density $f(y|x)=f(y,x)/f(x)$ is a fundamental object in statistics
+-   The conditional PDF $f(y|x)=f(y,x)/f(x)$ is a fundamental object in statistics
 
--   Related objects include the conditional distribution function $F(y|x)=\int f(y|x)/f(x)=\int f(y,x)dy/f(x)$, the conditional expectation $E(Y|X=x)=\int yf(y|x)dy$, and the conditional quantile function $Q(p|x)=\inf\{y:F(y|x)\ge p\}$
+-   Related objects include 
 
--   Also, derivatives are often required for constructing, say, "marginal effects" in econometrics such as $d E(Y|X=x)/d x$ along with counterparts for the conditional distribution function and quantile function
+    -   The conditional CDF $F(y|x)=\int_{-\infty}^y f(t|x)dt=\int_{-\infty}^y f(t,x)dt/f(x)$
+    -   The conditional expectation $E(Y|X=x)=\int_{-\infty}^{\infty} yf(y|x)dy$
+    -   The conditional quantile $Q_{\tau}(x)=\inf\{y:F(y|x)\ge \tau\}$, etc.
 
--   Consistent estimation, however, must be based on nonparametric estimation of the conditional density $f(y|x)$
+-   Also, derivatives are often required for constructing marginal effects, e.g. $d E(Y|X=x)/d x$, along with counterparts for the conditional distribution function and quantile function
 
 -   Sound nonparametric estimation must address a range of issues including boundary bias, bandwidth selection, choice of kernel function, and the choice of the order of the local polynomial approximation
 
@@ -361,7 +363,7 @@ rug(x)
 
 -   But, the local polynomial estimator is not without its own problems, in particular the estimated density can be negative and fail to integrate to unity (i.e., is not guaranteed to be proper)
 
--   Another problem [@FAN_GIJBELS:1995, p 59; @FAN_GIJBELS:1996] is the conventional wisdom about polynomial order selection:
+-   Then there is the conventional wisdom about polynomial order selection [@FAN_GIJBELS:1995, p 59; @FAN_GIJBELS:1996]:
 
     > "Another issue in local polynomial fitting is the choice of the order of the local polynomial. Since the modelling bias is primarily controlled by the bandwidth, this issue is less crucial however. \[\dots\] Since the bandwidth is used to control the modelling complexity, we recommend the use of the lowest odd order, i.e. $p=\nu+1$, or occasionally $p=\nu+3$. \[$\nu$ is the order of the derivative required\]."
 
@@ -407,7 +409,34 @@ rug(x)
 
 -   This supports the construction of uniform or "simultaneous" confidence intervals
 
--   Let's consider an illustration
+-   Let's consider some illustrations
+
+## Example - Conditional KDE with Bounded $Y$ and Irrelevant $X$
+
+::: {.callout-note appearance="simple"}
+## Example (Uniform, Irrelevant $X$)
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| out-width: "80%"
+#| label: fig-conditional-kde-uniform
+#| fig-cap: Conditional KDE for $U[0,1]$ with empirical bounds
+library(bkcde)
+set.seed(42)
+n <- 350
+x <- runif(n)
+y <- rbeta(n,1,1)
+f <- bkcde(x=x,y=y,proper=TRUE)
+dgp <- dbeta(f$y.eval,1,1)
+par(mfrow=c(1,2),cex=.75,mar=c(2,2,2,1))
+zlim <- range(f$f,dgp,0,2)
+plot(f,main=paste("Estimated Density, n = ",n),zlim=zlim)
+persp(unique(f$x.eval),unique(f$y.eval),
+      matrix(dgp,nrow=length(unique(f$x.eval))),
+      theta=120,phi=45,ticktype="detailed",xlab="x",ylab="y",zlab="f(y|x)",zlim=zlim,main="True density")
+```
+:::
 
 ## Example - Conditional KDE with Unbounded $Y$
 
@@ -419,7 +448,7 @@ rug(x)
 #| output-location: slide
 #| out-width: "80%"
 #| label: fig-conditional-kde-gaussian
-#| fig-cap: Conditional KDE for $N(0,1)$ with empirical bounds
+#| fig-cap: Conditional KDE for $N(x,1)$ with empirical bounds
 library(bkcde)
 set.seed(42)
 n <- 250
@@ -443,7 +472,7 @@ persp(unique(f$x.eval),unique(f$y.eval),
 ## Example - Conditional KDE with Bounded $Y$
 
 ::: {.callout-note appearance="simple"}
-## Example (Beta, Empirical Bounds)
+## Example (Beta(1+x,2-x), Empirical Bounds)
 
 ```{r}
 #| echo: true
@@ -467,7 +496,7 @@ persp(unique(f$x.eval),unique(f$y.eval),
 ```
 :::
 
-## Example - Conditional KDE with Bounded $Y$
+## Example - Simultaneous Confidence Intervals
 
 ::: {.callout-note appearance="simple"}
 ## Example (Beta, Empirical Bounds, Simultaneous Confidence Intervals)
