@@ -103,15 +103,17 @@ library(MASS)
 
 -   This talk is about a proposed boundary adaptive, polynomial order adaptive, conditional kernel density estimator, and its finite-sample performance.
 
--   I am aiming for an interactive seminar format, which will require either your participation or being seated next to someone who is
+-   I am aiming for an interactive seminar format, which will require either your participation or your sitting next to someone who is participating.
 
 -   Hopefully you came with your laptop, the Firefox browser, R/RStudio, and a the suggested libraries installed (if you have your laptop you can do this now if you didn't get the memo).
 
--   If you have R/RStudio and the libraries installed, we can work with the methods and data interactively.
+-   If you have R/RStudio and the libraries installed, you can work with the methods and data interactively as the talk proceeds.
 
--   My hope is that you will be able to follow along and reproduce the results on your own computer.
+-   My hope is that you will follow along and reproduce the results on your own computer.
 
--   Let's begin by opening the following link in Firefox: [https://jeffreyracine.github.io/bk](https://jeffreyracine.github.io/bk)
+-   Let's begin by opening the following link in Firefox:
+
+    [https://jeffreyracine.github.io/bk](https://jeffreyracine.github.io/bk)
 
 ## Overview of Talk
 
@@ -124,23 +126,31 @@ library(MASS)
     5.  Conditional density estimation, bandwidth and polynomial order selection with/without bounded data
     6.  Theoretical underpinnings, uniform consistency results, pointwise, Bonferroni, and simultaneous confidence intervals
     
--   Software written in R is available at:  [https://github.com/JeffreyRacine/bkcde](https://github.com/JeffreyRacine/bkcde)
+-   An R package is available at:
+
+    [https://github.com/JeffreyRacine/bkcde](https://github.com/JeffreyRacine/bkcde)
 
 # Unconditional Density Estimation with Bounded Data
 
 ## KDE with Bounded Data
 
--   Nonparametric (local) kernel-based density estimation has a rich history [@ROSENBLATT:1956; @PARZEN:1962]: \begin{equation*}
-    \hat f(x)=\frac{1}{n}\sum_{i=1}^n \frac{1}{h}K\left(\frac{x-X_i}{h}\right)
+-   Kernel density estimation has a rich history [@ROSENBLATT:1956; @PARZEN:1962]
+
+-   Assuming smoothness, an unknown density $f(x)$ can be estimated using a local average of weight (kernel) functions,
+    \begin{equation*}
+    \hat f(x)=\frac{1}{n}\sum_{i=1}^n \frac{1}{h}K\left(\frac{x-X_i}{h}\right),
     \end{equation*}
+    where $K(\cdot)$ is a kernel function, $h$ is a bandwidth, and $X_i$ are the data
 
--   Conditions for consistency are well-established and typically require that the bandwidth vanishes asymptotically (i.e., that $h\to 0$ as $n\to\infty$)
+<!-- -   For consistency we typically require the bandwidth to vanish asymptotically ($h\to 0$ as $n\to\infty$) -->
 
--   However, in the presence of finite bounds (e.g., $X\in[a,b]$, $a<b$, $|a|<\infty$, $|b|<\infty$) commonly used kernels (e.g., Gaussian, Epanechnikov) are known to behave poorly at the boundary of support (i.e., may converge very slowly at or near boundaries)
+-   However, in the presence of finite bounds (e.g., $X\in[a,b]$, $a<b$, $|a|<\infty$, $|b|<\infty$) "classical" kernels (e.g., Gaussian, Epanechnikov) can behave poorly at the boundary of support; $\hat f(x)$ may converge very slowly at or near boundaries, or even be inconsistent
 
 -   This artifact is known as the "edge" or "boundary" effect
 
 ## Example of KDE with Bounded Data - Boundary Bias
+
+We simulate two datasets, one $N(0,1)$ and one $U[0,1]$, and use data-driven methods of bandwidth selection with a "classical" Gaussian kernel.
 
 ::: {.callout-note appearance="simple"}
 ## Example ($N(0,1)$ (left figure), $U{[0,1]}$ (right figure), R function density())
@@ -148,12 +158,16 @@ library(MASS)
 ```{r}
 #| echo: true
 #| output-location: slide
+#| out-width: "80%"
+#| label: fig-simulated-kde-norm-unif
+#| fig-cap: Simulated data from $N(0,1)$ and $U[0,1]$ with classical KDE
 set.seed(42)
 ## Simulate n=1000 observations from N(0,1) and U[0,1]
 n <- 1000
 par(mfrow=c(1,2))
 x <- sort(rnorm(1000))
 ## Plot the density using R's density() for N(0,1)
+?density
 plot(density(x),main="Gaussian Data")
 lines(x,dnorm(x),col=2,lwd=2,lty=2)
 legend("topleft",c("DGP","density()"),col=c(2,1),lty=c(2,1),bty="n")
@@ -421,7 +435,7 @@ rug(x)
 #| output-location: slide
 #| out-width: "80%"
 #| label: fig-conditional-kde-uniform
-#| fig-cap: Conditional KDE for $U[0,1]$ with classical bounds ($Y\in[-\infty,\infty]$, $p=0$), empirical bounds with adaptive polynomial choice ($Y\in[\min(Y),\max(Y)]$)
+#| fig-cap: Conditional KDE for $U[0,1]$ with classical bounds and ad hoc degree ($Y\in[-\infty,\infty]$, $p=0$), empirical bounds with adaptive polynomial choice ($Y\in[\min(Y),\max(Y)]$)
 library(bkcde)
 set.seed(42)
 n <- 350
@@ -531,7 +545,7 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 # Finite-Sample Performance
 
-## Summary
+## Details
 
 -   We provide theoretical underpinnings for joint selection of $p$, $h_y$, and $h_x$ via least squares cross-validation (LS-CV) minimization of $$\mathrm{ISE}(p,h_y,h_x)=\int \{\widehat{g}(y | \mathbf{x})-{g}(y | \mathbf{x})\}^2dy$$
 
