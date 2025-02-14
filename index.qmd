@@ -421,17 +421,25 @@ rug(x)
 #| output-location: slide
 #| out-width: "80%"
 #| label: fig-conditional-kde-uniform
-#| fig-cap: Conditional KDE for $U[0,1]$ with empirical bounds
+#| fig-cap: Conditional KDE for $U[0,1]$ with classical bounds ($Y\in[-\infty,\infty]$, $p=0$), empirical bounds with adaptive polynomial choice ($Y\in[\min(Y),\max(Y)]$)
 library(bkcde)
 set.seed(42)
 n <- 350
 x <- runif(n)
 y <- rbeta(n,1,1)
 f <- bkcde(x=x,y=y,proper=TRUE)
+f.classic <- bkcde(x=x,y=y,proper=TRUE,
+                   y.ub=Inf,
+                   y.lb=-Inf,
+                   x.ub=Inf,
+                   x.lb=-Inf,
+                   degree.min=0,
+                   degree.max=0)
 dgp <- dbeta(f$y.eval,1,1)
-par(mfrow=c(1,2),cex=.75,mar=c(2,2,2,1))
-zlim <- range(f$f,dgp,0,2)
-plot(f,main=paste("Estimated Density, n = ",n),zlim=zlim)
+par(mfrow=c(1,3),cex=.75,mar=c(2,2,2,1))
+zlim <- range(f$f,f.classic$f,dgp,0,2)
+plot(f.classic,main=paste("Estimated Density (Classic, p = 0), n = ",n),zlim=zlim)
+plot(f,main=paste("Estimated Density (Bounded, p = ",f$degree,"), n = ",n,sep=""),zlim=zlim)
 persp(unique(f$x.eval),unique(f$y.eval),
       matrix(dgp,nrow=length(unique(f$x.eval))),
       theta=120,phi=45,ticktype="detailed",xlab="x",ylab="y",zlab="f(y|x)",zlim=zlim,main="True density")
