@@ -36,7 +36,7 @@ format:
     code-link: true
     css: custom.css
     embed-resources: false
-    footer: "Boundary Corrected Adaptive CKDE | <https://jeffreyracine.github.io/bk> |&copy; Jeffrey S. Racine"
+    footer: "Boundary Corrected Adaptive CKDE | <https://jeffreyracine.github.io/bk>"
     ## This "hack" is exclusive to using mathjax and allows for plain vanilla
     ## equation cross referencing using any LaTeX math environment such as
     ## align, equation, split, etc., i.e., \label{eqfoo} and \eqref{eqfoo} (it
@@ -101,9 +101,21 @@ library(MASS)
 
 ## Overview of Talk
 
--   You are invited to participate in this "interactive seminar". Hopefully you came with your laptop, the Firefox browser, R/RStudio, and a the suggested libraries installed.
+-   This talk is about a proposed boundary adaptive, polynomial order adaptive, conditional kernel density estimator, and its finite-sample performance.
 
--   This talk is about a proposed boundary adaptive, polynomial order adaptive, conditional kernel density estimator. The talk is divided into the following sections:
+-   I am aiming for an interactive seminar format, which will require either your participation or being seated next to someone who is
+
+-   Hopefully you came with your laptop, the Firefox browser, R/RStudio, and a the suggested libraries installed (if you have your laptop you can do this now if you didn't get the memo).
+
+-   If you have R/RStudio and the libraries installed, we can work with the methods and data interactively.
+
+-   My hope is that you will be able to follow along and reproduce the results on your own computer.
+
+-   Let's begin by opening the following link in Firefox: [https://jeffreyracine.github.io/bk](https://jeffreyracine.github.io/bk)
+
+## Overview of Talk
+
+-   We will cover the following topics:
 
     1.  Unconditional kernel density estimation with/without bounded data
     2.  Conditional kernel density estimation
@@ -111,6 +123,8 @@ library(MASS)
     4.  Conditional density estimation, bandwidth and polynomial order selection
     5.  Conditional density estimation, bandwidth and polynomial order selection with/without bounded data
     6.  Theoretical underpinnings, uniform consistency results, pointwise, Bonferroni, and simultaneous confidence intervals
+    
+-   Software written in R is available at:  [https://github.com/JeffreyRacine/bkcde](https://github.com/JeffreyRacine/bkcde)
 
 # Unconditional Density Estimation with Bounded Data
 
@@ -183,35 +197,23 @@ rug(x)
 
 ## KDE with Bounded Data - Carpentry
 
--   Consider the range of boundary kernel functions existing in the literature:
+-   Numerous boundary kernel functions exist, including
 
--   Beta ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$)
+-   Beta kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@CHEN:1999; @BOUEZMARNI_ROLIN:2003; @ZHANG_KARUNAMUNI:2010; @IGARASHI:2016]
 
-    -   @CHEN:1999
-    -   @BOUEZMARNI_ROLIN:2003
-    -   @ZHANG_KARUNAMUNI:2010
-    -   @IGARASHI:2016
-    -   @RACINE_LI_WANG:2024
+-   Gamma kenels ($x\in[a,\infty]$, $|a|<\infty$) [@CHEN:2000; @MALEC201457]
 
--   Gamma ($x\in[a,\infty]$, $|a|<\infty$)
-
-    -   @CHEN:2000
-    -   @MALEC201457
-
--   Inverse and Reciprocal Inverse Gaussian ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$)
-
-    -   @SCAILLET:2004
-    -   @IGARASHI_KAKIZAWA:2014
+-   Inverse and Reciprocal Inverse Gaussian kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@SCAILLET:2004; @IGARASHI_KAKIZAWA:2014]
+    
+-   A more recent addition is the Gaussian kernel ($x\in[a,b]$, $|a|\le\infty$, $|b|\le\infty$, $a<b$) of @RACINE_LI_WANG:2024
 
 ## KDE with Bounded Data - A Priori Information
 
--   The use of boundary kernels is not without its issues. @SCOTT:1992, Page 149, writes
+-   Regarding the use of boundary kernels, @SCOTT:1992, Page 149, notes:
 
     > "*While boundary kernels can be very useful, there are potentially serious problems with real data. There are an infinite number of boundary kernels reflecting the spectrum of possible design constraints, and these kernels are not interchangeable. Severe artifacts can be introduced by any one of them in inappropriate situations. Very careful examination is required to avoid being victimized by the particular boundary kernel chosen. Artifacts can unfortunately be introduced by the choice of the support interval for the boundary kernel.*"
 
--   Another problem is that virtually all existing boundary kernels require the bounds to be known a priori
-
--   This is because they proceed from weight functions that are themselves bounded on $[a,b]$, e.g., the Beta ($x\in[a,b]$) and Gamma kernels ($x\in[a,\infty]$) where $a$ and $b$ are finite
+-   Also, virtually all existing boundary kernels require the bounds to be known a priori as they proceed from weight functions bounded on the finite interval $[a,b]$ (e.g., the Beta ($x\in[a,b]$) and Gamma kernels ($x\in[a,\infty]$) where $a$ and $b$ are finite)
 
 -   Unlike its peers, however, the kernel proposed by @RACINE_LI_WANG:2024 is applicable whether or not bounds are known a-priori and allow $a$ and $b$ to be infinite
 
@@ -219,7 +221,7 @@ rug(x)
 
 -   If bounds are known, naturally one should use that information
 
--   But in the presence of *unknown* bounds, @RACINE_LI_WANG:2024 considered a simple kernel function that can *automatically* adapt *and* nests classical kernels where $Y\in[-\infty,\infty]$ as a special case
+-   But in the presence of *unknown* bounds, @RACINE_LI_WANG:2024 considered a simple kernel function that can *automatically* adapt (more shortly) *and* nests the classical Gaussian kernel with $Y\in[-\infty,\infty]$ as a special case
 
 -   They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when $h\to\infty$ as $n\to\infty$ is appropriate, which violates classical conditions for consistency
 

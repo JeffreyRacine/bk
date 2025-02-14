@@ -467,9 +467,16 @@ Qi Li<sup>3</sup>
 </div>
 </section><section id="overview-of-talk" class="slide level2 center"><h2>Overview of Talk</h2>
 <ul>
-<li class="fragment"><p>You are invited to participate in this “interactive seminar”. Hopefully you came with your laptop, the Firefox browser, R/RStudio, and a the suggested libraries installed.</p></li>
+<li class="fragment"><p>This talk is about a proposed boundary adaptive, polynomial order adaptive, conditional kernel density estimator, and its finite-sample performance.</p></li>
+<li class="fragment"><p>I am aiming for an interactive seminar format, which will require either your participation or being seated next to someone who is</p></li>
+<li class="fragment"><p>Hopefully you came with your laptop, the Firefox browser, R/RStudio, and a the suggested libraries installed (if you have your laptop you can do this now if you didn’t get the memo).</p></li>
+<li class="fragment"><p>If you have R/RStudio and the libraries installed, we can work with the methods and data interactively.</p></li>
+<li class="fragment"><p>My hope is that you will be able to follow along and reproduce the results on your own computer.</p></li>
+<li class="fragment"><p>Let’s begin by opening the following link in Firefox: <a href="https://jeffreyracine.github.io/bk">https://jeffreyracine.github.io/bk</a></p></li>
+</ul></section><section id="overview-of-talk-1" class="slide level2 center"><h2>Overview of Talk</h2>
+<ul>
 <li class="fragment">
-<p>This talk is about a proposed boundary adaptive, polynomial order adaptive, conditional kernel density estimator. The talk is divided into the following sections:</p>
+<p>We will cover the following topics:</p>
 <ol type="1">
 <li class="fragment">Unconditional kernel density estimation with/without bounded data</li>
 <li class="fragment">Conditional kernel density estimation</li>
@@ -479,6 +486,7 @@ Qi Li<sup>3</sup>
 <li class="fragment">Theoretical underpinnings, uniform consistency results, pointwise, Bonferroni, and simultaneous confidence intervals</li>
 </ol>
 </li>
+<li class="fragment"><p>Software written in R is available at: <a href="https://github.com/JeffreyRacine/bkcde">https://github.com/JeffreyRacine/bkcde</a></p></li>
 </ul></section></section><section><section id="unconditional-density-estimation-with-bounded-data" class="title-slide slide level1 center"><h1>Unconditional Density Estimation with Bounded Data</h1>
 
 </section><section id="kde-with-bounded-data" class="slide level2 center"><h2>KDE with Bounded Data</h2>
@@ -558,46 +566,25 @@ Qi Li<sup>3</sup>
 <li class="fragment"><p>To some degree, all methods (i.e., reflection, transformation, carpentry) can reduce the amount of bias that would otherwise be present near a boundary to that which holds in the interior of support where it is free from boundary effects</p></li>
 </ul></section><section id="kde-with-bounded-data---carpentry-1" class="slide level2 center"><h2>KDE with Bounded Data - Carpentry</h2>
 <ul>
-<li class="fragment"><p>Consider the range of boundary kernel functions existing in the literature:</p></li>
-<li class="fragment">
-<p>Beta (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>)</p>
-<ul>
-<li class="fragment"><span class="citation" data-cites="CHEN:1999">Chen (<a href="#/references-scrollable" role="doc-biblioref" onclick="">1999</a>)</span></li>
-<li class="fragment"><span class="citation" data-cites="BOUEZMARNI_ROLIN:2003">Bouezmarni and Rolin (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2003</a>)</span></li>
-<li class="fragment"><span class="citation" data-cites="ZHANG_KARUNAMUNI:2010">Zhang and Karunamuni (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2010</a>)</span></li>
-<li class="fragment"><span class="citation" data-cites="IGARASHI:2016">Igarashi (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2016</a>)</span></li>
-<li class="fragment"><span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span></li>
-</ul>
-</li>
-<li class="fragment">
-<p>Gamma (<span class="math inline">\(x\in[a,\infty]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>)</p>
-<ul>
-<li class="fragment"><span class="citation" data-cites="CHEN:2000">Chen (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2000</a>)</span></li>
-<li class="fragment"><span class="citation" data-cites="MALEC201457">Malec and Schienle (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2014</a>)</span></li>
-</ul>
-</li>
-<li class="fragment">
-<p>Inverse and Reciprocal Inverse Gaussian (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>)</p>
-<ul>
-<li class="fragment"><span class="citation" data-cites="SCAILLET:2004">Scaillet (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span></li>
-<li class="fragment"><span class="citation" data-cites="IGARASHI_KAKIZAWA:2014">Igarashi and Kakizawa (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2014</a>)</span></li>
-</ul>
-</li>
+<li class="fragment"><p>Numerous boundary kernel functions exist, including</p></li>
+<li class="fragment"><p>Beta kernels (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="CHEN:1999 BOUEZMARNI_ROLIN:2003 ZHANG_KARUNAMUNI:2010 IGARASHI:2016">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 1999</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Bouezmarni and Rolin 2003</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Zhang and Karunamuni 2010</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi 2016</a>)</span></p></li>
+<li class="fragment"><p>Gamma kenels (<span class="math inline">\(x\in[a,\infty]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>) <span class="citation" data-cites="CHEN:2000 MALEC201457">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 2000</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Malec and Schienle 2014</a>)</span></p></li>
+<li class="fragment"><p>Inverse and Reciprocal Inverse Gaussian kernels (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="SCAILLET:2004 IGARASHI_KAKIZAWA:2014">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Scaillet 2004</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi and Kakizawa 2014</a>)</span></p></li>
+<li class="fragment"><p>A more recent addition is the Gaussian kernel (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|\le\infty\)</span>, <span class="math inline">\(|b|\le\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span></p></li>
 </ul></section><section id="kde-with-bounded-data---a-priori-information" class="slide level2 center"><h2>KDE with Bounded Data - A Priori Information</h2>
 <ul>
 <li class="fragment">
-<p>The use of boundary kernels is not without its issues. <span class="citation" data-cites="SCOTT:1992">Scott (<a href="#/references-scrollable" role="doc-biblioref" onclick="">1992</a>)</span>, Page 149, writes</p>
+<p>Regarding the use of boundary kernels, <span class="citation" data-cites="SCOTT:1992">Scott (<a href="#/references-scrollable" role="doc-biblioref" onclick="">1992</a>)</span>, Page 149, notes:</p>
 <blockquote>
 <p>“<em>While boundary kernels can be very useful, there are potentially serious problems with real data. There are an infinite number of boundary kernels reflecting the spectrum of possible design constraints, and these kernels are not interchangeable. Severe artifacts can be introduced by any one of them in inappropriate situations. Very careful examination is required to avoid being victimized by the particular boundary kernel chosen. Artifacts can unfortunately be introduced by the choice of the support interval for the boundary kernel.</em>”</p>
 </blockquote>
 </li>
-<li class="fragment"><p>Another problem is that virtually all existing boundary kernels require the bounds to be known a priori</p></li>
-<li class="fragment"><p>This is because they proceed from weight functions that are themselves bounded on <span class="math inline">\([a,b]\)</span>, e.g., the Beta (<span class="math inline">\(x\in[a,b]\)</span>) and Gamma kernels (<span class="math inline">\(x\in[a,\infty]\)</span>) where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite</p></li>
+<li class="fragment"><p>Also, virtually all existing boundary kernels require the bounds to be known a priori as they proceed from weight functions bounded on the finite interval <span class="math inline">\([a,b]\)</span> (e.g., the Beta (<span class="math inline">\(x\in[a,b]\)</span>) and Gamma kernels (<span class="math inline">\(x\in[a,\infty]\)</span>) where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite)</p></li>
 <li class="fragment"><p>Unlike its peers, however, the kernel proposed by <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> is applicable whether or not bounds are known a-priori and allow <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> to be infinite</p></li>
 </ul></section><section id="kde-with-bounded-data---shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Shrinkage</h2>
 <ul>
 <li class="fragment"><p>If bounds are known, naturally one should use that information</p></li>
-<li class="fragment"><p>But in the presence of <em>unknown</em> bounds, <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> considered a simple kernel function that can <em>automatically</em> adapt <em>and</em> nests classical kernels where <span class="math inline">\(Y\in[-\infty,\infty]\)</span> as a special case</p></li>
+<li class="fragment"><p>But in the presence of <em>unknown</em> bounds, <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> considered a simple kernel function that can <em>automatically</em> adapt (more shortly) <em>and</em> nests the classical Gaussian kernel with <span class="math inline">\(Y\in[-\infty,\infty]\)</span> as a special case</p></li>
 <li class="fragment"><p>They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when <span class="math inline">\(h\to\infty\)</span> as <span class="math inline">\(n\to\infty\)</span> is appropriate, which violates classical conditions for consistency</p></li>
 <li class="fragment"><p>This result is the <em>unconditional counterpart</em> to the <em>conditional</em> result provided by <span class="citation" data-cites="HALL_RACINE_LI:2004">Hall, Racine, and Li (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span> who showed that cross-validated bandwidth selection “automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently <strong>shrinking</strong> them toward the uniform distribution on the respective marginals”</p></li>
 </ul></section><section id="kde-with-bounded-data---bandwidths-and-shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Bandwidths and Shrinkage</h2>
@@ -1154,12 +1141,12 @@ Table&nbsp;3: Relative RMSE Irrelevant
 </tr>
 <tr class="even">
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">800</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important; font-weight: bold; color: green !important;">0.89</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.11</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.24</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.35</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.49</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.61</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important; font-weight: bold; color: green !important;">0.88</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.10</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.23</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.34</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.47</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.60</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 </tbody>
@@ -1273,22 +1260,22 @@ Table&nbsp;5: Relative RMSE Irrelevant
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">100</td>
-<td style="text-align: right; font-weight: bold; color: green !important;">0.96</td>
-<td style="text-align: right;">1.10</td>
-<td style="text-align: right;">1.25</td>
-<td style="text-align: right;">1.34</td>
-<td style="text-align: right;">1.51</td>
-<td style="text-align: right;">1.52</td>
+<td style="text-align: right; font-weight: bold; color: green !important;">0.91</td>
+<td style="text-align: right;">1.14</td>
+<td style="text-align: right;">1.26</td>
+<td style="text-align: right;">1.37</td>
+<td style="text-align: right;">1.49</td>
+<td style="text-align: right;">1.54</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">200</td>
-<td style="text-align: right; font-weight: bold; color: green !important;">0.85</td>
-<td style="text-align: right;">1.15</td>
-<td style="text-align: right;">1.28</td>
-<td style="text-align: right;">1.43</td>
-<td style="text-align: right;">1.56</td>
-<td style="text-align: right;">1.72</td>
+<td style="text-align: right; font-weight: bold; color: green !important;">0.93</td>
+<td style="text-align: right;">1.16</td>
+<td style="text-align: right;">1.29</td>
+<td style="text-align: right;">1.45</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">1.77</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 <tr class="odd">
@@ -1500,7 +1487,7 @@ Table&nbsp;8: Relative RMSE Quadratic
 <tr class="even">
 <td style="text-align: right;">200</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.01</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.01</td>
 <td style="text-align: right;">1.01</td>
 <td style="text-align: right;">1.01</td>
@@ -1509,12 +1496,12 @@ Table&nbsp;8: Relative RMSE Quadratic
 </tr>
 <tr class="odd">
 <td style="text-align: right;">400</td>
-<td style="text-align: right;">1.02</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right; font-weight: bold; color: green !important;">0.97</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1.03</td>
 <td style="text-align: right;">1.01</td>
+<td style="text-align: right; font-weight: bold; color: green !important;">0.98</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.00</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 <tr class="even">
@@ -1691,7 +1678,7 @@ Table&nbsp;11: Median Relative RMSE
 <tr class="even">
 <td style="text-align: right;">800</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">2.37</td>
+<td style="text-align: right;">2.36</td>
 <td style="text-align: right;">2.53</td>
 </tr>
 </tbody>
@@ -1780,8 +1767,8 @@ Table&nbsp;13: Median Relative RMSE
 <tr class="odd">
 <td style="text-align: right;">100</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">0.64</td>
-<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.81</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">200</td>
@@ -1941,12 +1928,12 @@ Table&nbsp;16: Median Relative RMSE
 <td style="text-align: right;">200</td>
 <td style="text-align: right;">1.00</td>
 <td style="text-align: right;">0.96</td>
-<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">0.92</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">400</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.01</td>
 <td style="text-align: right;">0.95</td>
 </tr>
 <tr class="even">
@@ -2689,7 +2676,7 @@ FYT
 </section><section id="references-scrollable" class="slide level2 allowframebreaks smaller scrollable"><h2>References (scrollable)</h2>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
-<p>Boundary Corrected Adaptive CKDE | <a href="https://jeffreyracine.github.io/bk" class="uri">https://jeffreyracine.github.io/bk</a> |© Jeffrey S. Racine</p>
+<p>Boundary Corrected Adaptive CKDE | <a href="https://jeffreyracine.github.io/bk" class="uri">https://jeffreyracine.github.io/bk</a></p>
 </div>
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
