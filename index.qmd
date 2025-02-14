@@ -36,7 +36,7 @@ format:
     code-link: true
     css: custom.css
     embed-resources: false
-    footer: "Boundary Corrected Adaptive CKDE | &copy; Jeffrey S. Racine"
+    footer: "Boundary Corrected Adaptive CKDE | <https://jeffreyracine.github.io/bk> |&copy; Jeffrey S. Racine"
     ## This "hack" is exclusive to using mathjax and allows for plain vanilla
     ## equation cross referencing using any LaTeX math environment such as
     ## align, equation, split, etc., i.e., \label{eqfoo} and \eqref{eqfoo} (it
