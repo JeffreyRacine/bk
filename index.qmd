@@ -10,7 +10,7 @@ institute:
 - ^3^Department of Economics, Texas A&M University
 date: last-modified
 date-format: "[Updated] MMMM DD, YYYY"
-bibliography: ../bkcde.bib
+bibliography: index.bib
 editor: source
 ## Pass knitr options like this (otherwise old-school knitr::opt_chunks$set() in an R chunk)
 ## Squirrel issues, trying setting autodep and cache in opts_chunk below
