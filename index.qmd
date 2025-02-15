@@ -368,7 +368,7 @@ rug(x)
 
 -   The local polynomial extension of this estimator is given by \begin{equation*}
     \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right),
-    \end{equation*} which delivers $\hat\alpha=\hat f(y|x)$, a $p$-th order local polynomial estimator.
+    \end{equation*} which delivers $\hat\alpha_0=\hat f(y|x)$, a $p$-th order local polynomial estimator.
 
 ## Local Polynomial Conditional KDE
 
@@ -382,7 +382,7 @@ rug(x)
 
     > "Another issue in local polynomial fitting is the choice of the order of the local polynomial. Since the modelling bias is primarily controlled by the bandwidth, this issue is less crucial however. \[\dots\] Since the bandwidth is used to control the modelling complexity, we recommend the use of the lowest odd order, i.e. $p=\nu+1$, or occasionally $p=\nu+3$. \[$\nu$ is the order of the derivative required\]."
 
-# Conditional Density Estimation - Bandwidth and Polynomial Order Selection
+# Conditional Density Estimation:<br> Bandwidth and Polynomial Order Selection
 
 ## Conditional KDE - Bandwidth Selection
 
@@ -414,9 +414,11 @@ rug(x)
 
 ## Conditional KDE - Bandwidth and Order Selection with Bounded $Y$
 
--   We consider the case where $Y\in[a,b]$ and $X\in\mathbb{R}^1$
+-   We consider the case where $Y\in[a,b]$ and $X\in\mathbb{R}^1$, and allow for the bounds to be known or unknown a priori
 
--   We also allow for the bounds to be known or unknown a priori
+-   The local polynomial estimator using the boundary adaptive kernel $K_{[a,b]}(z_y)$ is $\hat\alpha_0=\hat f(y|x)$ from the solution of \begin{equation*}
+    \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K_{[a,b]}\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right)
+    \end{equation*} 
 
 -   We minimize ISE($p$, $h_x$,$h_y$) with known bounds $a$ and $b$ or unknown bounds using the empirical support $[\hat a,\hat b]=[\min(Y),\max(Y)]$
 
@@ -424,7 +426,7 @@ rug(x)
 
 -   This supports the construction of uniform or "simultaneous" confidence intervals
 
--   Let's consider some illustrations
+-   Let's consider some illustrations of the fully data-driven method of bandwidth and polynomial order selection
 
 ## Example - Conditional KDE with Bounded $Y$ and Irrelevant $X$
 
@@ -436,7 +438,7 @@ rug(x)
 #| output-location: slide
 #| out-width: "80%"
 #| label: fig-conditional-kde-uniform
-#| fig-cap: Conditional KDE for $U[0,1]$ with classical bounds and ad hoc degree ($Y\in[-\infty,\infty]$, $p=0$), empirical bounds with adaptive polynomial choice ($Y\in[\min(Y),\max(Y)]$)
+#| fig-cap: Conditional KDE for $U[0,1]$ with classical bounds and ad hoc order ($Y\in[-\infty,\infty]$, $p=0$), empirical bounds with adaptive polynomial choice ($Y\in[\min(Y),\max(Y)]$)
 library(bkcde)
 set.seed(42)
 n <- 350
@@ -783,7 +785,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
 
 ## Candidate Model Comparison:  Beta DGP
 
--   We conduct Monte Carlo simulations are report the average relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).
+-   We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).
 
 -   Numbers $<1$ are more efficient than the PA method.
 
@@ -796,7 +798,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-beta-ml-irr
-    #| tbl-cap: Relative RMSE Irrelevant
+    #| tbl-cap: Relative RMSE Irrelevant ML
     kable(rmse.beta.ml.irr,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -809,7 +811,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-beta-ls-irr
-    #| tbl-cap: Relative RMSE Irrelevant     
+    #| tbl-cap: Relative RMSE Irrelevant LS  
     kable(rmse.beta.ls.irr,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -822,7 +824,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-beta-ml-quad
-    #| tbl-cap: Relative RMSE Quadratic
+    #| tbl-cap: Relative RMSE Quadratic ML
     kable(rmse.beta.ml.quad,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -835,7 +837,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-beta-ls-quad
-    #| tbl-cap: Relative RMSE Quadratic
+    #| tbl-cap: Relative RMSE Quadratic LS
     kable(rmse.beta.ls.quad,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -845,7 +847,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
 
 ## Candidate Model Comparison:  Gaussian DGP
 
--   We conduct Monte Carlo simulations are report the average relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).
+-   We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).
 
 -   Numbers $<1$ are more efficient than the PA method.
 
@@ -858,7 +860,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-norm-ml-irr
-    #| tbl-cap: Relative RMSE Irrelevant 
+    #| tbl-cap: Relative RMSE Irrelevant ML
     kable(rmse.norm.ml.irr,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -871,7 +873,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-norm-ls-irr
-    #| tbl-cap: Relative RMSE Irrelevant  
+    #| tbl-cap: Relative RMSE Irrelevant LS
     kable(rmse.norm.ls.irr,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -884,7 +886,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-norm-ml-quad
-    #| tbl-cap: Relative RMSE Quadratic
+    #| tbl-cap: Relative RMSE Quadratic ML
     kable(rmse.norm.ml.quad,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -897,7 +899,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| echo: false
     #| cache: false
     #| label: tbl-dgp-norm-ls-quad
-    #| tbl-cap: Relative RMSE Quadratic
+    #| tbl-cap: Relative RMSE Quadratic LS
     kable(rmse.norm.ls.quad,
           col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
@@ -1015,7 +1017,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-beta-cv-ml-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant
+    #| tbl-cap: Median Relative RMSE Irrelevant ML
     kable(rmse.comp.beta.ml.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
     ```
     
@@ -1025,7 +1027,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-beta-cv-ls-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant
+    #| tbl-cap: Median Relative RMSE Irrelevant LS
     kable(rmse.comp.beta.ls.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
     ```    
 
@@ -1035,7 +1037,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-beta-cv-ml-quad
-    #| tbl-cap: Median Relative RMSE Quadratic
+    #| tbl-cap: Median Relative RMSE Quadratic ML
     kable(rmse.comp.beta.ml.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
     ```
 
@@ -1045,7 +1047,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-beta-cv-ls-quad
-    #| tbl-cap: Median Relative RMSE Quadratic
+    #| tbl-cap: Median Relative RMSE Quadratic LS
 
     kable(rmse.comp.beta.ls.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
     ```
@@ -1062,7 +1064,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-norm-cv-ml-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant
+    #| tbl-cap: Median Relative RMSE Irrelevant ML
     kable(rmse.comp.norm.ml.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
     ```
     
@@ -1072,7 +1074,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-norm-cv-ls-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant
+    #| tbl-cap: Median Relative RMSE Irrelevant LS
     kable(rmse.comp.norm.ls.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
     ```    
 
@@ -1082,7 +1084,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-norm-cv-ml-quad
-    #| tbl-cap: Median Relative RMSE Quadratic
+    #| tbl-cap: Median Relative RMSE Quadratic ML
     kable(rmse.comp.norm.ml.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
     ```
 
@@ -1093,7 +1095,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     #| echo: false
     #| cache: false
     #| label: tbl-norm-cv-ls-quad
-    #| tbl-cap: Median Relative RMSE Quadratic
+    #| tbl-cap: Median Relative RMSE Quadratic LS
     kable(rmse.comp.norm.ls.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
     ```
     :::
@@ -1396,36 +1398,27 @@ sf.beta.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_
 
 # Scale Factor Summaries
 
-## Scale Factor Summaries ML-CV
+## Scale Factor Summaries: Beta DGP
 
 ::: panel-tabset
-### $N(0,1/12)$ ML
-
-```{r}
-#| echo: false
-#| label: tbl-sf-norm-cvml-irr
-#| tbl-cap: Scale Factor Summary Irrelevant
-kable(sf.norm.cvml.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
-add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
-```
-
-### $N(x^2,1/12)$ ML
-
-```{r}
-#| echo: false
-#| label: tbl-sf-norm-cvml-quad
-#| tbl-cap: Scale Factor Summary Quadratic
-kable(sf.norm.cvml.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
-add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
-```
-
 ### $B(1,2)$ ML
 
 ```{r}
 #| echo: false
 #| label: tbl-sf-beta-cvml-irr
-#| tbl-cap: Scale Factor Summary Irrelevant
+#| tbl-cap: Scale Factor Summary Irrelevant ML
 kable(sf.beta.cvml.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
+add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
+```
+
+
+### $B(1,2)$ LS
+
+```{r}
+#| echo: false
+#| label: tbl-sf-beta-cvls-irr
+#| tbl-cap: Scale Factor Summary Irrelevant LS
+kable(sf.beta.cvls.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
@@ -1434,43 +1427,8 @@ add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```{r}
 #| echo: false
 #| label: tbl-sf-beta-cvml-quad
-#| tbl-cap: Scale Factor Summary Quadratic
+#| tbl-cap: Scale Factor Summary Quadratic ML
 kable(sf.beta.cvml.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
-add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
-```
-
-:::
-
-## Scale Factor Summaries LS-CV
-
-::: panel-tabset
-### $N(0,1/12)$ LS
-
-```{r}
-#| echo: false
-#| label: tbl-sf-norm-cvls-irr
-#| tbl-cap: Scale Factor Summary Irrelevant
-kable(sf.norm.cvls.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
-add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
-```
-
-### $N(x^2,1/12)$ LS
-
-```{r}
-#| echo: false
-#| label: tbl-sf-norm-cvls-quad
-#| tbl-cap: Scale Factor Summary Quadratic
-kable(sf.norm.cvls.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
-add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
-```
-
-### $B(1,2)$ LS
-
-```{r}
-#| echo: false
-#| label: tbl-sf-beta-cvls-irr
-#| tbl-cap: Scale Factor Summary Irrelevant
-kable(sf.beta.cvls.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
@@ -1479,8 +1437,54 @@ add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```{r}
 #| echo: false
 #| label: tbl-sf-beta-cvls-quad
-#| tbl-cap: Scale Factor Summary Quadratic
+#| tbl-cap: Scale Factor Summary Quadratic LS
 kable(sf.beta.cvls.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
+add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
+```
+
+:::
+
+## Scale Factor Summaries: Gaussian DGP
+
+::: panel-tabset
+
+### $N(0,1/12)$ ML
+
+```{r}
+#| echo: false
+#| label: tbl-sf-norm-cvml-irr
+#| tbl-cap: Scale Factor Summary Irrelevant ML
+kable(sf.norm.cvml.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
+add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
+```
+
+### $N(0,1/12)$ LS
+
+```{r}
+#| echo: false
+#| label: tbl-sf-norm-cvls-irr
+#| tbl-cap: Scale Factor Summary Irrelevant LS
+kable(sf.norm.cvls.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
+add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
+```
+
+### $N(x^2,1/12)$ ML
+
+```{r}
+#| echo: false
+#| label: tbl-sf-norm-cvml-quad
+#| tbl-cap: Scale Factor Summary Quadratic ML
+kable(sf.norm.cvml.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
+add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
+```
+
+### $N(x^2,1/12)$ LS
+
+```{r}
+#| echo: false
+#| label: tbl-sf-norm-cvls-quad
+#| tbl-cap: Scale Factor Summary Quadratic LS
+kable(sf.norm.cvls.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 

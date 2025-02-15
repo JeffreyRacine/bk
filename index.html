@@ -747,7 +747,7 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 \end{equation*}\]</span> which delivers <span class="math inline">\(\hat\alpha=\hat f(y|x)\)</span> identical to that from the previous approach.</p></li>
 <li class="fragment"><p>The local polynomial extension of this estimator is given by <span class="math display">\[\begin{equation*}
 \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right),
-\end{equation*}\]</span> which delivers <span class="math inline">\(\hat\alpha=\hat f(y|x)\)</span>, a <span class="math inline">\(p\)</span>-th order local polynomial estimator.</p></li>
+\end{equation*}\]</span> which delivers <span class="math inline">\(\hat\alpha_0=\hat f(y|x)\)</span>, a <span class="math inline">\(p\)</span>-th order local polynomial estimator.</p></li>
 </ul></section><section id="local-polynomial-conditional-kde-1" class="slide level2 center"><h2>Local Polynomial Conditional KDE</h2>
 <ul>
 <li class="fragment"><p>The local polynomial estimator is often adopted for its boundary properties with odd-order polynomials <span class="math inline">\(p\ge 1\)</span></p></li>
@@ -759,7 +759,7 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <p>“Another issue in local polynomial fitting is the choice of the order of the local polynomial. Since the modelling bias is primarily controlled by the bandwidth, this issue is less crucial however. [] Since the bandwidth is used to control the modelling complexity, we recommend the use of the lowest odd order, i.e.&nbsp;<span class="math inline">\(p=\nu+1\)</span>, or occasionally <span class="math inline">\(p=\nu+3\)</span>. [<span class="math inline">\(\nu\)</span> is the order of the derivative required].”</p>
 </blockquote>
 </li>
-</ul></section></section><section><section id="conditional-density-estimation---bandwidth-and-polynomial-order-selection" class="title-slide slide level1 center"><h1>Conditional Density Estimation - Bandwidth and Polynomial Order Selection</h1>
+</ul></section></section><section><section id="conditional-density-estimation-bandwidth-and-polynomial-order-selection" class="title-slide slide level1 center"><h1>Conditional Density Estimation:<br> Bandwidth and Polynomial Order Selection</h1>
 
 </section><section id="conditional-kde---bandwidth-selection" class="slide level2 center"><h2>Conditional KDE - Bandwidth Selection</h2>
 <ul>
@@ -777,17 +777,19 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment"><p>This joint optimization of the polynomial order vector (integers) and the bandwidth vector (continuous positive bounded scalars <span class="math inline">\(&gt;0\)</span>), is a <em>mixed-integer</em> problem that can be solved using the <code>NOMAD</code> algorithm <span class="citation" data-cites="LEDIGABEL:2011 NOMAD">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Le Digabel 2011</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Abramson et al. 2022</a>)</span></p></li>
 <li class="fragment"><p>We extend this to the conditional density estimation case, where the choice of polynomial order is also crucial</p></li>
 <li class="fragment"><p>We minimize ISE(<span class="math inline">\(p\)</span>, <span class="math inline">\(h_x\)</span>,<span class="math inline">\(h_y\)</span>), while the classical approach minimizes ISE(<span class="math inline">\(h_x\)</span>,<span class="math inline">\(h_y\)</span>) for ad hoc <span class="math inline">\(p\)</span></p></li>
-</ul></section></section><section><section id="conditional-density-estimation---bandwidth-and-polynomial-order-selection-1" class="title-slide slide level1 center"><h1>Conditional Density Estimation - Bandwidth and Polynomial Order Selection</h1>
+</ul></section></section><section><section id="conditional-density-estimation---bandwidth-and-polynomial-order-selection" class="title-slide slide level1 center"><h1>Conditional Density Estimation - Bandwidth and Polynomial Order Selection</h1>
 
 </section><section id="conditional-kde---bandwidth-and-order-selection-with-bounded-y" class="slide level2 center"><h2>Conditional KDE - Bandwidth and Order Selection with Bounded <span class="math inline">\(Y\)</span>
 </h2>
 <ul>
-<li class="fragment"><p>We consider the case where <span class="math inline">\(Y\in[a,b]\)</span> and <span class="math inline">\(X\in\mathbb{R}^1\)</span></p></li>
-<li class="fragment"><p>We also allow for the bounds to be known or unknown a priori</p></li>
+<li class="fragment"><p>We consider the case where <span class="math inline">\(Y\in[a,b]\)</span> and <span class="math inline">\(X\in\mathbb{R}^1\)</span>, and allow for the bounds to be known or unknown a priori</p></li>
+<li class="fragment"><p>The local polynomial estimator using the boundary adaptive kernel <span class="math inline">\(K_{[a,b]}(z_y)\)</span> is <span class="math inline">\(\hat\alpha_0=\hat f(y|x)\)</span> from the solution of <span class="math display">\[\begin{equation*}
+\hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K_{[a,b]}\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right)
+\end{equation*}\]</span></p></li>
 <li class="fragment"><p>We minimize ISE(<span class="math inline">\(p\)</span>, <span class="math inline">\(h_x\)</span>,<span class="math inline">\(h_y\)</span>) with known bounds <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> or unknown bounds using the empirical support <span class="math inline">\([\hat a,\hat b]=[\min(Y),\max(Y)]\)</span></p></li>
 <li class="fragment"><p>We provide uniform consistency results for the resulting estimator</p></li>
 <li class="fragment"><p>This supports the construction of uniform or “simultaneous” confidence intervals</p></li>
-<li class="fragment"><p>Let’s consider some illustrations</p></li>
+<li class="fragment"><p>Let’s consider some illustrations of the fully data-driven method of bandwidth and polynomial order selection</p></li>
 </ul></section><section id="example---conditional-kde-with-bounded-y-and-irrelevant-x" class="slide level2 center"><h2>Example - Conditional KDE with Bounded <span class="math inline">\(Y\)</span> and Irrelevant <span class="math inline">\(X\)</span>
 </h2>
 <div class="callout callout-note callout-titled callout-style-simple">
@@ -834,7 +836,7 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <img data-src="index_files/figure-revealjs/fig-conditional-kde-uniform-1.png" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-kde-uniform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Conditional KDE for <span class="math inline">\(U[0,1]\)</span> with classical bounds and ad hoc degree (<span class="math inline">\(Y\in[-\infty,\infty]\)</span>, <span class="math inline">\(p=0\)</span>), empirical bounds with adaptive polynomial choice (<span class="math inline">\(Y\in[\min(Y),\max(Y)]\)</span>)
+Figure&nbsp;4: Conditional KDE for <span class="math inline">\(U[0,1]\)</span> with classical bounds and ad hoc order (<span class="math inline">\(Y\in[-\infty,\infty]\)</span>, <span class="math inline">\(p=0\)</span>), empirical bounds with adaptive polynomial choice (<span class="math inline">\(Y\in[\min(Y),\max(Y)]\)</span>)
 </figcaption></figure>
 </div>
 </div>
@@ -1003,7 +1005,7 @@ Figure&nbsp;8: DGPs for the conditional density simulations (top Beta, bottom Ga
 
 </section><section id="candidate-model-comparison-beta-dgp" class="slide level2 center"><h2>Candidate Model Comparison: Beta DGP</h2>
 <ul>
-<li class="fragment"><p>We conduct Monte Carlo simulations are report the average relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).</p></li>
+<li class="fragment"><p>We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).</p></li>
 <li class="fragment"><p>Numbers <span class="math inline">\(&lt;1\)</span> are more efficient than the PA method.</p></li>
 <li class="fragment">
 <p>If you knew <em>ex ante</em> which polynomial order to select, you would use that.</p>
@@ -1019,7 +1021,7 @@ Figure&nbsp;8: DGPs for the conditional density simulations (top Beta, bottom Ga
 <div class="cell">
 <div id="tbl-dgp-beta-ml-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-beta-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Relative RMSE Irrelevant
+Table&nbsp;1: Relative RMSE Irrelevant ML
 </figcaption><div aria-describedby="tbl-dgp-beta-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1086,7 +1088,7 @@ Table&nbsp;1: Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-dgp-beta-ls-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-beta-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Relative RMSE Irrelevant
+Table&nbsp;2: Relative RMSE Irrelevant LS
 </figcaption><div aria-describedby="tbl-dgp-beta-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1123,11 +1125,11 @@ Table&nbsp;2: Relative RMSE Irrelevant
 </tr>
 <tr class="odd">
 <td style="text-align: right;">400</td>
-<td style="text-align: right; font-weight: bold; color: green !important;">0.91</td>
+<td style="text-align: right; font-weight: bold; color: green !important;">0.90</td>
 <td style="text-align: right;">1.09</td>
 <td style="text-align: right;">1.25</td>
-<td style="text-align: right;">1.37</td>
-<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">1.36</td>
+<td style="text-align: right;">1.45</td>
 <td style="text-align: right;">1.54</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
 </tr>
@@ -1137,7 +1139,7 @@ Table&nbsp;2: Relative RMSE Irrelevant
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.10</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.23</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.34</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.47</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.48</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.60</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important; font-weight: bold; color: green !important;">1.00</td>
 </tr>
@@ -1153,7 +1155,7 @@ Table&nbsp;2: Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-dgp-beta-ml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-beta-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Relative RMSE Quadratic
+Table&nbsp;3: Relative RMSE Quadratic ML
 </figcaption><div aria-describedby="tbl-dgp-beta-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1220,7 +1222,7 @@ Table&nbsp;3: Relative RMSE Quadratic
 <div class="cell">
 <div id="tbl-dgp-beta-ls-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-beta-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Relative RMSE Quadratic
+Table&nbsp;4: Relative RMSE Quadratic LS
 </figcaption><div aria-describedby="tbl-dgp-beta-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1288,7 +1290,7 @@ Table&nbsp;4: Relative RMSE Quadratic
 </li>
 </ul></section><section id="candidate-model-comparison-gaussian-dgp" class="slide level2 center"><h2>Candidate Model Comparison: Gaussian DGP</h2>
 <ul>
-<li class="fragment"><p>We conduct Monte Carlo simulations are report the average relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).</p></li>
+<li class="fragment"><p>We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).</p></li>
 <li class="fragment"><p>Numbers <span class="math inline">\(&lt;1\)</span> are more efficient than the PA method.</p></li>
 <li class="fragment">
 <p>If you knew <em>ex ante</em> which polynomial order to select, you would use that.</p>
@@ -1304,7 +1306,7 @@ Table&nbsp;4: Relative RMSE Quadratic
 <div class="cell">
 <div id="tbl-dgp-norm-ml-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-norm-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Relative RMSE Irrelevant
+Table&nbsp;5: Relative RMSE Irrelevant ML
 </figcaption><div aria-describedby="tbl-dgp-norm-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1371,7 +1373,7 @@ Table&nbsp;5: Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-dgp-norm-ls-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-norm-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6: Relative RMSE Irrelevant
+Table&nbsp;6: Relative RMSE Irrelevant LS
 </figcaption><div aria-describedby="tbl-dgp-norm-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1438,7 +1440,7 @@ Table&nbsp;6: Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-dgp-norm-ml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-norm-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7: Relative RMSE Quadratic
+Table&nbsp;7: Relative RMSE Quadratic ML
 </figcaption><div aria-describedby="tbl-dgp-norm-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1455,12 +1457,12 @@ Table&nbsp;7: Relative RMSE Quadratic
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">100</td>
-<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.96</td>
 <td style="text-align: right;">1.01</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.03</td>
 <td style="text-align: right;">0.99</td>
 <td style="text-align: right;">0.97</td>
-<td style="text-align: right;">1.04</td>
+<td style="text-align: right;">1.03</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 <tr class="even">
@@ -1470,7 +1472,7 @@ Table&nbsp;7: Relative RMSE Quadratic
 <td style="text-align: right; font-weight: bold; color: green !important;">1.04</td>
 <td style="text-align: right;">1.00</td>
 <td style="text-align: right;">0.99</td>
-<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">1.02</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 <tr class="odd">
@@ -1505,7 +1507,7 @@ Table&nbsp;7: Relative RMSE Quadratic
 <div class="cell">
 <div id="tbl-dgp-norm-ls-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dgp-norm-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8: Relative RMSE Quadratic
+Table&nbsp;8: Relative RMSE Quadratic LS
 </figcaption><div aria-describedby="tbl-dgp-norm-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" data-quarto-postprocess="true">
@@ -1589,7 +1591,7 @@ Table&nbsp;8: Relative RMSE Quadratic
 <div class="cell">
 <div id="tbl-beta-cv-ml-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-beta-cv-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9: Median Relative RMSE Irrelevant
+Table&nbsp;9: Median Relative RMSE Irrelevant ML
 </figcaption><div aria-describedby="tbl-beta-cv-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1636,7 +1638,7 @@ Table&nbsp;9: Median Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-beta-cv-ls-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-beta-cv-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;10: Median Relative RMSE Irrelevant
+Table&nbsp;10: Median Relative RMSE Irrelevant LS
 </figcaption><div aria-describedby="tbl-beta-cv-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1663,13 +1665,13 @@ Table&nbsp;10: Median Relative RMSE Irrelevant
 <td style="text-align: right;">400</td>
 <td style="text-align: right;">1.00</td>
 <td style="text-align: right;">1.93</td>
-<td style="text-align: right;">2.13</td>
+<td style="text-align: right;">2.14</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">800</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">2.36</td>
-<td style="text-align: right;">2.53</td>
+<td style="text-align: right;">2.35</td>
+<td style="text-align: right;">2.52</td>
 </tr>
 </tbody>
 </table>
@@ -1683,7 +1685,7 @@ Table&nbsp;10: Median Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-beta-cv-ml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-beta-cv-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;11: Median Relative RMSE Quadratic
+Table&nbsp;11: Median Relative RMSE Quadratic ML
 </figcaption><div aria-describedby="tbl-beta-cv-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1730,7 +1732,7 @@ Table&nbsp;11: Median Relative RMSE Quadratic
 <div class="cell">
 <div id="tbl-beta-cv-ls-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-beta-cv-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;12: Median Relative RMSE Quadratic
+Table&nbsp;12: Median Relative RMSE Quadratic LS
 </figcaption><div aria-describedby="tbl-beta-cv-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1763,7 +1765,7 @@ Table&nbsp;12: Median Relative RMSE Quadratic
 <td style="text-align: right;">800</td>
 <td style="text-align: right;">1.00</td>
 <td style="text-align: right;">1.23</td>
-<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">1.18</td>
 </tr>
 </tbody>
 </table>
@@ -1792,7 +1794,7 @@ Table&nbsp;12: Median Relative RMSE Quadratic
 <div class="cell">
 <div id="tbl-norm-cv-ml-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-norm-cv-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;13: Median Relative RMSE Irrelevant
+Table&nbsp;13: Median Relative RMSE Irrelevant ML
 </figcaption><div aria-describedby="tbl-norm-cv-ml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1839,7 +1841,7 @@ Table&nbsp;13: Median Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-norm-cv-ls-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-norm-cv-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;14: Median Relative RMSE Irrelevant
+Table&nbsp;14: Median Relative RMSE Irrelevant LS
 </figcaption><div aria-describedby="tbl-norm-cv-ls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1886,7 +1888,7 @@ Table&nbsp;14: Median Relative RMSE Irrelevant
 <div class="cell">
 <div id="tbl-norm-cv-ml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-norm-cv-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;15: Median Relative RMSE Quadratic
+Table&nbsp;15: Median Relative RMSE Quadratic ML
 </figcaption><div aria-describedby="tbl-norm-cv-ml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1901,7 +1903,7 @@ Table&nbsp;15: Median Relative RMSE Quadratic
 <td style="text-align: right;">100</td>
 <td style="text-align: right;">1.00</td>
 <td style="text-align: right;">0.88</td>
-<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.88</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">200</td>
@@ -1933,7 +1935,7 @@ Table&nbsp;15: Median Relative RMSE Quadratic
 <div class="cell">
 <div id="tbl-norm-cv-ls-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-norm-cv-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;16: Median Relative RMSE Quadratic
+Table&nbsp;16: Median Relative RMSE Quadratic LS
 </figcaption><div aria-describedby="tbl-norm-cv-ls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top">
@@ -1981,190 +1983,20 @@ Table&nbsp;16: Median Relative RMSE Quadratic
 </li>
 </ul></section></section><section><section id="scale-factor-summaries" class="title-slide slide level1 center"><h1>Scale Factor Summaries</h1>
 
-</section><section id="scale-factor-summaries-ml-cv" class="slide level2 center"><h2>Scale Factor Summaries ML-CV</h2>
+</section><section id="scale-factor-summaries-beta-dgp" class="slide level2 center"><h2>Scale Factor Summaries: Beta DGP</h2>
 <div class="panel-tabset">
 <ul id="tabset-5" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-5-1"><span class="math inline">\(N(0,1/12)\)</span> ML</a></li>
-<li><a href="#tabset-5-2"><span class="math inline">\(N(x^2,1/12)\)</span> ML</a></li>
-<li><a href="#tabset-5-3"><span class="math inline">\(B(1,2)\)</span> ML</a></li>
-<li><a href="#tabset-5-4"><span class="math inline">\(B(1+x^2,2-x^2)\)</span> ML</a></li>
+<li><a data-tabby-default="" href="#tabset-5-1"><span class="math inline">\(B(1,2)\)</span> ML</a></li>
+<li><a href="#tabset-5-2"><span class="math inline">\(B(1,2)\)</span> LS</a></li>
+<li><a href="#tabset-5-3"><span class="math inline">\(B(1+x^2,2-x^2)\)</span> ML</a></li>
+<li><a href="#tabset-5-4"><span class="math inline">\(B(1+x^2,2-x^2)\)</span> LS</a></li>
 </ul>
 <div class="tab-content">
 <div id="tabset-5-1">
 <div class="cell">
-<div id="tbl-sf-norm-cvml-irr" class="cell quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;17: Scale Factor Summary Irrelevant
-</figcaption><div aria-describedby="tbl-sf-norm-cvml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-BKPA
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-HRL
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-FYT
-</div></th>
-</tr>
-<tr class="odd">
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">1.41</td>
-<td style="text-align: right;">221.99</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">5.33</td>
-<td style="text-align: right;">1.17</td>
-<td style="text-align: right;">6.67</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">1.26</td>
-<td style="text-align: right;">170.92</td>
-<td style="text-align: right;">0.99</td>
-<td style="text-align: right;">233.63</td>
-<td style="text-align: right;">1.13</td>
-<td style="text-align: right;">9.74</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">1.13</td>
-<td style="text-align: right;">273.45</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">160.51</td>
-<td style="text-align: right;">1.06</td>
-<td style="text-align: right;">136.59</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">308.30</td>
-<td style="text-align: right;">0.90</td>
-<td style="text-align: right;">115.66</td>
-<td style="text-align: right;">1.02</td>
-<td style="text-align: right;">26.27</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-</div>
-<div id="tabset-5-2">
-<div class="cell">
-<div id="tbl-sf-norm-cvml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;18: Scale Factor Summary Quadratic
-</figcaption><div aria-describedby="tbl-sf-norm-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-BKPA
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-HRL
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-FYT
-</div></th>
-</tr>
-<tr class="odd">
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">2.49</td>
-<td style="text-align: right;">0.90</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.90</td>
-<td style="text-align: right;">0.55</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">1.67</td>
-<td style="text-align: right;">0.87</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.90</td>
-<td style="text-align: right;">0.53</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">1.67</td>
-<td style="text-align: right;">0.84</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.86</td>
-<td style="text-align: right;">0.50</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">1.50</td>
-<td style="text-align: right;">0.81</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.84</td>
-<td style="text-align: right;">0.50</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-</div>
-<div id="tabset-5-3">
-<div class="cell">
 <div id="tbl-sf-beta-cvml-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-beta-cvml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;19: Scale Factor Summary Irrelevant
+Table&nbsp;17: Scale Factor Summary Irrelevant ML
 </figcaption><div aria-describedby="tbl-sf-beta-cvml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
@@ -2245,277 +2077,11 @@ FYT
 </div>
 </div>
 </div>
-<div id="tabset-5-4">
-<div class="cell">
-<div id="tbl-sf-beta-cvml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-beta-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;20: Scale Factor Summary Quadratic
-</figcaption><div aria-describedby="tbl-sf-beta-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-BKPA
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-HRL
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-FYT
-</div></th>
-</tr>
-<tr class="odd">
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">1.75</td>
-<td style="text-align: right;">82.44</td>
-<td style="text-align: right;">0.53</td>
-<td style="text-align: right;">1.05</td>
-<td style="text-align: right;">0.59</td>
-<td style="text-align: right;">1.55</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">1.74</td>
-<td style="text-align: right;">17.44</td>
-<td style="text-align: right;">0.50</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">0.51</td>
-<td style="text-align: right;">1.46</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">1.63</td>
-<td style="text-align: right;">7.56</td>
-<td style="text-align: right;">0.50</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">0.50</td>
-<td style="text-align: right;">1.42</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">1.63</td>
-<td style="text-align: right;">2.33</td>
-<td style="text-align: right;">0.50</td>
-<td style="text-align: right;">0.86</td>
-<td style="text-align: right;">0.50</td>
-<td style="text-align: right;">1.28</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section><section id="scale-factor-summaries-ls-cv" class="slide level2 center"><h2>Scale Factor Summaries LS-CV</h2>
-<div class="panel-tabset">
-<ul id="tabset-6" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-6-1"><span class="math inline">\(N(0,1/12)\)</span> LS</a></li>
-<li><a href="#tabset-6-2"><span class="math inline">\(N(x^2,1/12)\)</span> LS</a></li>
-<li><a href="#tabset-6-3"><span class="math inline">\(B(1,2)\)</span> LS</a></li>
-<li><a href="#tabset-6-4"><span class="math inline">\(B(1+x^2,2-x^2)\)</span> LS</a></li>
-</ul>
-<div class="tab-content">
-<div id="tabset-6-1">
-<div class="cell">
-<div id="tbl-sf-norm-cvls-irr" class="cell quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;21: Scale Factor Summary Irrelevant
-</figcaption><div aria-describedby="tbl-sf-norm-cvls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-BKPA
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-HRL
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-FYT
-</div></th>
-</tr>
-<tr class="odd">
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">126.21</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">4.59</td>
-<td style="text-align: right;">1.18</td>
-<td style="text-align: right;">4.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">217.60</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">216.25</td>
-<td style="text-align: right;">1.16</td>
-<td style="text-align: right;">85.14</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">0.91</td>
-<td style="text-align: right;">158.03</td>
-<td style="text-align: right;">0.94</td>
-<td style="text-align: right;">109.73</td>
-<td style="text-align: right;">1.09</td>
-<td style="text-align: right;">144.53</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">0.91</td>
-<td style="text-align: right;">235.64</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">140.56</td>
-<td style="text-align: right;">1.06</td>
-<td style="text-align: right;">123.96</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-</div>
-<div id="tabset-6-2">
-<div class="cell">
-<div id="tbl-sf-norm-cvls-quad" class="cell quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;22: Scale Factor Summary Quadratic
-</figcaption><div aria-describedby="tbl-sf-norm-cvls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-BKPA
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-HRL
-</div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-FYT
-</div></th>
-</tr>
-<tr class="odd">
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.43</td>
-<td style="text-align: right;">0.99</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.99</td>
-<td style="text-align: right;">0.52</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">1.94</td>
-<td style="text-align: right;">0.96</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.97</td>
-<td style="text-align: right;">0.50</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">1.69</td>
-<td style="text-align: right;">0.91</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.91</td>
-<td style="text-align: right;">0.50</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">1.90</td>
-<td style="text-align: right;">0.85</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.88</td>
-<td style="text-align: right;">0.50</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-</div>
-<div id="tabset-6-3">
+<div id="tabset-5-2">
 <div class="cell">
 <div id="tbl-sf-beta-cvls-irr" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-beta-cvls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;23: Scale Factor Summary Irrelevant
+Table&nbsp;18: Scale Factor Summary Irrelevant LS
 </figcaption><div aria-describedby="tbl-sf-beta-cvls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
@@ -2596,11 +2162,96 @@ FYT
 </div>
 </div>
 </div>
-<div id="tabset-6-4">
+<div id="tabset-5-3">
+<div class="cell">
+<div id="tbl-sf-beta-cvml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-beta-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;19: Scale Factor Summary Quadratic ML
+</figcaption><div aria-describedby="tbl-sf-beta-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+BKPA
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+HRL
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+FYT
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.75</td>
+<td style="text-align: right;">82.44</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">1.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">1.74</td>
+<td style="text-align: right;">17.44</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">1.46</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">7.56</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.42</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">2.33</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.28</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-5-4">
 <div class="cell">
 <div id="tbl-sf-beta-cvls-quad" class="cell quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-beta-cvls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;24: Scale Factor Summary Quadratic
+Table&nbsp;20: Scale Factor Summary Quadratic LS
 </figcaption><div aria-describedby="tbl-sf-beta-cvls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
@@ -2672,6 +2323,357 @@ FYT
 <td style="text-align: right;">0.80</td>
 <td style="text-align: right;">0.68</td>
 <td style="text-align: right;">1.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="scale-factor-summaries-gaussian-dgp" class="slide level2 center"><h2>Scale Factor Summaries: Gaussian DGP</h2>
+<div class="panel-tabset">
+<ul id="tabset-6" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-6-1"><span class="math inline">\(N(0,1/12)\)</span> ML</a></li>
+<li><a href="#tabset-6-2"><span class="math inline">\(N(0,1/12)\)</span> LS</a></li>
+<li><a href="#tabset-6-3"><span class="math inline">\(N(x^2,1/12)\)</span> ML</a></li>
+<li><a href="#tabset-6-4"><span class="math inline">\(N(x^2,1/12)\)</span> LS</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-6-1">
+<div class="cell">
+<div id="tbl-sf-norm-cvml-irr" class="cell quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;21: Scale Factor Summary Irrelevant ML
+</figcaption><div aria-describedby="tbl-sf-norm-cvml-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+BKPA
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+HRL
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+FYT
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.41</td>
+<td style="text-align: right;">221.99</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">5.33</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">6.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">1.26</td>
+<td style="text-align: right;">170.92</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">233.63</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">9.74</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">273.45</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">160.51</td>
+<td style="text-align: right;">1.06</td>
+<td style="text-align: right;">136.59</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">308.30</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">115.66</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">26.27</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-6-2">
+<div class="cell">
+<div id="tbl-sf-norm-cvls-irr" class="cell quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;22: Scale Factor Summary Irrelevant LS
+</figcaption><div aria-describedby="tbl-sf-norm-cvls-irr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+BKPA
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+HRL
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+FYT
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">126.21</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">4.59</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: right;">4.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">217.60</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">216.25</td>
+<td style="text-align: right;">1.16</td>
+<td style="text-align: right;">85.14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">158.03</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">109.73</td>
+<td style="text-align: right;">1.09</td>
+<td style="text-align: right;">144.53</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">235.64</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">140.56</td>
+<td style="text-align: right;">1.06</td>
+<td style="text-align: right;">123.96</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-6-3">
+<div class="cell">
+<div id="tbl-sf-norm-cvml-quad" class="cell quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;23: Scale Factor Summary Quadratic ML
+</figcaption><div aria-describedby="tbl-sf-norm-cvml-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+BKPA
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+HRL
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+FYT
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">2.49</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.67</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">1.67</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-6-4">
+<div class="cell">
+<div id="tbl-sf-norm-cvls-quad" class="cell quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sf-norm-cvls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;24: Scale Factor Summary Quadratic LS
+</figcaption><div aria-describedby="tbl-sf-norm-cvls-quad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top" style="width:100%;" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+BKPA
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+HRL
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+FYT
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sf-x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.43</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">0.52</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.94</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">1.69</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">1.90</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">0.50</td>
 </tr>
 </tbody>
 </table>
