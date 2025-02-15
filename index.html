@@ -966,13 +966,13 @@ Figure&nbsp;7: Conditional KDE for <span class="math inline">\(\textrm{Beta}(1+x
 </div>
 </div></section></section><section><section id="finite-sample-performance" class="title-slide slide level1 center"><h1>Finite-Sample Performance</h1>
 
-</section><section id="details" class="slide level2 center"><h2>Details</h2>
+</section><section id="simulation-details" class="slide level2 center"><h2>Simulation Details</h2>
 <ul>
 <li class="fragment"><p>We provide theoretical underpinnings for joint selection of <span class="math inline">\(p\)</span>, <span class="math inline">\(h_y\)</span>, and <span class="math inline">\(h_x\)</span> via least squares cross-validation (LS-CV) minimization of <span class="math display">\[\mathrm{ISE}(p,h_y,h_x)=\int \{\widehat{g}(y | \mathbf{x})-{g}(y | \mathbf{x})\}^2dy\]</span></p></li>
 <li class="fragment"><p>However, no data-driven method is guaranteed to always deliver reliable results</p></li>
 <li class="fragment"><p>We therefore compare the method with maximum likelihood cross-validation (ML-CV) which maximizes <span class="math display">\[\mathcal{L}(p,h_y,h_x)=\sum_{i=1}^n \log \widehat{g}_{-i}(y_i | \mathbf{x}_i)\]</span></p></li>
 <li class="fragment"><p>Both ML-CV and LS-CV perform comparably and appear to deliver consistent estimates</p></li>
-</ul></section><section id="details-1" class="slide level2 center"><h2>Details</h2>
+</ul></section><section id="simulation-details-1" class="slide level2 center"><h2>Simulation Details</h2>
 <ul>
 <li class="fragment"><p>We present a range of simulations for the beta and Gaussian densities, <span class="math inline">\(f(y|x)\)</span>, with x being irrelevant, i.e.&nbsp;<span class="math inline">\(f(y|x)=f(y)\)</span>, or the mean of <span class="math inline">\(f(y|x)\)</span> being quadratic in <span class="math inline">\(x\)</span></p></li>
 <li class="fragment"><p>We consider sample sizes of <span class="math inline">\(n=100,200,400,800\)</span></p></li>
@@ -986,19 +986,19 @@ Figure&nbsp;7: Conditional KDE for <span class="math inline">\(\textrm{Beta}(1+x
 </li>
 <li class="fragment"><p>Neither <span class="citation" data-cites="HALL_RACINE_LI:2004">Hall, Racine, and Li (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span> nor <span class="citation" data-cites="fyt:1996">Fan, Yao, and Tong (<a href="#/references-scrollable" role="doc-biblioref" onclick="">1996</a>)</span> make use of boundary information</p></li>
 <li class="fragment"><p>For BKPA we conduct search jointly over candidate models of order <span class="math inline">\(p=0,1,2,3,4,5\)</span> and <span class="math inline">\(h_y\)</span> and <span class="math inline">\(h_x\)</span></p></li>
-</ul></section><section id="notes" class="slide level2 center"><h2>Notes</h2>
+</ul></section><section id="simulation-details-2" class="slide level2 center"><h2>Simulation Details</h2>
 <ul>
-<li class="fragment"><p>The proposed approach is always using the empirical support of <span class="math inline">\(Y\)</span> for the boundary kernel, i.e., <span class="math inline">\([\min(Y),\max(Y)]\)</span></p></li>
+<li class="fragment"><p>The proposed approach uses the empirical support of <span class="math inline">\(Y\)</span> <span class="math inline">\([\min(Y),\max(Y)]\)</span> for the boundary kernel (we <em>don’t</em> assume bounds <span class="math inline">\([a,b]\)</span> are known a-priori)</p></li>
 <li class="fragment"><p>For the Beta distribution, the true bounds are <span class="math inline">\([0,1]\)</span></p></li>
 <li class="fragment"><p>For the Gaussian distribution, the true bounds are <span class="math inline">\([-\infty,\infty]\)</span></p></li>
 <li class="fragment"><p>HRL: <span class="citation" data-cites="HALL_RACINE_LI:2004">Hall, Racine, and Li (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span> (<span class="math inline">\(p=0\)</span>) uses the classical bounds, <span class="math inline">\([-\infty,\infty]\)</span></p></li>
 <li class="fragment"><p>FYT: <span class="citation" data-cites="fyt:1996">Fan, Yao, and Tong (<a href="#/references-scrollable" role="doc-biblioref" onclick="">1996</a>)</span> (<span class="math inline">\(p=1\)</span>) uses the classical bounds, <span class="math inline">\([-\infty,\infty]\)</span></p></li>
 <li class="fragment"><p>The <span class="math inline">\(\mathrm{Beta}(s_1,s_2)\)</span> random variate has mean <span class="math inline">\(s_1/(s_1+s_2)\)</span> and variance <span class="math inline">\(s_1s_2/((s_1+s_2)^2(s_1+s_2+1))\)</span></p></li>
 <li class="fragment"><p><span class="math inline">\(X\)</span> is drawn from a <span class="math inline">\(U[0,1]\)</span> distribution which has mean <span class="math inline">\(1/2\)</span> and variance <span class="math inline">\(1/12\)</span></p></li>
-</ul></section><section id="dgp-plots" class="slide level2 center"><h2>DGP Plots</h2>
+</ul></section><section id="simulation-dgp-plots" class="slide level2 center"><h2>Simulation DGP Plots</h2>
 
-<img data-src="index_files/figure-revealjs/fig-dgp-beta-ml-1.png" style="width:60.0%" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;8: DGPs for the conditional density simulations (Beta, Gaussian)
+<img data-src="index_files/figure-revealjs/fig-dgp-beta-ml-1.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">
+Figure&nbsp;8: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left <span class="math inline">\(X\)</span> irrelevant, figures on the right <span class="math inline">\(X\)</span> quadratic)
 </p></section><section id="ml-cv-candidate-model-results-for-beta-dgp" class="slide level2 center"><h2>ML-CV Candidate Model Results for Beta DGP</h2>
 <ul>
 <li class="fragment"><p>We conduct Monte Carlo simulations are report the average relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).</p></li>
@@ -1499,12 +1499,12 @@ Table&nbsp;7: Relative RMSE Irrelevant
 </tr>
 <tr class="odd">
 <td style="text-align: right;">400</td>
-<td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
-<td style="text-align: right;">1.23</td>
+<td style="text-align: right; font-weight: bold; color: green !important;">0.99</td>
+<td style="text-align: right;">1.27</td>
 <td style="text-align: right;">1.51</td>
-<td style="text-align: right;">1.67</td>
-<td style="text-align: right;">1.89</td>
-<td style="text-align: right;">2.03</td>
+<td style="text-align: right;">1.71</td>
+<td style="text-align: right;">1.91</td>
+<td style="text-align: right;">2.09</td>
 <td style="text-align: right; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 <tr class="even">
@@ -1513,8 +1513,8 @@ Table&nbsp;7: Relative RMSE Irrelevant
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.32</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.53</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.71</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.91</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">2.08</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.89</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">2.07</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important; font-weight: bold; color: green !important;">1.00</td>
 </tr>
 </tbody>
@@ -1577,10 +1577,10 @@ Table&nbsp;8: Relative RMSE Quadratic
 <tr class="even">
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">800</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.08</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.03</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.02</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important; font-weight: bold; color: green !important;">0.99</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.01</td>
-<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.03</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.00</td>
+<td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.02</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important;">1.01</td>
 <td style="text-align: right; font-weight: bold; color: lightgreen !important; font-weight: bold; color: green !important;">1.00</td>
 </tr>
@@ -1956,8 +1956,8 @@ Table&nbsp;15: Median Relative RMSE
 <tr class="odd">
 <td style="text-align: right;">400</td>
 <td style="text-align: right;">1.00</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">1.18</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">1.22</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">800</td>

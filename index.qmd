@@ -545,7 +545,7 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 # Finite-Sample Performance
 
-## Details
+## Simulation Details
 
 -   We provide theoretical underpinnings for joint selection of $p$, $h_y$, and $h_x$ via least squares cross-validation (LS-CV) minimization of $$\mathrm{ISE}(p,h_y,h_x)=\int \{\widehat{g}(y | \mathbf{x})-{g}(y | \mathbf{x})\}^2dy$$
 
@@ -555,7 +555,7 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 -   Both ML-CV and LS-CV perform comparably and appear to deliver consistent estimates
 
-## Details
+## Simulation Details
 
 -   We present a range of simulations for the beta and Gaussian densities, $f(y|x)$, with x being irrelevant, i.e. $f(y|x)=f(y)$, or the mean of $f(y|x)$ being quadratic in $x$
 
@@ -571,9 +571,9 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 -   For BKPA we conduct search jointly over candidate models of order $p=0,1,2,3,4,5$ and $h_y$ and $h_x$
 
-## Notes
+## Simulation Details
 
--   The proposed approach is always using the empirical support of $Y$ for the boundary kernel, i.e., $[\min(Y),\max(Y)]$
+-   The proposed approach uses the empirical support of $Y$  $[\min(Y),\max(Y)]$ for the boundary kernel (we *don't* assume bounds $[a,b]$ are known a-priori)
 
 -   For the Beta distribution, the true bounds are $[0,1]$
 
@@ -587,17 +587,17 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 -   $X$ is drawn from a $U[0,1]$ distribution which has mean $1/2$ and variance $1/12$
 
-## DGP Plots
+## Simulation DGP Plots
 
 ```{r}
 #| echo: false
 #| label: fig-dgp-beta-ml
 #| cache: true
-#| out-width: "60%"
-#| fig-cap: DGPs for the conditional density simulations (Beta, Gaussian)
+#| out-width: "80%"
+#| fig-cap: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left $X$ irrelevant, figures on the right $X$ quadratic)
 theta <- 110
 phi <- 50
-par(mfrow=c(2,2),cex=.75,mar=c(2,2,2,1))
+par(mfrow=c(2,2),cex=.5,mar=c(2,2,2,1))
 ## beta, irrelevant
 s1 <- 1
 s2 <- 2
