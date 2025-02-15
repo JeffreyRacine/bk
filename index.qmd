@@ -544,7 +544,7 @@ persp(unique(f$x.eval),unique(f$y.eval),
 ```
 :::
 
-# Finite-Sample Performance
+# Finite-Sample Performance:<br> Monte Carlo Simulation Results
 
 ## Simulation Details
 
@@ -588,14 +588,14 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 -   $X$ is drawn from a $U[0,1]$ distribution which has mean $1/2$ and variance $1/12$
 
-## Simulation DGP Plots
+## Simulation DGPs
 
 ```{r}
 #| echo: false
 #| label: fig-dgp-beta-ml
 #| cache: true
 #| out-width: "80%"
-#| fig-cap: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left $X$ irrelevant, figures on the right $X$ quadratic)
+#| fig-cap: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left $X$ irrelevant, figures on the right mean quadratic in $X$)
 theta <- 110
 phi <- 50
 par(mfrow=c(2,2),cex=.5,mar=c(2,2,2,1))
@@ -637,6 +637,8 @@ eg <- expand.grid(x=x,y=y)
 dgp <- matrix(dnorm(eg$y,mean=eg$x^2,sd=sn*sd.unif),n.grid,n.grid)
 persp(x,y,dgp,theta=theta, phi=phi, main=latex2exp::TeX(r'($N(x^2,1/12)$)'),ticktype="detailed", xlab="x", ylab="y", zlab="f(y|x)")
 ```
+
+# Candidate Model Comparison
 
 ```{r}
 #| echo: false
@@ -779,7 +781,6 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
 
 ```
 
-
 ## Candidate Model Comparison:  Beta DGP
 
 -   We conduct Monte Carlo simulations are report the average relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).
@@ -903,6 +904,8 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
       column_spec(c(4,8), bold = T, color = "green")
     ```
     :::
+   
+# Comparison with HRL and FYT   
     
 ```{r}
 #| echo: false
@@ -1006,7 +1009,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
 -   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (inappropriate for the Beta).
 
     ::: panel-tabset
-    ### $B(1,2)$  ML
+    ### $B(1,2)$ ML
 
     ```{r}
     #| echo: false
@@ -1016,7 +1019,7 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
     kable(rmse.comp.beta.ml.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
     ```
     
-    ### $B(1,2)$  LS
+    ### $B(1,2)$ LS
 
     ```{r}
     #| echo: false
@@ -1391,100 +1394,95 @@ sf.beta.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_
 
 ```
 
-# Scale Factor Summaries ML-CV
+# Scale Factor Summaries
 
-## Gaussian ML-CV
+## Scale Factor Summaries ML-CV
 
 ::: panel-tabset
-### Irrelevant
+### $N(0,1/12)$ ML
 
 ```{r}
 #| echo: false
+#| label: tbl-sf-norm-cvml-irr
+#| tbl-cap: Scale Factor Summary Irrelevant
 kable(sf.norm.cvml.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
-### Quadratic
+### $N(x^2,1/12)$ ML
 
 ```{r}
 #| echo: false
+#| label: tbl-sf-norm-cvml-quad
+#| tbl-cap: Scale Factor Summary Quadratic
 kable(sf.norm.cvml.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
-:::
-
-## Beta ML-CV
-
-::: panel-tabset
-### Irrelevant
+### $B(1,2)$ ML
 
 ```{r}
 #| echo: false
+#| label: tbl-sf-beta-cvml-irr
+#| tbl-cap: Scale Factor Summary Irrelevant
 kable(sf.beta.cvml.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
-### Quadratic
+### $B(1+x^2,2-x^2)$ ML
 
 ```{r}
 #| echo: false
+#| label: tbl-sf-beta-cvml-quad
+#| tbl-cap: Scale Factor Summary Quadratic
 kable(sf.beta.cvml.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
 :::
 
-# Scale Factor Summaries LS-CV
-
-## Gaussian LS-CV
+## Scale Factor Summaries LS-CV
 
 ::: panel-tabset
-### Irrelevant
+### $N(0,1/12)$ LS
 
 ```{r}
 #| echo: false
 #| label: tbl-sf-norm-cvls-irr
-#| tbl-cap: Scale Factor Summary
+#| tbl-cap: Scale Factor Summary Irrelevant
 kable(sf.norm.cvls.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
-### Quadratic
+### $N(x^2,1/12)$ LS
 
 ```{r}
 #| echo: false
 #| label: tbl-sf-norm-cvls-quad
-#| tbl-cap: Scale Factor Summary
+#| tbl-cap: Scale Factor Summary Quadratic
 kable(sf.norm.cvls.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
-:::
-
-## Beta LS-CV
-
-::: panel-tabset
-### Irrelevant
+### $B(1,2)$ LS
 
 ```{r}
 #| echo: false
 #| label: tbl-sf-beta-cvls-irr
-#| tbl-cap: Scale Factor Summary
+#| tbl-cap: Scale Factor Summary Irrelevant
 kable(sf.beta.cvls.irr,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
-### Quadratic
+### $B(1+x^2,2-x^2)$  LS
 
 ```{r}
 #| echo: false
 #| label: tbl-sf-beta-cvls-quad
-#| tbl-cap: Scale Factor Summary
+#| tbl-cap: Scale Factor Summary Quadratic
 kable(sf.beta.cvls.quad,col.names=c("n","sf-y","sf-x","sf-y","sf-x","sf-y","sf-x"), digits=2,align='r')  %>%
 add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
-
 
 :::
 
