@@ -6,7 +6,9 @@ This repository contains presentation slides for a joint project with Angda Li a
 
 The slides can be accessed via <https://jeffreyracine.github.io/bk>
 
-The GitHub repository for this project is <https://github.com/JeffreyRacine/bk> (you are here!)
+The GitHub repository for these slides is <https://github.com/JeffreyRacine/bk> (you are here!)
 
-To generate the slides, a) click the CODE icon in the GitHub repository, b) click on Download ZIP, c) unzip the download, d) open index.qmd in RStudio, e) click Render in RStudio (you may have to install a few packages - click install if presented with the option), f) be patient, the code can take some time to run and complete.
+The bkcde R package can be accessed at <https://github.com/JeffreyRacine/bkcde> (you need to first install this package if you wish to compile the slides)
+
+To generate the slides, a) click the CODE icon in the GitHub repository, b) click on Download ZIP, c) unzip the download, d) open index.qmd in RStudio, e) comment out the simulation section (this reads files from a subdirectory containing large data files so is not included in this repo), f) install the packages highlighted in RStudio, then g) click Render in RStudio (you may have to install a few packages - click install if presented with the option), h) be patient, the code can take some time to run and complete.
 
