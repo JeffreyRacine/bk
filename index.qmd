@@ -592,7 +592,8 @@ f.hrl <- bkcde(h=c(4.166873,5.442247),degree=0,x=x,y=y,proper=TRUE,y.ub=Inf,y.lb
 ## replications to 399.
 B <- 399
 par(mfrow=c(2,2),cex=.65,mar=c(4,4,4,2))
-hist(y[x==1987],xlab="patent",main="",ylim=c(0,0.06),xlim=c(0,100),prob=TRUE,breaks=500)
+plot(f.bkcde,persp=FALSE,x.eval=1987,y.eval=seq(min(y),100,length=100),xlim=c(0,100))
+hist(y[x==1987],xlab="Patent counts",main="",ylim=c(0,0.06),xlim=c(0,100),prob=TRUE,breaks=250)
 lines(density(y[x==1987],from=0,to=100),lty=1,col=1)
 lines(seq(min(y),100,length=100),predict(f.hrl,newdata=data.frame(x=rep(1987,100),y=seq(min(y),100,length=100))),
       col=2,lty=2,lwd=2)
@@ -600,7 +601,6 @@ lines(seq(min(y),100,length=100),predict(f.bkcde,newdata=data.frame(x=rep(1987,1
       col=3,lty=3,lwd=3)
 legend("topright",legend=c("density() classical kernel [1987 only]","HRL classical kernel","BKPA boundary kernel"),
        col=1:3,lty=1:3,lwd=c(1,2,3),bty="n")
-plot(f.bkcde,persp=FALSE,x.eval=1987,y.eval=seq(min(y),100,length=100),xlim=c(0,100))
 plot(f.bkcde,persp=FALSE,x.eval=1987,y.eval=seq(min(y),100,length=100),xlim=c(0,100),
      ci=TRUE,ci.method="Simultaneous",ci.preplot=FALSE,B=B)
 plot(f.bkcde,x.eval=seq(min(x),max(x),length=25),y.eval=seq(min(y),100,length=25),
