@@ -966,6 +966,78 @@ Figure&nbsp;7: Conditional KDE for <span class="math inline">\(\textrm{Beta}(1+x
 </figcaption></figure>
 </div>
 </div>
+</div></section><section id="example---patent-application-data" class="slide level2 center"><h2>Example - Patent Application Data</h2>
+<div class="callout callout-note callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Example (Annual numbers of European patent applications)</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">library</span>(bkcde)</span>
+<span id="cb8-2"><a href=""></a><span class="fu">library</span>(np)</span>
+<span id="cb8-3"><a href=""></a><span class="fu">library</span>(pglm)</span>
+<span id="cb8-4"><a href=""></a><span class="do">## Annual observations of 181 firms from 1983 to 1991, number of European patent</span></span>
+<span id="cb8-5"><a href=""></a><span class="do">## applications (count), 1629 observations. </span></span>
+<span id="cb8-6"><a href=""></a><span class="fu">data</span>(PatentsRD)</span>
+<span id="cb8-7"><a href=""></a><span class="fu">attach</span>(PatentsRD)</span>
+<span id="cb8-8"><a href=""></a><span class="do">## Patent data often has a preponderance of zeros and "overdispersion". Since</span></span>
+<span id="cb8-9"><a href=""></a><span class="do">## the data has a boundary at zero, a zero-inflated negative binomial model is</span></span>
+<span id="cb8-10"><a href=""></a><span class="do">## often used. Instead we consider a kernel density estimation approach that</span></span>
+<span id="cb8-11"><a href=""></a><span class="do">## adapts to the boundary automatically and also chooses the polynomial order in</span></span>
+<span id="cb8-12"><a href=""></a><span class="do">## a data-driven fashion.</span></span>
+<span id="cb8-13"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.character</span>(year))</span>
+<span id="cb8-14"><a href=""></a>y <span class="ot">&lt;-</span> patent</span>
+<span id="cb8-15"><a href=""></a>f.bkcde <span class="ot">&lt;-</span> <span class="fu">bkcde</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">proper=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-16"><a href=""></a><span class="do">## Estimator of Hall, Racine &amp; Li (polynomial order 0 conditional density estimate)</span></span>
+<span id="cb8-17"><a href=""></a><span class="do">## with bandwidth selection via likelihood cross-validation</span></span>
+<span id="cb8-18"><a href=""></a>f.hrl <span class="ot">&lt;-</span> <span class="fu">npcdens</span>(<span class="at">txdat=</span>x,<span class="at">exdat=</span><span class="fu">rep</span>(<span class="dv">1987</span>,<span class="dv">100</span>),<span class="at">tydat=</span>y,<span class="at">eydat=</span><span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">100</span>))</span>
+<span id="cb8-19"><a href=""></a><span class="do">## In the following plots note that the data has a very long tail (right skewed)</span></span>
+<span id="cb8-20"><a href=""></a><span class="do">## so we hone in on firms having 100 or fewer patents/year. We first take</span></span>
+<span id="cb8-21"><a href=""></a><span class="do">## univariate histogram and density() estimators for the year 1987, then overlay</span></span>
+<span id="cb8-22"><a href=""></a><span class="do">## the conditional kernel density estimates from npcdens() and bkcde() for the</span></span>
+<span id="cb8-23"><a href=""></a><span class="do">## same year (these use data for all years). We also plot the bkcde() 2D</span></span>
+<span id="cb8-24"><a href=""></a><span class="do">## estimates for the year 1987 without, then with simultaneous confidence</span></span>
+<span id="cb8-25"><a href=""></a><span class="do">## intervals. Finally, we plot the bkcde() estimate in 3D with and without</span></span>
+<span id="cb8-26"><a href=""></a><span class="do">## confidence intervals (all years)</span></span>
+<span id="cb8-27"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">cex=</span>.<span class="dv">75</span>,<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb8-28"><a href=""></a><span class="fu">hist</span>(y[x<span class="sc">==</span><span class="dv">1987</span>],<span class="at">xlab=</span><span class="st">"patent"</span>,<span class="at">main=</span><span class="st">""</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.06</span>),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),<span class="at">prob=</span><span class="cn">TRUE</span>,<span class="at">breaks=</span><span class="dv">500</span>)</span>
+<span id="cb8-29"><a href=""></a><span class="fu">lines</span>(<span class="fu">density</span>(y[x<span class="sc">==</span><span class="dv">1987</span>],<span class="at">from=</span><span class="dv">0</span>,<span class="at">to=</span><span class="dv">100</span>),<span class="at">lty=</span><span class="dv">1</span>,<span class="at">col=</span><span class="dv">1</span>)</span>
+<span id="cb8-30"><a href=""></a><span class="fu">lines</span>(<span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">100</span>),<span class="fu">fitted</span>(f.hrl),<span class="at">col=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb8-31"><a href=""></a><span class="fu">lines</span>(<span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">100</span>),<span class="fu">predict</span>(f.bkcde,<span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">rep</span>(<span class="dv">1987</span>,<span class="dv">100</span>),<span class="at">y=</span><span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">100</span>))),<span class="at">col=</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">3</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb8-32"><a href=""></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">"density() classical kernel"</span>,<span class="st">"HRL classical kernel"</span>,<span class="st">"BKPA boundary kernel"</span>),<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">bty=</span><span class="st">"n"</span>)</span>
+<span id="cb8-33"><a href=""></a><span class="fu">plot</span>(f.bkcde,<span class="at">persp=</span><span class="cn">FALSE</span>,<span class="at">x.eval=</span><span class="dv">1987</span>,<span class="at">y.eval=</span><span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">100</span>),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>))</span>
+<span id="cb8-34"><a href=""></a><span class="fu">plot</span>(f.bkcde,<span class="at">persp=</span><span class="cn">FALSE</span>,<span class="at">x.eval=</span><span class="dv">1987</span>,<span class="at">y.eval=</span><span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">100</span>),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),<span class="at">ci=</span><span class="cn">TRUE</span>,<span class="at">ci.method=</span><span class="st">"Simultaneous"</span>,<span class="at">ci.preplot=</span><span class="cn">FALSE</span>,<span class="at">B=</span><span class="dv">1000</span>)</span>
+<span id="cb8-35"><a href=""></a><span class="fu">plot</span>(f.bkcde,<span class="at">x.eval=</span><span class="fu">seq</span>(<span class="fu">min</span>(x),<span class="fu">max</span>(x),<span class="at">length=</span><span class="dv">25</span>),<span class="at">y.eval=</span><span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">25</span>),<span class="at">proper=</span><span class="cn">FALSE</span>,<span class="at">ci=</span><span class="cn">TRUE</span>,<span class="at">ci.method=</span><span class="st">"Simultaneous"</span>,<span class="at">ci.preplot=</span><span class="cn">FALSE</span>,<span class="at">B=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</div>
+</div>
+</div>
+</section><section id="example---patent-application-data-output" class="slide level2 output-location-slide center"><h2>Example - Patent Application Data</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div id="fig-conditional-kde-beta-ci-2-1" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig"><div aria-describedby="fig-conditional-kde-beta-ci-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="index_files/figure-revealjs/fig-conditional-kde-beta-ci-2-1.png" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-kde-beta-ci-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Conditional KDE for patent data with simultaneous confidence intervals, 2D plot for year 1987, 3D plot for all years
+</figcaption></figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div id="fig-conditional-kde-beta-ci-2-2" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig"><div aria-describedby="fig-conditional-kde-beta-ci-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="index_files/figure-revealjs/fig-conditional-kde-beta-ci-2-2.png" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-kde-beta-ci-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Conditional KDE for patent data with simultaneous confidence intervals, 2D plot for year 1987, 3D plot for all years
+</figcaption></figure>
+</div>
+</div>
 </div></section></section><section><section id="finite-sample-performance-monte-carlo-simulation-results" class="title-slide slide level1 center"><h1>Finite-Sample Performance:<br> Monte Carlo Simulation Results</h1>
 
 </section><section id="simulation-details" class="slide level2 center"><h2>Simulation Details</h2>
@@ -1000,7 +1072,7 @@ Figure&nbsp;7: Conditional KDE for <span class="math inline">\(\textrm{Beta}(1+x
 </ul></section><section id="simulation-dgps" class="slide level2 center"><h2>Simulation DGPs</h2>
 
 <img data-src="index_files/figure-revealjs/fig-dgp-beta-ml-1.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;8: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left <span class="math inline">\(X\)</span> irrelevant, figures on the right mean quadratic in <span class="math inline">\(X\)</span>)
+Figure&nbsp;10: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left <span class="math inline">\(X\)</span> irrelevant, figures on the right mean quadratic in <span class="math inline">\(X\)</span>)
 </p></section></section><section><section id="candidate-model-comparison" class="title-slide slide level1 center"><h1>Candidate Model Comparison</h1>
 
 </section><section id="candidate-model-comparison-beta-dgp" class="slide level2 center"><h2>Candidate Model Comparison: Beta DGP</h2>
