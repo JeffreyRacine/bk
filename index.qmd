@@ -862,7 +862,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-beta-ml-irr
     #| tbl-cap: Relative RMSE Irrelevant ML
     kable(rmse.beta.ml.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(2,8), bold = T, color = "green")
     ```
@@ -875,7 +875,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-beta-ls-irr
     #| tbl-cap: Relative RMSE Irrelevant LS  
     kable(rmse.beta.ls.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(2,8), bold = T, color = "green")
     ```
@@ -888,7 +888,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-beta-ml-quad
     #| tbl-cap: Relative RMSE Quadratic ML
     kable(rmse.beta.ml.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(4,8), bold = T, color = "green")
     ```
@@ -901,7 +901,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-beta-ls-quad
     #| tbl-cap: Relative RMSE Quadratic LS
     kable(rmse.beta.ls.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(4,8), bold = T, color = "green")
     ```
@@ -924,7 +924,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-norm-ml-irr
     #| tbl-cap: Relative RMSE Irrelevant ML
     kable(rmse.norm.ml.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(2,8), bold = T, color = "green")
     ```
@@ -937,7 +937,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-norm-ls-irr
     #| tbl-cap: Relative RMSE Irrelevant LS
     kable(rmse.norm.ls.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(2,8), bold = T, color = "green")
     ```
@@ -950,7 +950,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-norm-ml-quad
     #| tbl-cap: Relative RMSE Quadratic ML
     kable(rmse.norm.ml.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(4,8), bold = T, color = "green")
     ```
@@ -963,204 +963,14 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| label: tbl-dgp-norm-ls-quad
     #| tbl-cap: Relative RMSE Quadratic LS
     kable(rmse.norm.ls.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"PA"), digits=2,align='r') %>%
+          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
       row_spec(4, bold = T, color = "lightgreen") %>%
       column_spec(c(4,8), bold = T, color = "green")
     ```
     :::
    
-# Comparison with HRL and FYT   
-    
-```{r}
-#| echo: false
-#| cache: false
-## HRL/FYT comparison
 
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.beta.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.beta.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.beta.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-rmse.comp.beta.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-    
-```
-    
-## Comparison with HRL and FYT: Beta DGP
-
--   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (inappropriate for the Beta).
-
-    ::: panel-tabset
-    ### $B(1,2)$ ML
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-beta-cv-ml-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant ML
-    kable(rmse.comp.beta.ml.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
-    ```
-    
-    ### $B(1,2)$ LS
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-beta-cv-ls-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant LS
-    kable(rmse.comp.beta.ls.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
-    ```    
-
-    ### $B(1+x^2,2-x^2)$ ML
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-beta-cv-ml-quad
-    #| tbl-cap: Median Relative RMSE Quadratic ML
-    kable(rmse.comp.beta.ml.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
-    ```
-
-    ### $B(1+x^2,2-x^2)$ LS
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-beta-cv-ls-quad
-    #| tbl-cap: Median Relative RMSE Quadratic LS
-
-    kable(rmse.comp.beta.ls.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
-    ```
-    :::
-
-## Comparison with HRL and FYT: Gaussian DGP
-
--   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (appropriate for the Gaussian).
-
-    ::: panel-tabset
-    ### $N(0,1/12)$ ML
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-norm-cv-ml-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant ML
-    kable(rmse.comp.norm.ml.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
-    ```
-    
-    ### $N(0,1/12)$ LS
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-norm-cv-ls-irr
-    #| tbl-cap: Median Relative RMSE Irrelevant LS
-    kable(rmse.comp.norm.ls.irr, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')    
-    ```    
-
-    ### $N(x^2,1/12)$ ML
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-norm-cv-ml-quad
-    #| tbl-cap: Median Relative RMSE Quadratic ML
-    kable(rmse.comp.norm.ml.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
-    ```
-
-
-    ### $N(x^2,1/12)$ LS
-
-    ```{r}
-    #| echo: false
-    #| cache: false
-    #| label: tbl-norm-cv-ls-quad
-    #| tbl-cap: Median Relative RMSE Quadratic LS
-    kable(rmse.comp.norm.ls.quad, col.names=c("n","BCPA","HLR","FYT"), digits=2,align='r')
-    ```
-    :::
+# Scale Factor Summaries
 
 ```{r}
 #| echo: false
@@ -1458,9 +1268,9 @@ sf.beta.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_
 
 ```
 
-# Scale Factor Summaries
-
 ## Scale Factor Summaries: Beta DGP
+
+The "scale factor" $s$ is an unknown constant that, adjusted for the sample size and data scale, related to the "bandwidth" $h$, i.e., $h_x=s_x\sigma_x/n^{1/6}$ and $h_y=s_y\sigma_y/n^{1/6}$, where $n$ is the sample size. The scale factor is estimated by optimizing the cross-validation score. The scale factor summaries below show the median scale factor for the three methods: BKPA, HRL, and FYT, and are presented for the irrelevant $x$ and quadratic $x$ DGPs.
 
 ::: panel-tabset
 ### $B(1,2)$ ML
@@ -1508,6 +1318,8 @@ add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 
 ## Scale Factor Summaries: Gaussian DGP
 
+The "scale factor" $s$ is an unknown constant that, adjusted for the sample size and data scale, related to the "bandwidth" $h$, i.e., $h_x=s_x\sigma_x/n^{1/6}$ and $h_y=s_y\sigma_y/n^{1/6}$, where $n$ is the sample size. The scale factor is estimated by optimizing the cross-validation score. The scale factor summaries below show the median scale factor for the three methods: BKPA, HRL, and FYT, and are presented for the irrelevant $x$ and quadratic $x$ DGPs.
+
 ::: panel-tabset
 
 ### $N(0,1/12)$ ML
@@ -1551,5 +1363,203 @@ add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 ```
 
 :::
+
+# Comparison with HRL and FYT   
+    
+```{r}
+#| echo: false
+#| cache: false
+## HRL/FYT comparison
+
+median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)))
+
+rmse.comp.beta.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+
+median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)))
+
+rmse.comp.beta.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+
+
+median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)))
+
+rmse.comp.beta.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+
+median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)))
+rmse.comp.beta.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+
+
+median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)))
+
+rmse.comp.norm.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+
+median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)))
+
+rmse.comp.norm.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+
+
+median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
+                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)))
+
+rmse.comp.norm.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+
+median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)),
+                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
+                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)))
+
+rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
+    
+```
+    
+## Comparison with HRL and FYT: Beta DGP
+
+-   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (inappropriate for the Beta).
+
+-   Numbers $<1$ are more efficient than the BKPA method.
+
+    ::: panel-tabset
+    ### $B(1,2)$ ML
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-beta-cv-ml-irr
+    #| tbl-cap: Median Relative RMSE Irrelevant ML
+    kable(rmse.comp.beta.ml.irr, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')    
+    ```
+    
+    ### $B(1,2)$ LS
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-beta-cv-ls-irr
+    #| tbl-cap: Median Relative RMSE Irrelevant LS
+    kable(rmse.comp.beta.ls.irr, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')    
+    ```    
+
+    ### $B(1+x^2,2-x^2)$ ML
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-beta-cv-ml-quad
+    #| tbl-cap: Median Relative RMSE Quadratic ML
+    kable(rmse.comp.beta.ml.quad, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')
+    ```
+
+    ### $B(1+x^2,2-x^2)$ LS
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-beta-cv-ls-quad
+    #| tbl-cap: Median Relative RMSE Quadratic LS
+
+    kable(rmse.comp.beta.ls.quad, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')
+    ```
+    :::
+
+## Comparison with HRL and FYT: Gaussian DGP
+
+-   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (appropriate for the Gaussian).
+
+-   Numbers $<1$ are more efficient than the BKPA method.
+
+    ::: panel-tabset
+    ### $N(0,1/12)$ ML
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-norm-cv-ml-irr
+    #| tbl-cap: Median Relative RMSE Irrelevant ML
+    kable(rmse.comp.norm.ml.irr, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')    
+    ```
+    
+    ### $N(0,1/12)$ LS
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-norm-cv-ls-irr
+    #| tbl-cap: Median Relative RMSE Irrelevant LS
+    kable(rmse.comp.norm.ls.irr, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')    
+    ```    
+
+    ### $N(x^2,1/12)$ ML
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-norm-cv-ml-quad
+    #| tbl-cap: Median Relative RMSE Quadratic ML
+    kable(rmse.comp.norm.ml.quad, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')
+    ```
+
+
+    ### $N(x^2,1/12)$ LS
+
+    ```{r}
+    #| echo: false
+    #| cache: false
+    #| label: tbl-norm-cv-ls-quad
+    #| tbl-cap: Median Relative RMSE Quadratic LS
+    kable(rmse.comp.norm.ls.quad, col.names=c("n","BKPA","HLR","FYT"), digits=2,align='r')
+    ```
+    :::
+
 
 ## References (scrollable) {.allowframebreaks}
