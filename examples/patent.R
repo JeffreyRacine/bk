@@ -1,0 +1,10 @@
+library(bkcde)
+library(np)
+library(pglm)
+data(PatentsRD)
+attach(PatentsRD)
+patent <- sort(subset(PatentsRD,year==1989,select=patent)$patent)
+# patent <- PatentsRD$patent
+f <- npuniden.boundary(patent)
+hist(patent,prob=TRUE)
+lines(patent,f$f)
