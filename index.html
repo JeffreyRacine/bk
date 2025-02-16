@@ -1003,7 +1003,7 @@ Figure&nbsp;7: Conditional KDE for <span class="math inline">\(\textrm{Beta}(1+x
 <span id="cb8-24"><a href=""></a><span class="do">## estimates for the year 1987 without, then with simultaneous confidence</span></span>
 <span id="cb8-25"><a href=""></a><span class="do">## intervals. Finally, we plot the bkcde() estimate in 3D with and without</span></span>
 <span id="cb8-26"><a href=""></a><span class="do">## confidence intervals (all years)</span></span>
-<span id="cb8-27"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="at">cex=</span>.<span class="dv">75</span>,<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb8-27"><a href=""></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),<span class="at">cex=</span>.<span class="dv">65</span>,<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>))</span>
 <span id="cb8-28"><a href=""></a><span class="fu">hist</span>(y[x<span class="sc">==</span><span class="dv">1987</span>],<span class="at">xlab=</span><span class="st">"patent"</span>,<span class="at">main=</span><span class="st">""</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.06</span>),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),<span class="at">prob=</span><span class="cn">TRUE</span>,<span class="at">breaks=</span><span class="dv">500</span>)</span>
 <span id="cb8-29"><a href=""></a><span class="fu">lines</span>(<span class="fu">density</span>(y[x<span class="sc">==</span><span class="dv">1987</span>],<span class="at">from=</span><span class="dv">0</span>,<span class="at">to=</span><span class="dv">100</span>),<span class="at">lty=</span><span class="dv">1</span>,<span class="at">col=</span><span class="dv">1</span>)</span>
 <span id="cb8-30"><a href=""></a><span class="fu">lines</span>(<span class="fu">seq</span>(<span class="fu">min</span>(y),<span class="dv">100</span>,<span class="at">length=</span><span class="dv">100</span>),<span class="fu">fitted</span>(f.hrl),<span class="at">col=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
@@ -1019,22 +1019,12 @@ Figure&nbsp;7: Conditional KDE for <span class="math inline">\(\textrm{Beta}(1+x
 </div>
 </section><section id="example---patent-application-data-output" class="slide level2 output-location-slide center"><h2>Example - Patent Application Data</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<div id="fig-conditional-kde-beta-ci-2-1" class="quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-fig"><div aria-describedby="fig-conditional-kde-beta-ci-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="index_files/figure-revealjs/fig-conditional-kde-beta-ci-2-1.png" width="960">
+<div id="fig-conditional-patent" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig"><div aria-describedby="fig-conditional-patent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="index_files/figure-revealjs/fig-conditional-patent-1.png" style="width:100.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-kde-beta-ci-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-patent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8: Conditional KDE for patent data with simultaneous confidence intervals, 2D plot for year 1987, 3D plot for all years
-</figcaption></figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div id="fig-conditional-kde-beta-ci-2-2" class="quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-fig"><div aria-describedby="fig-conditional-kde-beta-ci-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="index_files/figure-revealjs/fig-conditional-kde-beta-ci-2-2.png" width="960">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conditional-kde-beta-ci-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Conditional KDE for patent data with simultaneous confidence intervals, 2D plot for year 1987, 3D plot for all years
 </figcaption></figure>
 </div>
 </div>
@@ -1072,7 +1062,7 @@ Figure&nbsp;9: Conditional KDE for patent data with simultaneous confidence inte
 </ul></section><section id="simulation-dgps" class="slide level2 center"><h2>Simulation DGPs</h2>
 
 <img data-src="index_files/figure-revealjs/fig-dgp-beta-ml-1.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">
-Figure&nbsp;10: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left <span class="math inline">\(X\)</span> irrelevant, figures on the right mean quadratic in <span class="math inline">\(X\)</span>)
+Figure&nbsp;9: DGPs for the conditional density simulations (top Beta, bottom Gaussian, figures on the left <span class="math inline">\(X\)</span> irrelevant, figures on the right mean quadratic in <span class="math inline">\(X\)</span>)
 </p></section></section><section><section id="candidate-model-comparison" class="title-slide slide level1 center"><h1>Candidate Model Comparison</h1>
 
 </section><section id="candidate-model-comparison-beta-dgp" class="slide level2 center"><h2>Candidate Model Comparison: Beta DGP</h2>
@@ -2211,11 +2201,11 @@ FYT
 <tr class="odd">
 <td style="text-align: right;">400</td>
 <td style="text-align: right;">1.20</td>
-<td style="text-align: right;">106.60</td>
+<td style="text-align: right;">105.60</td>
 <td style="text-align: right;">0.50</td>
-<td style="text-align: right;">1171.63</td>
+<td style="text-align: right;">69.97</td>
 <td style="text-align: right;">0.50</td>
-<td style="text-align: right;">255.60</td>
+<td style="text-align: right;">282.66</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">800</td>
@@ -2278,38 +2268,38 @@ FYT
 <tr class="odd">
 <td style="text-align: right;">100</td>
 <td style="text-align: right;">1.75</td>
-<td style="text-align: right;">82.44</td>
+<td style="text-align: right;">154.32</td>
 <td style="text-align: right;">0.53</td>
 <td style="text-align: right;">1.05</td>
-<td style="text-align: right;">0.59</td>
-<td style="text-align: right;">1.55</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">1.58</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">200</td>
-<td style="text-align: right;">1.74</td>
-<td style="text-align: right;">17.44</td>
+<td style="text-align: right;">1.75</td>
+<td style="text-align: right;">134.70</td>
 <td style="text-align: right;">0.50</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.02</td>
 <td style="text-align: right;">0.51</td>
-<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">1.48</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">400</td>
 <td style="text-align: right;">1.63</td>
-<td style="text-align: right;">7.56</td>
+<td style="text-align: right;">8.65</td>
 <td style="text-align: right;">0.50</td>
-<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.94</td>
 <td style="text-align: right;">0.50</td>
-<td style="text-align: right;">1.42</td>
+<td style="text-align: right;">1.40</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">800</td>
-<td style="text-align: right;">1.63</td>
-<td style="text-align: right;">2.33</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">2.40</td>
 <td style="text-align: right;">0.50</td>
 <td style="text-align: right;">0.86</td>
 <td style="text-align: right;">0.50</td>
-<td style="text-align: right;">1.28</td>
+<td style="text-align: right;">1.27</td>
 </tr>
 </tbody>
 </table>
@@ -2390,8 +2380,8 @@ FYT
 <tr class="even">
 <td style="text-align: right;">800</td>
 <td style="text-align: right;">1.32</td>
-<td style="text-align: right;">23.73</td>
-<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">24.59</td>
+<td style="text-align: right;">0.67</td>
 <td style="text-align: right;">0.80</td>
 <td style="text-align: right;">0.68</td>
 <td style="text-align: right;">1.09</td>
@@ -2459,29 +2449,29 @@ FYT
 <tr class="odd">
 <td style="text-align: right;">100</td>
 <td style="text-align: right;">1.41</td>
-<td style="text-align: right;">221.99</td>
+<td style="text-align: right;">266.16</td>
 <td style="text-align: right;">1.03</td>
-<td style="text-align: right;">5.33</td>
+<td style="text-align: right;">5.56</td>
 <td style="text-align: right;">1.17</td>
-<td style="text-align: right;">6.67</td>
+<td style="text-align: right;">5.64</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">200</td>
 <td style="text-align: right;">1.26</td>
-<td style="text-align: right;">170.92</td>
-<td style="text-align: right;">0.99</td>
-<td style="text-align: right;">233.63</td>
+<td style="text-align: right;">196.13</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">237.23</td>
 <td style="text-align: right;">1.13</td>
-<td style="text-align: right;">9.74</td>
+<td style="text-align: right;">9.03</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">400</td>
-<td style="text-align: right;">1.13</td>
-<td style="text-align: right;">273.45</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">160.51</td>
+<td style="text-align: right;">1.12</td>
+<td style="text-align: right;">237.86</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">128.15</td>
 <td style="text-align: right;">1.06</td>
-<td style="text-align: right;">136.59</td>
+<td style="text-align: right;">135.52</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">800</td>
@@ -2629,7 +2619,7 @@ FYT
 <tr class="odd">
 <td style="text-align: right;">100</td>
 <td style="text-align: right;">1.01</td>
-<td style="text-align: right;">2.49</td>
+<td style="text-align: right;">2.45</td>
 <td style="text-align: right;">0.90</td>
 <td style="text-align: right;">0.5</td>
 <td style="text-align: right;">0.90</td>
@@ -2637,26 +2627,26 @@ FYT
 </tr>
 <tr class="even">
 <td style="text-align: right;">200</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">1.67</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">1.66</td>
 <td style="text-align: right;">0.87</td>
 <td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.88</td>
 <td style="text-align: right;">0.53</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">400</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">1.67</td>
-<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">1.64</td>
+<td style="text-align: right;">0.83</td>
 <td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.85</td>
 <td style="text-align: right;">0.50</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">800</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">1.55</td>
 <td style="text-align: right;">0.81</td>
 <td style="text-align: right;">0.5</td>
 <td style="text-align: right;">0.84</td>
@@ -2713,11 +2703,11 @@ FYT
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">100</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">1.43</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1.74</td>
 <td style="text-align: right;">0.99</td>
 <td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1.00</td>
 <td style="text-align: right;">0.52</td>
 </tr>
 <tr class="even">

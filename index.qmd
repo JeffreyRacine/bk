@@ -554,10 +554,9 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 ```{r}
 #| echo: true
-#| cache: true
 #| output-location: slide
 #| out-width: "100%"
-#| label: fig-conditional-kde-beta-ci-2
+#| label: fig-conditional-patent
 #| fig-cap: Conditional KDE for patent data with simultaneous confidence intervals, 2D plot for year 1987, 3D plot for all years
 library(bkcde)
 library(np)
@@ -585,7 +584,7 @@ f.hrl <- npcdens(txdat=x,exdat=rep(1987,100),tydat=y,eydat=seq(min(y),100,length
 ## estimates for the year 1987 without, then with simultaneous confidence
 ## intervals. Finally, we plot the bkcde() estimate in 3D with and without
 ## confidence intervals (all years)
-par(mfrow=c(2,2),cex=.75,mar=c(4,4,4,2))
+par(mfrow=c(2,2),cex=.65,mar=c(4,4,4,2))
 hist(y[x==1987],xlab="patent",main="",ylim=c(0,0.06),xlim=c(0,100),prob=TRUE,breaks=500)
 lines(density(y[x==1987],from=0,to=100),lty=1,col=1)
 lines(seq(min(y),100,length=100),fitted(f.hrl),col=2,lty=2,lwd=2)
