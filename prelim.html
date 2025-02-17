@@ -103,27 +103,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="preliminary-preparation" class="level2">
-<h2 class="anchored" data-anchor-id="preliminary-preparation">Preliminary Preparation</h2>
-<p>I want to try something a bit different for this seminar, an “interactive presentation” that you can participate in fully if you wish.</p>
-<p>This requires you to bring a laptop to the seminar with the following items pre-installed (click on links to get started):</p>
+<section id="preparing-for-the-interactive-seminar" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-for-the-interactive-seminar">Preparing for the Interactive Seminar</h2>
+<p>I want to try something a bit different for this seminar, an “interactive presentation” that you can fully participate in if you wish.</p>
+<p>This requires you to bring a laptop to the seminar with a few items pre-installed (click on links to get started):</p>
 <ol type="1">
 <li><p><a href="https://www.mozilla.org/en-CA/firefox/new/">The Firefox browser</a></p></li>
 <li><p><a href="https://www.r-project.org">R</a> and <a href="https://posit.co/download/rstudio-desktop/">RStudio Desktop</a></p></li>
 <li><p>The R package <a href="https://github.com/JeffreyRacine/bkcde">bkcde from GitHub</a> (follow install instructions in the GitHub repository)</p></li>
-<li><p>A few supporting R packages from CRAN: In the R or RStudio console copy and paste the following (navigate your pointer to then click on the ciipboard in the upper right of the code block below):</p>
+<li><p>A few supporting R packages from CRAN:</p>
+<p>In the R or RStudio console copy and paste the following (navigate your pointer to then click on the clipboard in the upper right of the code block below):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"lpcde"</span>,<span class="st">"np"</span>,<span class="st">"pglm"</span>,<span class="st">"progress"</span>,<span class="st">"robustbase"</span>),</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repos=</span><span class="st">"https://cran.wu.ac.at/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 </ol>
-<p>If you experience issues with the install, ask a colleague or tech-savvy student for assistance, or simply sit next to someone in the seminar who has successfully completed these tasks.</p>
-<p>Once successful however, we can engage in an interactive session where you can run code copy-and-pasted directly from the presentation, and will leave the seminar able to test out the proposed methods on data of your choice.</p>
-<p>To test whether or not you have been successful, fire up R and enter the following command (you will have to hit the enter key as prompted, and this will take perhaps a minute or so depending on the speed of your laptop as it is crunching through some fairly intensive computations):</p>
+<p>If you experience issues with the install, please ask an R-savvy colleague or grad student for assistance, or simply sit next to someone in the seminar who has successfully completed these tasks.</p>
+<p>Once you are successful however, you can participate in an interactive seminar where you can run code copy-and-pasted directly from the presentation, and will leave the seminar able to test out the proposed methods on data of your choice.</p>
+<p>To test whether or not you have been successful in setting up your laptop, fire up RStudio and enter the following command in the R console and hit the return key:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">example</span>(<span class="st">"plot.bkcde"</span>,<span class="at">package=</span><span class="st">"bkcde"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bkcde)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(x,<span class="dv">1</span><span class="sc">+</span>x,<span class="dv">2</span><span class="sc">-</span>x)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">bkcde</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(f)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Please don’t waste time on this, if you encounter issues we can resolve them at the beginning or end of the seminar.</p>
+<p>Please don’t waste time on this if any of these tasks don’t work for you, as we can always resolve them at the beginning of (or after) the seminar.</p>
 <p>Finally, thanks for indulging me on this! Let’s see if the gods of technology are going to smile upon us or not.</p>
 </section>
 
