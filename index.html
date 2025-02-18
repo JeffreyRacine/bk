@@ -556,15 +556,15 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 </div></section><section id="kde-with-bounded-data---reflection-transformation" class="slide level2 center"><h2>KDE with Bounded Data - Reflection, Transformation</h2>
 <ul>
 <li class="fragment"><p>Boundary bias arises mostly when there is substantial probability mass at a support boundary</p></li>
-<li class="fragment"><p>Boundary bias <em>when (finite) bounds</em> <span class="math inline">\([a,b]\)</span> are known a-priori has been widely studied</p></li>
-<li class="fragment"><p>A number of procedures exist, with the most well-known being <em>data-reflection</em>, <em>data-transformation</em> and the use of <em>kernel carpentry</em> (i.e., so-called “boundary kernels”)</p></li>
+<li class="fragment"><p>Boundary bias when (finite) bounds <span class="math inline">\([a,b]\)</span> are known <em>a-priori</em> has been widely studied</p></li>
+<li class="fragment"><p>A number of procedures exist, including <em>data-reflection</em>, <em>data-transformation</em> and the use of <em>kernel carpentry</em> (i.e., so-called “boundary kernels”)</p></li>
 <li class="fragment"><p><em>Data-reflection</em> involves duplicating symmetrically (i.e., reflecting) data around its boundary, running standard bandwidth selection and kernel estimation, then adjusting the resulting estimate to ensure it is proper</p></li>
 <li class="fragment"><p><em>Data-transformation</em> involves some mathematical transform of the data that, when rescaled, has the desired effect</p></li>
 </ul></section><section id="kde-with-bounded-data---carpentry" class="slide level2 center"><h2>KDE with Bounded Data - Carpentry</h2>
 <ul>
-<li class="fragment"><p><em>Kernel carpentry</em> constructs kernels that <em>adjust</em> to the presence of a boundary</p></li>
+<li class="fragment"><p><em>Kernel carpentry</em> constructs kernels that <em>adjust</em> to the presence of boundaries</p></li>
 <li class="fragment">
-<p>A range of 1- and 2-sided kernels have been proposed for three cases:</p>
+<p>A range of left- and right-bounded kernels have been proposed for three cases:</p>
 <ul>
 <li class="fragment">
 <span class="math inline">\([a,b]=[a_0,\infty]\)</span>, <span class="math inline">\(|a_0|&lt;\infty\)</span>
@@ -581,27 +581,39 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment"><p>To some degree, all methods (i.e., reflection, transformation, carpentry) can reduce the amount of bias that would otherwise be present near a boundary to that which holds in the interior of support where it is free from boundary effects</p></li>
 </ul></section><section id="kde-with-bounded-data---carpentry-1" class="slide level2 center"><h2>KDE with Bounded Data - Carpentry</h2>
 <ul>
-<li class="fragment"><p>Numerous boundary kernel functions exist, including</p></li>
+<li class="fragment">
+<p>Existing boundary kernel functions include</p>
+<ul>
 <li class="fragment"><p>Beta kernels (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="CHEN:1999 BOUEZMARNI_ROLIN:2003 ZHANG_KARUNAMUNI:2010 IGARASHI:2016">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 1999</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Bouezmarni and Rolin 2003</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Zhang and Karunamuni 2010</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi 2016</a>)</span></p></li>
 <li class="fragment"><p>Gamma kenels (<span class="math inline">\(x\in[a,\infty]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>) <span class="citation" data-cites="CHEN:2000 MALEC201457">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 2000</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Malec and Schienle 2014</a>)</span></p></li>
 <li class="fragment"><p>Inverse and Reciprocal Inverse Gaussian kernels (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="SCAILLET:2004 IGARASHI_KAKIZAWA:2014">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Scaillet 2004</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi and Kakizawa 2014</a>)</span></p></li>
-<li class="fragment"><p>A more recent addition is the Gaussian kernel (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|\le\infty\)</span>, <span class="math inline">\(|b|\le\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span></p></li>
-</ul></section><section id="kde-with-bounded-data---a-priori-information" class="slide level2 center"><h2>KDE with Bounded Data - A Priori Information</h2>
-<ul>
+</ul>
+</li>
 <li class="fragment">
 <p>Regarding the use of boundary kernels, <span class="citation" data-cites="SCOTT:1992">Scott (<a href="#/references-scrollable" role="doc-biblioref" onclick="">1992</a>)</span>, p 149, notes:</p>
 <blockquote>
 <p>“<em>While boundary kernels can be very useful, there are potentially serious problems with real data. There are an infinite number of boundary kernels reflecting the spectrum of possible design constraints, and these kernels are not interchangeable. Severe artifacts can be introduced by any one of them in inappropriate situations. Very careful examination is required to avoid being victimized by the particular boundary kernel chosen. Artifacts can unfortunately be introduced by the choice of the support interval for the boundary kernel.</em>”</p>
 </blockquote>
 </li>
-<li class="fragment"><p>Also, virtually all existing boundary kernels require the bounds to be known a priori as they proceed from weight functions bounded on the finite interval <span class="math inline">\([a,b]\)</span> (e.g., the Beta (<span class="math inline">\(x\in[a,b]\)</span>) and Gamma kernels (<span class="math inline">\(x\in[a,\infty]\)</span>) where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite)</p></li>
-<li class="fragment"><p>Unlike its peers, however, the kernel proposed by <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> is applicable whether or not bounds are known a-priori and allow <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> to be infinite</p></li>
+</ul></section><section id="kde-with-bounded-data---a-priori-information" class="slide level2 center"><h2>KDE with Bounded Data - A Priori Information</h2>
+<ul>
+<li class="fragment"><p>It bears noting that virtually all existing boundary kernels require the bounds to be known <em>a priori</em></p></li>
+<li class="fragment"><p>Furthermore, they typically involve weight functions bounded on finite intervals <span class="math inline">\([a,b]\)</span> (e.g., the Beta (<span class="math inline">\(x\in[a,b]\)</span>) and Gamma kernels (<span class="math inline">\(x\in[a,\infty]\)</span>) where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite)</p></li>
+<li class="fragment"><p>A more recent addition is the Gaussian kernel (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|\le\infty\)</span>, <span class="math inline">\(|b|\le\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span></p></li>
+<li class="fragment">
+<p>Unlike its peers, however, the kernel proposed by <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span>,</p>
+<ul>
+<li class="fragment">is applicable whether or not bounds are known a-priori</li>
+<li class="fragment">allows <span class="math inline">\(a\)</span> and/or <span class="math inline">\(b\)</span> to be infinite</li>
+</ul>
+</li>
 </ul></section><section id="kde-with-bounded-data---shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Shrinkage</h2>
 <ul>
 <li class="fragment"><p>If bounds are known, naturally one should use that information</p></li>
 <li class="fragment"><p>But in the presence of <em>unknown</em> bounds, <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> considered a simple kernel function that can <em>automatically</em> adapt (more shortly) <em>and</em> nests the classical Gaussian kernel with <span class="math inline">\(Y\in[-\infty,\infty]\)</span> as a special case</p></li>
 <li class="fragment"><p>They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when <span class="math inline">\(h\to\infty\)</span> as <span class="math inline">\(n\to\infty\)</span> is appropriate, which violates classical conditions for consistency</p></li>
 <li class="fragment"><p>This result is the <em>unconditional counterpart</em> to the <em>conditional</em> result provided by <span class="citation" data-cites="HALL_RACINE_LI:2004">Hall, Racine, and Li (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span> who showed that cross-validated bandwidth selection “automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently <strong>shrinking</strong> them toward the uniform distribution on the respective marginals”</p></li>
+<li class="fragment"><p>Here we observe shinkage in the Bayesian sense <span class="citation" data-cites="KIEFER_RACINE:2009 KIEFER_RACINE:2015">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Kiefer 2009</a>, <a href="#/references-scrollable" role="doc-biblioref" onclick="">2015</a>)</span></p></li>
 </ul></section><section id="kde-with-bounded-data---bandwidths-and-shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Bandwidths and Shrinkage</h2>
 <ul>
 <li class="fragment"><p>For <span class="math inline">\(x\in [a,b]\)</span> and kernel <span class="math inline">\(K(z)\)</span> (e.g., Gaussian or Epanechnikov), a simple boundary kernel <span class="math inline">\(K_{[a,b]}(z)\)</span> is constructed as follows <span class="citation" data-cites="RACINE_LI_WANG:2024">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Racine, Li, and Wang 2024</a>)</span>: <span class="math display">\[\begin{equation*}
@@ -625,6 +637,7 @@ K_{[a,b]}(z)=\left\{
 </ul>
 </li>
 </ul></section><section id="unconditional-kde-in-r---cps-age-distribution" class="slide level2 center"><h2>Unconditional KDE in R - CPS Age Distribution</h2>
+<p>Let’s consider an illustration where we estimate the distribution of ages for working age males from a random sample taken from the Current Population Survey (CPS) using the classical kernel and that of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> when bounds are <em>not</em> assumed to be known <em>a priori</em> (we use the empirical support <span class="math inline">\([\min(X),\max(X)]\)</span>)</p>
 <div class="callout callout-note callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -666,6 +679,7 @@ Figure&nbsp;2: Age distribution of Canadian high school graduates
 </div>
 </div>
 </div></section><section id="unconditional-kde-in-r---simulated-data" class="slide level2 center"><h2>Unconditional KDE in R - Simulated Data</h2>
+<p>Now let’s consider some simulated data drawn from the <span class="math inline">\(U[0,1]\)</span> and assess the shrinkage phenomenon</p>
 <div class="callout callout-note callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -2810,6 +2824,12 @@ Igarashi, Gaku. 2016. <span>“Bias Reductions for Beta Kernel Estimation.”</s
 </div>
 <div id="ref-IGARASHI_KAKIZAWA:2014" class="csl-entry" role="listitem">
 Igarashi, Gaku, and Yoshihide Kakizawa. 2014. <span>“Re-Formulation of Inverse Gaussian, Reciprocal Inverse Gaussian, and Birnbaum–Saunders Kernel Estimators.”</span> <em>Statistics &amp; Probability Letters</em> 84: 235–46.
+</div>
+<div id="ref-KIEFER_RACINE:2009" class="csl-entry" role="listitem">
+Kiefer, N. M. and J. S. Racine. 2009. <span>“The Smooth Colonel Meets the Reverend.”</span> <em>Journal of Nonparametric Statistics</em> 21: 521–33.
+</div>
+<div id="ref-KIEFER_RACINE:2015" class="csl-entry" role="listitem">
+———. 2015. <span>“The Smooth Colonel and the Reverend Find Common Ground.”</span> <em>Econometric Reviews</em>, (forthcoming).
 </div>
 <div id="ref-LEDIGABEL:2011" class="csl-entry" role="listitem">
 Le Digabel, S. 2011. <span>“Algorithm 909: <span>NOMAD</span>: Nonlinear Optimization with the <span>MADS</span> Algorithm.”</span> <em>ACM Transactions on Mathematical Software</em> 37 (4): 44:1–15.

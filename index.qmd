@@ -185,9 +185,9 @@ rug(x)
 
 -   Boundary bias arises mostly when there is substantial probability mass at a support boundary
 
--   Boundary bias *when (finite) bounds* $[a,b]$ are known a-priori has been widely studied
+-   Boundary bias when (finite) bounds $[a,b]$ are known *a-priori* has been widely studied
 
--   A number of procedures exist, with the most well-known being *data-reflection*, *data-transformation* and the use of *kernel carpentry* (i.e., so-called "boundary kernels")
+-   A number of procedures exist, including *data-reflection*, *data-transformation* and the use of *kernel carpentry* (i.e., so-called "boundary kernels")
 
 -   *Data-reflection* involves duplicating symmetrically (i.e., reflecting) data around its boundary, running standard bandwidth selection and kernel estimation, then adjusting the resulting estimate to ensure it is proper
 
@@ -195,9 +195,9 @@ rug(x)
 
 ## KDE with Bounded Data - Carpentry
 
--   *Kernel carpentry* constructs kernels that *adjust* to the presence of a boundary
+-   *Kernel carpentry* constructs kernels that *adjust* to the presence of boundaries
 
--   A range of 1- and 2-sided kernels have been proposed for three cases:
+-   A range of left- and right-bounded kernels have been proposed for three cases:
 
     -   $[a,b]=[a_0,\infty]$, $|a_0|<\infty$
     -   $[a,b]=[-\infty,b_0]$, $|b_0|<\infty$\
@@ -209,25 +209,30 @@ rug(x)
 
 ## KDE with Bounded Data - Carpentry
 
--   Numerous boundary kernel functions exist, including
+-   Existing boundary kernel functions include
 
--   Beta kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@CHEN:1999; @BOUEZMARNI_ROLIN:2003; @ZHANG_KARUNAMUNI:2010; @IGARASHI:2016]
+    -   Beta kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@CHEN:1999; @BOUEZMARNI_ROLIN:2003; @ZHANG_KARUNAMUNI:2010; @IGARASHI:2016]
 
--   Gamma kenels ($x\in[a,\infty]$, $|a|<\infty$) [@CHEN:2000; @MALEC201457]
+    -   Gamma kenels ($x\in[a,\infty]$, $|a|<\infty$) [@CHEN:2000; @MALEC201457]
 
--   Inverse and Reciprocal Inverse Gaussian kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@SCAILLET:2004; @IGARASHI_KAKIZAWA:2014]
-
--   A more recent addition is the Gaussian kernel ($x\in[a,b]$, $|a|\le\infty$, $|b|\le\infty$, $a<b$) of @RACINE_LI_WANG:2024
-
-## KDE with Bounded Data - A Priori Information
+    -   Inverse and Reciprocal Inverse Gaussian kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@SCAILLET:2004; @IGARASHI_KAKIZAWA:2014]
 
 -   Regarding the use of boundary kernels, @SCOTT:1992, p 149, notes:
 
     > "*While boundary kernels can be very useful, there are potentially serious problems with real data. There are an infinite number of boundary kernels reflecting the spectrum of possible design constraints, and these kernels are not interchangeable. Severe artifacts can be introduced by any one of them in inappropriate situations. Very careful examination is required to avoid being victimized by the particular boundary kernel chosen. Artifacts can unfortunately be introduced by the choice of the support interval for the boundary kernel.*"
 
--   Also, virtually all existing boundary kernels require the bounds to be known a priori as they proceed from weight functions bounded on the finite interval $[a,b]$ (e.g., the Beta ($x\in[a,b]$) and Gamma kernels ($x\in[a,\infty]$) where $a$ and $b$ are finite)
+## KDE with Bounded Data - A Priori Information
 
--   Unlike its peers, however, the kernel proposed by @RACINE_LI_WANG:2024 is applicable whether or not bounds are known a-priori and allow $a$ and $b$ to be infinite
+-   It bears noting that virtually all existing boundary kernels require the bounds to be known *a priori*
+
+-   Furthermore, they typically involve weight functions bounded on finite intervals $[a,b]$ (e.g., the Beta ($x\in[a,b]$) and Gamma kernels ($x\in[a,\infty]$) where $a$ and $b$ are finite)
+
+-   A more recent addition is the Gaussian kernel ($x\in[a,b]$, $|a|\le\infty$, $|b|\le\infty$, $a<b$) of @RACINE_LI_WANG:2024
+
+-   Unlike its peers, however, the kernel proposed by @RACINE_LI_WANG:2024,
+
+    -   is applicable whether or not bounds are known a-priori
+    -   allows $a$ and/or $b$ to be infinite
 
 ## KDE with Bounded Data - Shrinkage
 
@@ -238,6 +243,8 @@ rug(x)
 -   They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when $h\to\infty$ as $n\to\infty$ is appropriate, which violates classical conditions for consistency
 
 -   This result is the *unconditional counterpart* to the *conditional* result provided by @HALL_RACINE_LI:2004 who showed that cross-validated bandwidth selection "automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently **shrinking** them toward the uniform distribution on the respective marginals"
+
+-   Here we observe shinkage in the Bayesian sense [@KIEFER_RACINE:2009; @KIEFER_RACINE:2015]
 
 ## KDE with Bounded Data - Bandwidths and Shrinkage
 
@@ -264,6 +271,8 @@ rug(x)
     -   If the bounds are unknown, the kernel can *automatically adapt* to the range of the data
 
 ## Unconditional KDE in R - CPS Age Distribution
+
+Let's consider an illustration where we estimate the distribution of ages for working age males from a random sample taken from the Current Population Survey (CPS) using the classical kernel and that of @RACINE_LI_WANG:2024 when bounds are *not* assumed to be known *a priori* (we use the empirical support $[\min(X),\max(X)]$)
 
 ::: {.callout-note appearance="simple"}
 ## Example (Canadian High School Graduate Age Distribution 21-65)
@@ -292,6 +301,8 @@ legend("topright",c("Boundary Kernel (unknown bounds)","Classical density()"),lt
 :::
 
 ## Unconditional KDE in R - Simulated Data
+
+Now let's consider some simulated data drawn from the $U[0,1]$ and assess the shrinkage phenomenon
 
 ::: {.callout-note appearance="simple"}
 ## Example ($N(0,1)$ (left figure), $U{[0,1]}$ (right figure), R function density())
