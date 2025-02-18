@@ -17,7 +17,7 @@ for(m in 1:M) {
   y <- rnorm(n,x,sd=sqrt(1/12))
   dgp.mean <- x
   #f <- bkcde(h=c(.5*sd(y)*n^{-1/6},10*sd(x)*n^{-1/6}),degree=1,y.erf=.5,integrate.erf=1,n.integrate=1000,x.erf=0,x=x, y=y,degree.min=0,degree.max=3,proper=TRUE,x.lb=-Inf,x.ub=Inf,y.lb=-Inf,y.ub=Inf)
-  f <- bkcde(h=c(.5*sd(y)*n^{-1/6},1000*sd(x)*n^{-1/6}),degree=2,x=x, y=y,proper=TRUE,degree.min=1,degree.max=1,y.lb=-Inf,y.ub=Inf,y.erf=.5)
+  f <- bkcde(x=x, y=y,proper=TRUE,degree.min=0,degree.max=5,y.lb=-Inf,y.ub=Inf)
   ylim <- range(f$g,dgp.mean)
   par(mfrow=c(2,2),cex=.75)
   dgp <-dnorm(f$y.eval,f$x.eval,sd=sqrt(1/12))

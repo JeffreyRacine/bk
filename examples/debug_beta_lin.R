@@ -1,7 +1,7 @@
 library(bkcde)
 library(progress)
 progress.bar <- TRUE
-## set.seed(42)
+set.seed(42)
 n <- scan("n.dat")
 M <- scan("M.dat")
 theta <- 160
@@ -17,7 +17,7 @@ for(m in 1:M) {
   y <- rbeta(n,1+x,2-x)
   ## change dgp in two places, after call to f and here
   dgp.mean <- (1+x)/(1+2)
-  f <- bkcde(x=x, y=y)#,degree.min=0,degree.max=2,proper=TRUE)
+  f <- bkcde(x=x, y=y,degree.min=0,degree.max=4,proper=TRUE,cv.penalty.method="extreme")
   ylim <- range(f$g,dgp.mean)
   par(mfrow=c(2,2),cex=.75)
   dgp <- dbeta(f$y.eval,1+f$x.eval,2-f$x.eval)
