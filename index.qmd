@@ -213,7 +213,7 @@ rug(x)
 
     -   Beta kernels ($X\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@CHEN:1999; @BOUEZMARNI_ROLIN:2003; @ZHANG_KARUNAMUNI:2010; @IGARASHI:2016]
 
-    -   Gamma kenels ($X\in[a,\infty]$, $|a|<\infty$) [@CHEN:2000; @MALEC201457]
+    -   Gamma kernels ($X\in[a,\infty]$, $|a|<\infty$) [@CHEN:2000; @MALEC201457]
 
     -   Inverse and Reciprocal Inverse Gaussian kernels ($X\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@SCAILLET:2004; @IGARASHI_KAKIZAWA:2014]
 
@@ -244,7 +244,7 @@ rug(x)
 
 -   This result is the *unconditional counterpart* to the *conditional* result provided by @HALL_RACINE_LI:2004 who showed that cross-validated bandwidth selection "automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently **shrinking** them toward the uniform distribution on the respective marginals"
 
--   Here we observe shinkage in the Bayesian sense [@KIEFER_RACINE:2009; @KIEFER_RACINE:2015]
+-   Here we observe shrinkage in the Bayesian sense [@KIEFER_RACINE:2009; @KIEFER_RACINE:2015]
 
 ## KDE with Bounded Data - Bandwidths and Shrinkage
 
@@ -582,16 +582,16 @@ library(pglm)
 ## applications (count), 1629 observations. 
 data(PatentsRD)
 attach(PatentsRD)
-## Patent data often has a preponderance of zeros and "overdispersion". Since
+## Patent data often has a preponderance of zeros and "over-dispersion". Since
 ## the data has a boundary at zero, a zero-inflated negative binomial model is
 ## often used. Instead we consider a kernel density estimation approach that
 ## adapts to the boundary automatically and also chooses the polynomial order in
 ## a data-driven fashion.
 x <- as.integer(as.character(year))
 y <- patent
-## To most quickly run this example, we take results from a prior run os that in
+## To most quickly run this example, we take results from a prior run so that in
 ## real-time computation proceeds as quickly as possible for illustrative
-## purposes (you can comment out/renable to confirm they produce identical
+## purposes (you can comment out/re-enable to confirm they produce identical
 ## results)
 # f.bkcde <- bkcde(x=x,y=y,proper=TRUE)
 # f.bkcde$h [1] 5.022254 5.233370
