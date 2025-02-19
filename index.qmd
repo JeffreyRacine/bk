@@ -69,7 +69,7 @@ format:
     transition: slide
 ---
 
-f# Slide Pro-Tips
+# Slide Pro-Tips
 
 ::: nonincremental
 -   View **full screen** in A2L by clicking on the slide and then pressing the F key (press the Esc key to revert)
