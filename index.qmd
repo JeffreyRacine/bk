@@ -475,6 +475,8 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 ## Example - Conditional KDE with Unbounded $Y$
 
+Below we consider the case where the distribution is unbounded ($Y\in(-\infty,\infty)$) but empirical bounds are used and the bandwidths and polynomial order are data-driven
+
 ::: {.callout-note appearance="simple"}
 ## Example (Gaussian, Empirical Bounds)
 
@@ -506,6 +508,8 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 ## Example - Conditional KDE with Bounded $Y$
 
+Below we consider the case where the distribution is bounded ($Y\in[0,1]$) but empirical bounds are used and the bandwidths and polynomial order are data-driven
+
 ::: {.callout-note appearance="simple"}
 ## Example (Beta(1+x,2-x), Empirical Bounds)
 
@@ -533,6 +537,9 @@ persp(unique(f$x.eval),unique(f$y.eval),
 
 ## Example - Simultaneous Confidence Intervals
 
+Simultaneous or "uniform" confidence intervals present a multiple comparison problem, requiring both bias adjustment and solving a problem known not to be easy. 
+The R package you are using can generate pointwise, simultaneous, and Bonferroni bounds that are theoretically supported and trivial to render, as the following example highlights (this may take a bit of time as there are a large number of bootstrap replications being drawn, $B=3,999$).
+
 ::: {.callout-note appearance="simple"}
 ## Example (Beta, Empirical Bounds, Simultaneous Confidence Intervals)
 
@@ -557,6 +564,8 @@ persp(unique(f$x.eval),unique(f$y.eval),
 :::
 
 ## Example - Patent Application Data
+
+As a nod to being in the patent capital of the world, consider estimating the density of patent counts using a panel of 181 firms from 1983 to 1991 (again, this may take a bit of time)
 
 ::: {.callout-note appearance="simple"}
 ## Example (Annual numbers of European patent applications)
