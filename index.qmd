@@ -99,15 +99,15 @@ library(pglm)
 
 ## Overview of Talk
 
--   This talk is about a proposed boundary adaptive, polynomial order adaptive, conditional kernel density estimator, and its finite-sample performance.
+-   This talk is about a proposed boundary adaptive, polynomial order adaptive, conditional kernel density estimator, and its finite-sample performance
 
--   I am aiming for an interactive seminar format, which will require either your participation or your sitting next to someone who is participating.
+-   I am aiming for an interactive seminar format, which will require either your participation or your sitting next to someone who is participating
 
 -   Hopefully you came with your laptop, the Firefox browser, R/RStudio, and the suggested libraries installed (if you have your laptop you can do this now if you didn't get the [memo](https://JeffreyRacine.github.io/bk/prelim.html)).
 
--   If you have R/RStudio and the libraries installed, you can work with the methods and data interactively as the talk proceeds.
+-   If you have R/RStudio and the libraries installed, you can work with the methods and data interactively as the talk proceeds
 
--   My hope is that you will follow along and reproduce the results on your own computer.
+-   My hope is that you will follow along and reproduce the results on your own computer
 
 -   Let's begin by opening the following link in Firefox:
 
@@ -365,18 +365,18 @@ rug(x)
 -   The classical case replaces $f(x,y)$ and $f(x)$ with their kernel estimates and then divides the former by the latter keeping the same bandwidth $h_x$ for the numerator and denominator, which can also be derived as the solution to a local polynomial approximation problem
 
 -   The resulting kernel density estimator of the conditional PDF with $Y\in\mathbb{R}^1$ and $X\in\mathbb{R}^1$ is given by \begin{equation*}
-    \hat f(y|x) = \frac{\hat f(y,x)}{\hat f(x)}=\frac{\sum_{i=1}^nh_y^{-1}h_x^{-1}K\left(\frac{y-Y_i}{h_y}\right)K\left(\frac{x-X_i}{h_x}\right)}{\sum_{i=1}^nh_x^{-1}K\left(\frac{x-X_i}{h_x}\right)}.
+    \hat f(y|x) = \frac{\hat f(y,x)}{\hat f(x)}=\frac{\sum_{i=1}^nh_y^{-1}h_x^{-1}K\left(\frac{y-Y_i}{h_y}\right)K\left(\frac{x-X_i}{h_x}\right)}{\sum_{i=1}^nh_x^{-1}K\left(\frac{x-X_i}{h_x}\right)}
     \end{equation*}
 
 ## Local Polynomial Conditional KDE
 
 -   This estimator is also the solution to a locally weighted least squares regression of $h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)$ on a constant $\alpha$ using local weights $h_x^{-1}K\left(\frac{x-X_i}{h_x}\right)$, i.e., \begin{equation*}
     \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\alpha\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
-    \end{equation*} which delivers $\hat\alpha=\hat f(y|x)$ identical to that from the previous approach.
+    \end{equation*} which delivers $\hat\alpha=\hat f(y|x)$ identical to that from the previous approach
 
 -   The local polynomial extension of this estimator is given by \begin{equation*}
     \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
-    \end{equation*} which delivers $\hat\alpha_0=\hat f(y|x)$, a $p$-th order local polynomial estimator.
+    \end{equation*} which delivers $\hat\alpha_0=\hat f(y|x)$, a $p$-th order local polynomial estimator
 
 ## Local Polynomial Conditional KDE
 
@@ -538,7 +538,7 @@ persp(unique(f$x.eval),unique(f$y.eval),
 ## Example - Simultaneous Confidence Intervals
 
 Simultaneous or "uniform" confidence intervals present a multiple comparison problem, requiring both bias adjustment and solving a problem known not to be easy. 
-The R package you are using can generate pointwise, simultaneous, and Bonferroni bounds that are theoretically supported and trivial to render, as the following example highlights (this may take a bit of time as there are a large number of bootstrap replications being drawn, $B=3,999$).
+The R package you are using can generate pointwise, simultaneous, and Bonferroni bounds that are theoretically supported and trivial to render, as the following example highlights (this may take a bit of time as there are a large number of bootstrap replications being drawn, $B=3,999$)
 
 ::: {.callout-note appearance="simple"}
 ## Example (Beta, Empirical Bounds, Simultaneous Confidence Intervals)
@@ -869,11 +869,11 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
 
 ## Candidate Model Comparison: Beta DGP
 
--   We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).
+-   We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA)
 
--   Numbers $<1$ are more efficient than the PA method.
+-   Numbers $<1$ are more efficient than the PA method
 
--   If you knew *ex ante* which polynomial order to select, you would use that.
+-   If you knew *ex ante* which polynomial order to select, you would use that
 
     ::: panel-tabset
     ### $B(1,2)$ ML
@@ -931,11 +931,11 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
 
 ## Candidate Model Comparison: Gaussian DGP
 
--   We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA).
+-   We conduct Monte Carlo simulations and report the median relative RMSE of fixed polynomial estimators and the polynomial adaptive approach (PA)
 
--   Numbers $<1$ are more efficient than the PA method.
+-   Numbers $<1$ are more efficient than the PA method
 
--   If you knew *ex ante* which polynomial order to select, you would use that.
+-   If you knew *ex ante* which polynomial order to select, you would use that
 
     ::: panel-tabset
     ### $N(0,1/12)$ ML
@@ -1291,7 +1291,7 @@ sf.beta.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_
 
 ## Scale Factor Summaries: Beta DGP
 
-The "scale factor" $s$ is an unknown constant that, adjusted for the sample size and data scale, related to the "bandwidth" $h$, i.e., $h_x=s_x\sigma_x/n^{1/6}$ and $h_y=s_y\sigma_y/n^{1/6}$, where $n$ is the sample size. The scale factor is estimated by optimizing the cross-validation score. The scale factor summaries below show the median scale factor for the three methods: BKPA, HRL, and FYT, and are presented for the irrelevant $x$ and quadratic $x$ DGPs.
+The "scale factor" $s$ is an unknown constant that, adjusted for the sample size and data scale, related to the "bandwidth" $h$, i.e., $h_x=s_x\sigma_x/n^{1/6}$ and $h_y=s_y\sigma_y/n^{1/6}$, where $n$ is the sample size. The scale factor is estimated by optimizing the cross-validation score. The scale factor summaries below show the median scale factor for the three methods: BKPA, HRL, and FYT, and are presented for the irrelevant $x$ and quadratic $x$ DGPs
 
 ::: panel-tabset
 ### $B(1,2)$ ML
@@ -1337,7 +1337,7 @@ add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 
 ## Scale Factor Summaries: Gaussian DGP
 
-The "scale factor" $s$ is an unknown constant that, adjusted for the sample size and data scale, related to the "bandwidth" $h$, i.e., $h_x=s_x\sigma_x/n^{1/6}$ and $h_y=s_y\sigma_y/n^{1/6}$, where $n$ is the sample size. The scale factor is estimated by optimizing the cross-validation score. The scale factor summaries below show the median scale factor for the three methods: BKPA, HRL, and FYT, and are presented for the irrelevant $x$ and quadratic $x$ DGPs.
+The "scale factor" $s$ is an unknown constant that, adjusted for the sample size and data scale, related to the "bandwidth" $h$, i.e., $h_x=s_x\sigma_x/n^{1/6}$ and $h_y=s_y\sigma_y/n^{1/6}$, where $n$ is the sample size. The scale factor is estimated by optimizing the cross-validation score. The scale factor summaries below show the median scale factor for the three methods: BKPA, HRL, and FYT, and are presented for the irrelevant $x$ and quadratic $x$ DGPs
 
 ::: panel-tabset
 ### $N(0,1/12)$ ML
@@ -1482,9 +1482,9 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
 
 ## Comparison with HRL and FYT: Beta DGP
 
--   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (inappropriate for the Beta).
+-   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (inappropriate for the Beta)
 
--   Numbers $<1$ are more efficient than the BKPA method.
+-   Numbers $<1$ are more efficient than the BKPA method
 
     ::: panel-tabset
     ### $B(1,2)$ ML
@@ -1531,9 +1531,9 @@ rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1
 
 ## Comparison with HRL and FYT: Gaussian DGP
 
--   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (appropriate for the Gaussian).
+-   We compare the performance of the proposed method using empirical bounds with the methods of @HALL_RACINE_LI:2004 and @fyt:1996, which use a classical kernel presuming infinite support (appropriate for the Gaussian)
 
--   Numbers $<1$ are more efficient than the BKPA method.
+-   Numbers $<1$ are more efficient than the BKPA method
 
     ::: panel-tabset
     ### $N(0,1/12)$ ML
