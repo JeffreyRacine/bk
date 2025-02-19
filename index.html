@@ -453,7 +453,7 @@ Qi Li<sup>3</sup>
 </div>
 
   <p class="date">Updated February 19, 2025</p>
-</section><section><section id="slide-pro-tips" class="title-slide slide level1 center"><h1>Slide Pro-Tips</h1>
+</section><section class="slide level2 center"><p>f# Slide Pro-Tips</p>
 <div>
 <ul>
 <li><p>View <strong>full screen</strong> in A2L by clicking on the slide and then pressing the F key (press the Esc key to revert)</p></li>
@@ -493,7 +493,7 @@ Qi Li<sup>3</sup>
 <p>An R package is available at:</p>
 <p><a href="https://github.com/JeffreyRacine/bkcde">github.com/JeffreyRacine/bkcde</a></p>
 </li>
-</ul></section></section><section><section id="unconditional-density-estimation-with-bounded-data" class="title-slide slide level1 center"><h1>Unconditional Density Estimation with Bounded Data</h1>
+</ul></section><section><section id="unconditional-density-estimation-with-bounded-data" class="title-slide slide level1 center"><h1>Unconditional Density Estimation with Bounded Data</h1>
 
 </section><section id="kde-with-bounded-data" class="slide level2 center"><h2>KDE with Bounded Data</h2>
 <ul>
@@ -613,7 +613,7 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment"><p>But in the presence of <em>unknown</em> bounds, <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> considered a simple kernel function that can <em>automatically</em> adapt (more shortly) <em>and</em> nests the classical Gaussian kernel with <span class="math inline">\(X\in[-\infty,\infty]\)</span> as a special case</p></li>
 <li class="fragment"><p>They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when <span class="math inline">\(h_x\to\infty\)</span> as <span class="math inline">\(n\to\infty\)</span> is appropriate, which violates classical conditions for consistency</p></li>
 <li class="fragment"><p>This result is the <em>unconditional counterpart</em> to the <em>conditional</em> result provided by <span class="citation" data-cites="HALL_RACINE_LI:2004">Hall, Racine, and Li (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span> who showed that cross-validated bandwidth selection “automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently <strong>shrinking</strong> them toward the uniform distribution on the respective marginals”</p></li>
-<li class="fragment"><p>Here we observe shrinkage in the Bayesian sense <span class="citation" data-cites="KIEFER_RACINE:2009 KIEFER_RACINE:2015">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Kiefer 2009</a>, <a href="#/references-scrollable" role="doc-biblioref" onclick="">2015</a>)</span></p></li>
+<li class="fragment"><p>Here we observe shrinkage in the Bayesian sense <span class="citation" data-cites="KIEFER_RACINE:2009 KIEFER_RACINE:2015">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Kiefer and Racine 2009</a>, <a href="#/references-scrollable" role="doc-biblioref" onclick="">2015</a>)</span></p></li>
 </ul></section><section id="kde-with-bounded-data---bandwidths-and-shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Bandwidths and Shrinkage</h2>
 <ul>
 <li class="fragment"><p>For <span class="math inline">\(X\in [a,b]\)</span> and kernel <span class="math inline">\(K(z)\)</span> (e.g., Gaussian or Epanechnikov), a simple boundary kernel <span class="math inline">\(K_{[a,b]}(z)\)</span> is constructed as follows <span class="citation" data-cites="RACINE_LI_WANG:2024">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Racine, Li, and Wang 2024</a>)</span>: <span class="math display">\[\begin{equation*}
@@ -2831,7 +2831,7 @@ Igarashi, Gaku. 2016. <span>“Bias Reductions for Beta Kernel Estimation.”</s
 Igarashi, Gaku, and Yoshihide Kakizawa. 2014. <span>“Re-Formulation of Inverse Gaussian, Reciprocal Inverse Gaussian, and Birnbaum–Saunders Kernel Estimators.”</span> <em>Statistics &amp; Probability Letters</em> 84: 235–46.
 </div>
 <div id="ref-KIEFER_RACINE:2009" class="csl-entry" role="listitem">
-Kiefer, N. M. and J. S. Racine. 2009. <span>“The Smooth Colonel Meets the Reverend.”</span> <em>Journal of Nonparametric Statistics</em> 21: 521–33.
+Kiefer, N. M., and J. S. Racine. 2009. <span>“The Smooth Colonel Meets the Reverend.”</span> <em>Journal of Nonparametric Statistics</em> 21: 521–33.
 </div>
 <div id="ref-KIEFER_RACINE:2015" class="csl-entry" role="listitem">
 ———. 2015. <span>“The Smooth Colonel and the Reverend Find Common Ground.”</span> <em>Econometric Reviews</em>, (forthcoming).
