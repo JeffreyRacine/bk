@@ -585,7 +585,7 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <p>Existing boundary kernel functions include</p>
 <ul>
 <li class="fragment"><p>Beta kernels (<span class="math inline">\(X\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="CHEN:1999 BOUEZMARNI_ROLIN:2003 ZHANG_KARUNAMUNI:2010 IGARASHI:2016">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 1999</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Bouezmarni and Rolin 2003</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Zhang and Karunamuni 2010</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi 2016</a>)</span></p></li>
-<li class="fragment"><p>Gamma kenels (<span class="math inline">\(X\in[a,\infty]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>) <span class="citation" data-cites="CHEN:2000 MALEC201457">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 2000</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Malec and Schienle 2014</a>)</span></p></li>
+<li class="fragment"><p>Gamma kernels (<span class="math inline">\(X\in[a,\infty]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>) <span class="citation" data-cites="CHEN:2000 MALEC201457">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 2000</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Malec and Schienle 2014</a>)</span></p></li>
 <li class="fragment"><p>Inverse and Reciprocal Inverse Gaussian kernels (<span class="math inline">\(X\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="SCAILLET:2004 IGARASHI_KAKIZAWA:2014">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Scaillet 2004</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi and Kakizawa 2014</a>)</span></p></li>
 </ul>
 </li>
@@ -613,7 +613,7 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment"><p>But in the presence of <em>unknown</em> bounds, <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> considered a simple kernel function that can <em>automatically</em> adapt (more shortly) <em>and</em> nests the classical Gaussian kernel with <span class="math inline">\(X\in[-\infty,\infty]\)</span> as a special case</p></li>
 <li class="fragment"><p>They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when <span class="math inline">\(h_x\to\infty\)</span> as <span class="math inline">\(n\to\infty\)</span> is appropriate, which violates classical conditions for consistency</p></li>
 <li class="fragment"><p>This result is the <em>unconditional counterpart</em> to the <em>conditional</em> result provided by <span class="citation" data-cites="HALL_RACINE_LI:2004">Hall, Racine, and Li (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span> who showed that cross-validated bandwidth selection “automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently <strong>shrinking</strong> them toward the uniform distribution on the respective marginals”</p></li>
-<li class="fragment"><p>Here we observe shinkage in the Bayesian sense <span class="citation" data-cites="KIEFER_RACINE:2009 KIEFER_RACINE:2015">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Kiefer 2009</a>, <a href="#/references-scrollable" role="doc-biblioref" onclick="">2015</a>)</span></p></li>
+<li class="fragment"><p>Here we observe shrinkage in the Bayesian sense <span class="citation" data-cites="KIEFER_RACINE:2009 KIEFER_RACINE:2015">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Kiefer 2009</a>, <a href="#/references-scrollable" role="doc-biblioref" onclick="">2015</a>)</span></p></li>
 </ul></section><section id="kde-with-bounded-data---bandwidths-and-shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Bandwidths and Shrinkage</h2>
 <ul>
 <li class="fragment"><p>For <span class="math inline">\(X\in [a,b]\)</span> and kernel <span class="math inline">\(K(z)\)</span> (e.g., Gaussian or Epanechnikov), a simple boundary kernel <span class="math inline">\(K_{[a,b]}(z)\)</span> is constructed as follows <span class="citation" data-cites="RACINE_LI_WANG:2024">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Racine, Li, and Wang 2024</a>)</span>: <span class="math display">\[\begin{equation*}
@@ -1003,16 +1003,16 @@ Figure&nbsp;7: Conditional KDE for <span class="math inline">\(\textrm{Beta}(1+x
 <span id="cb8-4"><a href=""></a><span class="do">## applications (count), 1629 observations. </span></span>
 <span id="cb8-5"><a href=""></a><span class="fu">data</span>(PatentsRD)</span>
 <span id="cb8-6"><a href=""></a><span class="fu">attach</span>(PatentsRD)</span>
-<span id="cb8-7"><a href=""></a><span class="do">## Patent data often has a preponderance of zeros and "overdispersion". Since</span></span>
+<span id="cb8-7"><a href=""></a><span class="do">## Patent data often has a preponderance of zeros and "over-dispersion". Since</span></span>
 <span id="cb8-8"><a href=""></a><span class="do">## the data has a boundary at zero, a zero-inflated negative binomial model is</span></span>
 <span id="cb8-9"><a href=""></a><span class="do">## often used. Instead we consider a kernel density estimation approach that</span></span>
 <span id="cb8-10"><a href=""></a><span class="do">## adapts to the boundary automatically and also chooses the polynomial order in</span></span>
 <span id="cb8-11"><a href=""></a><span class="do">## a data-driven fashion.</span></span>
 <span id="cb8-12"><a href=""></a>x <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">as.character</span>(year))</span>
 <span id="cb8-13"><a href=""></a>y <span class="ot">&lt;-</span> patent</span>
-<span id="cb8-14"><a href=""></a><span class="do">## To most quickly run this example, we take results from a prior run os that in</span></span>
+<span id="cb8-14"><a href=""></a><span class="do">## To most quickly run this example, we take results from a prior run so that in</span></span>
 <span id="cb8-15"><a href=""></a><span class="do">## real-time computation proceeds as quickly as possible for illustrative</span></span>
-<span id="cb8-16"><a href=""></a><span class="do">## purposes (you can comment out/renable to confirm they produce identical</span></span>
+<span id="cb8-16"><a href=""></a><span class="do">## purposes (you can comment out/re-enable to confirm they produce identical</span></span>
 <span id="cb8-17"><a href=""></a><span class="do">## results)</span></span>
 <span id="cb8-18"><a href=""></a><span class="co"># f.bkcde &lt;- bkcde(x=x,y=y,proper=TRUE)</span></span>
 <span id="cb8-19"><a href=""></a><span class="co"># f.bkcde$h [1] 5.022254 5.233370</span></span>
