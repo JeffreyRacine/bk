@@ -135,8 +135,8 @@ library(pglm)
 -   Kernel density estimation has a rich history [@ROSENBLATT:1956; @PARZEN:1962]
 
 -   Assuming smoothness, an unknown density $f(x)$ can be estimated using a local average of weight ("kernel") functions, \begin{equation*}
-    \hat f(x)=\frac{1}{n}\sum_{i=1}^n \frac{1}{h}K\left(\frac{x-X_i}{h}\right),
-    \end{equation*} where $K(\cdot)$ is a kernel function, $h$ is a bandwidth, and $X_i$ are the data
+    \hat f(x)=\frac{1}{n}\sum_{i=1}^n \frac{1}{h_x}K\left(\frac{x-X_i}{h_x}\right),
+    \end{equation*} where $K(\cdot)$ is a kernel function, $h_x$ is a bandwidth, and $X_i$ are the data
 
 <!-- -   For consistency we typically require the bandwidth to vanish asymptotically ($h\to 0$ as $n\to\infty$) -->
 
@@ -148,7 +148,7 @@ library(pglm)
 
 ## Example of KDE with Bounded Data - Boundary Bias
 
-We simulate two datasets, one $N(0,1)$ and one $U[0,1]$, and use data-driven methods of bandwidth selection with a "classical" Gaussian kernel to estimate unknown smooth densities, $f(x)$
+We simulate two datasets, one $N(0,1)$ and one $U[0,1]$ (a "worst case" scenario for classical kernel density estimation), and use data-driven methods of bandwidth selection with a "classical" Gaussian kernel to estimate unknown smooth densities, $f(x)$
 
 ::: {.callout-note appearance="simple"}
 ## Example ($N(0,1)$ (left figure), $U{[0,1]}$ (right figure), R function density())
@@ -211,11 +211,11 @@ rug(x)
 
 -   Existing boundary kernel functions include
 
-    -   Beta kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@CHEN:1999; @BOUEZMARNI_ROLIN:2003; @ZHANG_KARUNAMUNI:2010; @IGARASHI:2016]
+    -   Beta kernels ($X\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@CHEN:1999; @BOUEZMARNI_ROLIN:2003; @ZHANG_KARUNAMUNI:2010; @IGARASHI:2016]
 
-    -   Gamma kenels ($x\in[a,\infty]$, $|a|<\infty$) [@CHEN:2000; @MALEC201457]
+    -   Gamma kenels ($X\in[a,\infty]$, $|a|<\infty$) [@CHEN:2000; @MALEC201457]
 
-    -   Inverse and Reciprocal Inverse Gaussian kernels ($x\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@SCAILLET:2004; @IGARASHI_KAKIZAWA:2014]
+    -   Inverse and Reciprocal Inverse Gaussian kernels ($X\in[a,b]$, $|a|<\infty$, $|b|<\infty$, $a<b$) [@SCAILLET:2004; @IGARASHI_KAKIZAWA:2014]
 
 -   Regarding the use of boundary kernels, @SCOTT:1992, p 149, notes:
 
@@ -225,9 +225,9 @@ rug(x)
 
 -   It bears noting that virtually all existing boundary kernels require the bounds to be known *a priori*
 
--   Furthermore, they typically involve weight functions bounded on finite intervals $[a,b]$ (e.g., the Beta ($x\in[a,b]$) and Gamma kernels ($x\in[a,\infty]$) where $a$ and $b$ are finite)
+-   Furthermore, they typically involve weight functions bounded on finite intervals $[a,b]$ (e.g., the Beta ($X\in[a,b]$) and Gamma kernels ($X\in[a,\infty]$) where $a$ and $b$ are finite)
 
--   A more recent addition is the Gaussian kernel ($x\in[a,b]$, $|a|\le\infty$, $|b|\le\infty$, $a<b$) of @RACINE_LI_WANG:2024
+-   A more recent addition is the Gaussian kernel ($X\in[a,b]$, $|a|\le\infty$, $|b|\le\infty$, $a<b$) of @RACINE_LI_WANG:2024
 
 -   Unlike its peers, however, the kernel proposed by @RACINE_LI_WANG:2024,
 
@@ -238,9 +238,9 @@ rug(x)
 
 -   If bounds are known, naturally one should use that information
 
--   But in the presence of *unknown* bounds, @RACINE_LI_WANG:2024 considered a simple kernel function that can *automatically* adapt (more shortly) *and* nests the classical Gaussian kernel with $Y\in[-\infty,\infty]$ as a special case
+-   But in the presence of *unknown* bounds, @RACINE_LI_WANG:2024 considered a simple kernel function that can *automatically* adapt (more shortly) *and* nests the classical Gaussian kernel with $X\in[-\infty,\infty]$ as a special case
 
--   They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when $h\to\infty$ as $n\to\infty$ is appropriate, which violates classical conditions for consistency
+-   They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when $h_x\to\infty$ as $n\to\infty$ is appropriate, which violates classical conditions for consistency
 
 -   This result is the *unconditional counterpart* to the *conditional* result provided by @HALL_RACINE_LI:2004 who showed that cross-validated bandwidth selection "automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently **shrinking** them toward the uniform distribution on the respective marginals"
 
@@ -248,7 +248,7 @@ rug(x)
 
 ## KDE with Bounded Data - Bandwidths and Shrinkage
 
--   For $x\in [a,b]$ and kernel $K(z)$ (e.g., Gaussian or Epanechnikov), a simple boundary kernel $K_{[a,b]}(z)$ is constructed as follows [@RACINE_LI_WANG:2024]: \begin{equation*}
+-   For $X\in [a,b]$ and kernel $K(z)$ (e.g., Gaussian or Epanechnikov), a simple boundary kernel $K_{[a,b]}(z)$ is constructed as follows [@RACINE_LI_WANG:2024]: \begin{equation*}
     K_{[a,b]}(z)=\left\{
     \begin{array}{cl}
     \frac{K(z)}{G(z_b)-G(z_a)}&\text{ if } z_a\le z\le z_b,\\
@@ -257,7 +257,7 @@ rug(x)
     \right.
     \end{equation*}
 
--   Here, $z=(x-X_i)/h$, $z_b=(b-x)/h$, and $z_a=(a-x)/h$, and where $G(z)=\int_{-\infty}^z K(t)\,dt$
+-   Here, $z=(x-X_i)/h_x$, $z_b=(b-x)/h_x$, $z_a=(a-x)/h_x$, $a<b$, and $G(z)=\int_{-\infty}^z K(t)\,dt$
 
 ```{=html}
 <!--
@@ -302,7 +302,7 @@ legend("topright",c("Boundary Kernel (unknown bounds)","Classical density()"),lt
 
 ## Unconditional KDE in R - Simulated Data
 
-Now let's consider some simulated data drawn from the $U[0,1]$ and assess the shrinkage phenomenon
+Now let's consider some simulated data drawn from the $U[0,1]$ (a "worst case" scenario for classical kernel density estimation) and assess the shrinkage phenomenon
 
 ::: {.callout-note appearance="simple"}
 ## Example ($N(0,1)$ (left figure), $U{[0,1]}$ (right figure), R function density())
@@ -365,17 +365,17 @@ rug(x)
 -   The classical case replaces $f(x,y)$ and $f(x)$ with their kernel estimates and then divides the former by the latter keeping the same bandwidth $h_x$ for the numerator and denominator, which can also be derived as the solution to a local polynomial approximation problem
 
 -   The resulting kernel density estimator of the conditional PDF with $Y\in\mathbb{R}^1$ and $X\in\mathbb{R}^1$ is given by \begin{equation*}
-    \hat f(y|x) = \frac{\hat f(y,x)}{\hat f(x)}=\frac{\sum_{i=1}^nh_y^{-1}h_x^{-1}K\left(\frac{Y_i-y}{h_y}\right)K\left(\frac{X_i-x}{h_x}\right)}{\sum_{i=1}^nh_x^{-1}K\left(\frac{X_i-x}{h_x}\right)}.
+    \hat f(y|x) = \frac{\hat f(y,x)}{\hat f(x)}=\frac{\sum_{i=1}^nh_y^{-1}h_x^{-1}K\left(\frac{y-Y_i}{h_y}\right)K\left(\frac{x-X_i}{h_x}\right)}{\sum_{i=1}^nh_x^{-1}K\left(\frac{x-X_i}{h_x}\right)}.
     \end{equation*}
 
 ## Local Polynomial Conditional KDE
 
--   This estimator is also the solution to a locally weighted least squares regression of $h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)$ on a constant $\alpha$ using local weights $h_x^{-1}K\left(\frac{X_i-x}{h_x}\right)$, i.e., \begin{equation*}
-    \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)-\alpha\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right),
+-   This estimator is also the solution to a locally weighted least squares regression of $h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)$ on a constant $\alpha$ using local weights $h_x^{-1}K\left(\frac{x-X_i}{h_x}\right)$, i.e., \begin{equation*}
+    \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\alpha\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
     \end{equation*} which delivers $\hat\alpha=\hat f(y|x)$ identical to that from the previous approach.
 
 -   The local polynomial extension of this estimator is given by \begin{equation*}
-    \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right),
+    \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
     \end{equation*} which delivers $\hat\alpha_0=\hat f(y|x)$, a $p$-th order local polynomial estimator.
 
 ## Local Polynomial Conditional KDE
@@ -425,7 +425,7 @@ rug(x)
 -   We consider the case where $Y\in[a,b]$ and $X\in\mathbb{R}^1$, and allow for the bounds to be known or unknown a priori
 
 -   The local polynomial estimator using the boundary adaptive kernel $K_{[a,b]}(z_y)$ is $\hat\alpha_0=\hat f(y|x)$ from the solution of \begin{equation*}
-    \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K_{[a,b]}\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right)
+    \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K_{[a,b]}\left(\frac{y-Y_i}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right)
     \end{equation*}
 
 -   We minimize ISE($p$, $h_x$,$h_y$) with known bounds $a$ and $b$ or unknown bounds using the empirical support $[\hat a,\hat b]=[\min(Y),\max(Y)]$
@@ -437,6 +437,8 @@ rug(x)
 -   Let's consider some illustrations of the fully data-driven method of bandwidth and polynomial order selection
 
 ## Example - Conditional KDE with Bounded $Y$ and Irrelevant $X$
+
+We consider what is known to be the "worst case" scenario for classical kernel density estimation, namely, when the unknown conditional density has a uniform distribution
 
 ::: {.callout-note appearance="simple"}
 ## Example (Uniform, Irrelevant $X$)

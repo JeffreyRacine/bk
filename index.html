@@ -499,15 +499,15 @@ Qi Li<sup>3</sup>
 <ul>
 <li class="fragment"><p>Kernel density estimation has a rich history <span class="citation" data-cites="ROSENBLATT:1956 PARZEN:1962">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Rosenblatt 1956</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Parzen 1962</a>)</span></p></li>
 <li class="fragment"><p>Assuming smoothness, an unknown density <span class="math inline">\(f(x)\)</span> can be estimated using a local average of weight (“kernel”) functions, <span class="math display">\[\begin{equation*}
-\hat f(x)=\frac{1}{n}\sum_{i=1}^n \frac{1}{h}K\left(\frac{x-X_i}{h}\right),
-\end{equation*}\]</span> where <span class="math inline">\(K(\cdot)\)</span> is a kernel function, <span class="math inline">\(h\)</span> is a bandwidth, and <span class="math inline">\(X_i\)</span> are the data</p></li>
+\hat f(x)=\frac{1}{n}\sum_{i=1}^n \frac{1}{h_x}K\left(\frac{x-X_i}{h_x}\right),
+\end{equation*}\]</span> where <span class="math inline">\(K(\cdot)\)</span> is a kernel function, <span class="math inline">\(h_x\)</span> is a bandwidth, and <span class="math inline">\(X_i\)</span> are the data</p></li>
 </ul>
 <!-- -   For consistency we typically require the bandwidth to vanish asymptotically ($h\to 0$ as $n\to\infty$) --><ul>
 <li class="fragment"><p>However, in the presence of finite bounds (e.g., <span class="math inline">\(X\in[a,b]\)</span>, <span class="math inline">\(a&lt;b\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>) “classical” kernels (e.g., Gaussian, Epanechnikov) can behave poorly at the boundary of support; <span class="math inline">\(\hat f(x)\)</span> may converge very slowly at or near boundaries, or even be inconsistent</p></li>
 <li class="fragment"><p>This artifact is known as the “edge” or “boundary” effect</p></li>
 <li class="fragment"><p>Let’s examine this feature via some interactive illustrations</p></li>
 </ul></section><section id="example-of-kde-with-bounded-data---boundary-bias" class="slide level2 center"><h2>Example of KDE with Bounded Data - Boundary Bias</h2>
-<p>We simulate two datasets, one <span class="math inline">\(N(0,1)\)</span> and one <span class="math inline">\(U[0,1]\)</span>, and use data-driven methods of bandwidth selection with a “classical” Gaussian kernel to estimate unknown smooth densities, <span class="math inline">\(f(x)\)</span></p>
+<p>We simulate two datasets, one <span class="math inline">\(N(0,1)\)</span> and one <span class="math inline">\(U[0,1]\)</span> (a “worst case” scenario for classical kernel density estimation), and use data-driven methods of bandwidth selection with a “classical” Gaussian kernel to estimate unknown smooth densities, <span class="math inline">\(f(x)\)</span></p>
 <div class="callout callout-note callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -584,9 +584,9 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment">
 <p>Existing boundary kernel functions include</p>
 <ul>
-<li class="fragment"><p>Beta kernels (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="CHEN:1999 BOUEZMARNI_ROLIN:2003 ZHANG_KARUNAMUNI:2010 IGARASHI:2016">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 1999</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Bouezmarni and Rolin 2003</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Zhang and Karunamuni 2010</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi 2016</a>)</span></p></li>
-<li class="fragment"><p>Gamma kenels (<span class="math inline">\(x\in[a,\infty]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>) <span class="citation" data-cites="CHEN:2000 MALEC201457">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 2000</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Malec and Schienle 2014</a>)</span></p></li>
-<li class="fragment"><p>Inverse and Reciprocal Inverse Gaussian kernels (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="SCAILLET:2004 IGARASHI_KAKIZAWA:2014">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Scaillet 2004</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi and Kakizawa 2014</a>)</span></p></li>
+<li class="fragment"><p>Beta kernels (<span class="math inline">\(X\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="CHEN:1999 BOUEZMARNI_ROLIN:2003 ZHANG_KARUNAMUNI:2010 IGARASHI:2016">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 1999</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Bouezmarni and Rolin 2003</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Zhang and Karunamuni 2010</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi 2016</a>)</span></p></li>
+<li class="fragment"><p>Gamma kenels (<span class="math inline">\(X\in[a,\infty]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>) <span class="citation" data-cites="CHEN:2000 MALEC201457">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Chen 2000</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Malec and Schienle 2014</a>)</span></p></li>
+<li class="fragment"><p>Inverse and Reciprocal Inverse Gaussian kernels (<span class="math inline">\(X\in[a,b]\)</span>, <span class="math inline">\(|a|&lt;\infty\)</span>, <span class="math inline">\(|b|&lt;\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) <span class="citation" data-cites="SCAILLET:2004 IGARASHI_KAKIZAWA:2014">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Scaillet 2004</a>; <a href="#/references-scrollable" role="doc-biblioref" onclick="">Igarashi and Kakizawa 2014</a>)</span></p></li>
 </ul>
 </li>
 <li class="fragment">
@@ -598,8 +598,8 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 </ul></section><section id="kde-with-bounded-data---a-priori-information" class="slide level2 center"><h2>KDE with Bounded Data - A Priori Information</h2>
 <ul>
 <li class="fragment"><p>It bears noting that virtually all existing boundary kernels require the bounds to be known <em>a priori</em></p></li>
-<li class="fragment"><p>Furthermore, they typically involve weight functions bounded on finite intervals <span class="math inline">\([a,b]\)</span> (e.g., the Beta (<span class="math inline">\(x\in[a,b]\)</span>) and Gamma kernels (<span class="math inline">\(x\in[a,\infty]\)</span>) where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite)</p></li>
-<li class="fragment"><p>A more recent addition is the Gaussian kernel (<span class="math inline">\(x\in[a,b]\)</span>, <span class="math inline">\(|a|\le\infty\)</span>, <span class="math inline">\(|b|\le\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span></p></li>
+<li class="fragment"><p>Furthermore, they typically involve weight functions bounded on finite intervals <span class="math inline">\([a,b]\)</span> (e.g., the Beta (<span class="math inline">\(X\in[a,b]\)</span>) and Gamma kernels (<span class="math inline">\(X\in[a,\infty]\)</span>) where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are finite)</p></li>
+<li class="fragment"><p>A more recent addition is the Gaussian kernel (<span class="math inline">\(X\in[a,b]\)</span>, <span class="math inline">\(|a|\le\infty\)</span>, <span class="math inline">\(|b|\le\infty\)</span>, <span class="math inline">\(a&lt;b\)</span>) of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span></p></li>
 <li class="fragment">
 <p>Unlike its peers, however, the kernel proposed by <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span>,</p>
 <ul>
@@ -610,13 +610,13 @@ Figure&nbsp;1: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 </ul></section><section id="kde-with-bounded-data---shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Shrinkage</h2>
 <ul>
 <li class="fragment"><p>If bounds are known, naturally one should use that information</p></li>
-<li class="fragment"><p>But in the presence of <em>unknown</em> bounds, <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> considered a simple kernel function that can <em>automatically</em> adapt (more shortly) <em>and</em> nests the classical Gaussian kernel with <span class="math inline">\(Y\in[-\infty,\infty]\)</span> as a special case</p></li>
-<li class="fragment"><p>They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when <span class="math inline">\(h\to\infty\)</span> as <span class="math inline">\(n\to\infty\)</span> is appropriate, which violates classical conditions for consistency</p></li>
+<li class="fragment"><p>But in the presence of <em>unknown</em> bounds, <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> considered a simple kernel function that can <em>automatically</em> adapt (more shortly) <em>and</em> nests the classical Gaussian kernel with <span class="math inline">\(X\in[-\infty,\infty]\)</span> as a special case</p></li>
+<li class="fragment"><p>They considered a classical method of bandwidth selection and demonstrated that it can deliver consistent estimates even when <span class="math inline">\(h_x\to\infty\)</span> as <span class="math inline">\(n\to\infty\)</span> is appropriate, which violates classical conditions for consistency</p></li>
 <li class="fragment"><p>This result is the <em>unconditional counterpart</em> to the <em>conditional</em> result provided by <span class="citation" data-cites="HALL_RACINE_LI:2004">Hall, Racine, and Li (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2004</a>)</span> who showed that cross-validated bandwidth selection “automatically determines which components are relevant and which are not, through assigning large smoothing parameters to the latter and consequently <strong>shrinking</strong> them toward the uniform distribution on the respective marginals”</p></li>
 <li class="fragment"><p>Here we observe shinkage in the Bayesian sense <span class="citation" data-cites="KIEFER_RACINE:2009 KIEFER_RACINE:2015">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Kiefer 2009</a>, <a href="#/references-scrollable" role="doc-biblioref" onclick="">2015</a>)</span></p></li>
 </ul></section><section id="kde-with-bounded-data---bandwidths-and-shrinkage" class="slide level2 center"><h2>KDE with Bounded Data - Bandwidths and Shrinkage</h2>
 <ul>
-<li class="fragment"><p>For <span class="math inline">\(x\in [a,b]\)</span> and kernel <span class="math inline">\(K(z)\)</span> (e.g., Gaussian or Epanechnikov), a simple boundary kernel <span class="math inline">\(K_{[a,b]}(z)\)</span> is constructed as follows <span class="citation" data-cites="RACINE_LI_WANG:2024">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Racine, Li, and Wang 2024</a>)</span>: <span class="math display">\[\begin{equation*}
+<li class="fragment"><p>For <span class="math inline">\(X\in [a,b]\)</span> and kernel <span class="math inline">\(K(z)\)</span> (e.g., Gaussian or Epanechnikov), a simple boundary kernel <span class="math inline">\(K_{[a,b]}(z)\)</span> is constructed as follows <span class="citation" data-cites="RACINE_LI_WANG:2024">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Racine, Li, and Wang 2024</a>)</span>: <span class="math display">\[\begin{equation*}
 K_{[a,b]}(z)=\left\{
 \begin{array}{cl}
 \frac{K(z)}{G(z_b)-G(z_a)}&amp;\text{ if } z_a\le z\le z_b,\\
@@ -624,7 +624,7 @@ K_{[a,b]}(z)=\left\{
 \end{array}
 \right.
 \end{equation*}\]</span></p></li>
-<li class="fragment"><p>Here, <span class="math inline">\(z=(x-X_i)/h\)</span>, <span class="math inline">\(z_b=(b-x)/h\)</span>, and <span class="math inline">\(z_a=(a-x)/h\)</span>, and where <span class="math inline">\(G(z)=\int_{-\infty}^z K(t)\,dt\)</span></p></li>
+<li class="fragment"><p>Here, <span class="math inline">\(z=(x-X_i)/h_x\)</span>, <span class="math inline">\(z_b=(b-x)/h_x\)</span>, <span class="math inline">\(z_a=(a-x)/h_x\)</span>, <span class="math inline">\(a&lt;b\)</span>, and <span class="math inline">\(G(z)=\int_{-\infty}^z K(t)\,dt\)</span></p></li>
 </ul>
 <!--
 - Since $K(z)$ is a standard univariate kernel function, $G(z)$ is the CDF counterpart to the PDF $K(z)$ that we used to estimate $F(x)$
@@ -679,7 +679,7 @@ Figure&nbsp;2: Age distribution of Canadian high school graduates
 </div>
 </div>
 </div></section><section id="unconditional-kde-in-r---simulated-data" class="slide level2 center"><h2>Unconditional KDE in R - Simulated Data</h2>
-<p>Now let’s consider some simulated data drawn from the <span class="math inline">\(U[0,1]\)</span> and assess the shrinkage phenomenon</p>
+<p>Now let’s consider some simulated data drawn from the <span class="math inline">\(U[0,1]\)</span> (a “worst case” scenario for classical kernel density estimation) and assess the shrinkage phenomenon</p>
 <div class="callout callout-note callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -753,15 +753,15 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment"><p>The classical case is when <span class="math inline">\(X\)</span> is continuous and <span class="math inline">\(Y\)</span> is continuous lying in <span class="math inline">\([-\infty,\infty]\)</span>, and we are interested in estimating <span class="math inline">\(f(y|x)\)</span></p></li>
 <li class="fragment"><p>The classical case replaces <span class="math inline">\(f(x,y)\)</span> and <span class="math inline">\(f(x)\)</span> with their kernel estimates and then divides the former by the latter keeping the same bandwidth <span class="math inline">\(h_x\)</span> for the numerator and denominator, which can also be derived as the solution to a local polynomial approximation problem</p></li>
 <li class="fragment"><p>The resulting kernel density estimator of the conditional PDF with <span class="math inline">\(Y\in\mathbb{R}^1\)</span> and <span class="math inline">\(X\in\mathbb{R}^1\)</span> is given by <span class="math display">\[\begin{equation*}
-\hat f(y|x) = \frac{\hat f(y,x)}{\hat f(x)}=\frac{\sum_{i=1}^nh_y^{-1}h_x^{-1}K\left(\frac{Y_i-y}{h_y}\right)K\left(\frac{X_i-x}{h_x}\right)}{\sum_{i=1}^nh_x^{-1}K\left(\frac{X_i-x}{h_x}\right)}.
+\hat f(y|x) = \frac{\hat f(y,x)}{\hat f(x)}=\frac{\sum_{i=1}^nh_y^{-1}h_x^{-1}K\left(\frac{y-Y_i}{h_y}\right)K\left(\frac{x-X_i}{h_x}\right)}{\sum_{i=1}^nh_x^{-1}K\left(\frac{x-X_i}{h_x}\right)}.
 \end{equation*}\]</span></p></li>
 </ul></section><section id="local-polynomial-conditional-kde" class="slide level2 center"><h2>Local Polynomial Conditional KDE</h2>
 <ul>
-<li class="fragment"><p>This estimator is also the solution to a locally weighted least squares regression of <span class="math inline">\(h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)\)</span> on a constant <span class="math inline">\(\alpha\)</span> using local weights <span class="math inline">\(h_x^{-1}K\left(\frac{X_i-x}{h_x}\right)\)</span>, i.e., <span class="math display">\[\begin{equation*}
-\hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)-\alpha\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right),
+<li class="fragment"><p>This estimator is also the solution to a locally weighted least squares regression of <span class="math inline">\(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)\)</span> on a constant <span class="math inline">\(\alpha\)</span> using local weights <span class="math inline">\(h_x^{-1}K\left(\frac{x-X_i}{h_x}\right)\)</span>, i.e., <span class="math display">\[\begin{equation*}
+\hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\alpha\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
 \end{equation*}\]</span> which delivers <span class="math inline">\(\hat\alpha=\hat f(y|x)\)</span> identical to that from the previous approach.</p></li>
 <li class="fragment"><p>The local polynomial extension of this estimator is given by <span class="math display">\[\begin{equation*}
-\hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right),
+\hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
 \end{equation*}\]</span> which delivers <span class="math inline">\(\hat\alpha_0=\hat f(y|x)\)</span>, a <span class="math inline">\(p\)</span>-th order local polynomial estimator.</p></li>
 </ul></section><section id="local-polynomial-conditional-kde-1" class="slide level2 center"><h2>Local Polynomial Conditional KDE</h2>
 <ul>
@@ -799,7 +799,7 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <ul>
 <li class="fragment"><p>We consider the case where <span class="math inline">\(Y\in[a,b]\)</span> and <span class="math inline">\(X\in\mathbb{R}^1\)</span>, and allow for the bounds to be known or unknown a priori</p></li>
 <li class="fragment"><p>The local polynomial estimator using the boundary adaptive kernel <span class="math inline">\(K_{[a,b]}(z_y)\)</span> is <span class="math inline">\(\hat\alpha_0=\hat f(y|x)\)</span> from the solution of <span class="math display">\[\begin{equation*}
-\hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K_{[a,b]}\left(\frac{Y_i-y}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{X_i-x}{h_x}\right)
+\hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K_{[a,b]}\left(\frac{y-Y_i}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right)
 \end{equation*}\]</span></p></li>
 <li class="fragment"><p>We minimize ISE(<span class="math inline">\(p\)</span>, <span class="math inline">\(h_x\)</span>,<span class="math inline">\(h_y\)</span>) with known bounds <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> or unknown bounds using the empirical support <span class="math inline">\([\hat a,\hat b]=[\min(Y),\max(Y)]\)</span></p></li>
 <li class="fragment"><p>We provide uniform consistency results for the resulting estimator</p></li>
@@ -807,6 +807,7 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment"><p>Let’s consider some illustrations of the fully data-driven method of bandwidth and polynomial order selection</p></li>
 </ul></section><section id="example---conditional-kde-with-bounded-y-and-irrelevant-x" class="slide level2 center"><h2>Example - Conditional KDE with Bounded <span class="math inline">\(Y\)</span> and Irrelevant <span class="math inline">\(X\)</span>
 </h2>
+<p>We consider what is known to be the “worst case” scenario for classical kernel density estimation, namely, when the unknown conditional density has a uniform distribution</p>
 <div class="callout callout-note callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
