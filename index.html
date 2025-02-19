@@ -624,11 +624,7 @@ K_{[a,b]}(z)=\left\{
 \end{array}
 \right.
 \end{equation*}\]</span></p></li>
-<li class="fragment"><p>Here, <span class="math inline">\(z=(x-X_i)/h_x\)</span>, <span class="math inline">\(z_b=(b-x)/h_x\)</span>, <span class="math inline">\(z_a=(a-x)/h_x\)</span>, <span class="math inline">\(a&lt;b\)</span>, and <span class="math inline">\(G(z)=\int_{-\infty}^z K(t)\,dt\)</span></p></li>
-</ul>
-<!--
-- Since $K(z)$ is a standard univariate kernel function, $G(z)$ is the CDF counterpart to the PDF $K(z)$ that we used to estimate $F(x)$
---><ul>
+<li class="fragment"><p>Here, <span class="math inline">\(z=(x-X_i)/h_x\)</span>, <span class="math inline">\(z_b=(b-x)/h_x\)</span>, <span class="math inline">\(z_a=(a-x)/h_x\)</span>, <span class="math inline">\(a&lt;b\)</span>, and <span class="math inline">\(G(z)=\int_{-\infty}^z K(t)\,dt\)</span> (for a Gaussian kernel this is the “doubly truncated Gaussian”)</p></li>
 <li class="fragment">
 <p>The key to this kernel formulation lies in its <em>adaptability</em>:</p>
 <ul>
@@ -637,7 +633,7 @@ K_{[a,b]}(z)=\left\{
 </ul>
 </li>
 </ul></section><section id="unconditional-kde-in-r---cps-age-distribution" class="slide level2 center"><h2>Unconditional KDE in R - CPS Age Distribution</h2>
-<p>Let’s consider an illustration where we estimate the distribution of ages for working age males from a random sample taken from the Current Population Survey (CPS) using the classical kernel and that of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> when bounds are <em>not</em> assumed to be known <em>a priori</em> (we use the empirical support <span class="math inline">\([\min(X),\max(X)]\)</span>)</p>
+<p>Let’s consider an illustration where we estimate the age distribution for working age males from a random sample taken from the Current Population Survey (CPS) using the classical kernel and that of <span class="citation" data-cites="RACINE_LI_WANG:2024">Racine, Li, and Wang (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2024</a>)</span> when bounds are <em>not</em> assumed to be known <em>a priori</em> (we use the empirical support <span class="math inline">\([\min(X),\max(X)]\)</span>)</p>
 <div class="callout callout-note callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -760,7 +756,7 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 <li class="fragment"><p>This estimator is also the solution to a locally weighted least squares regression of <span class="math inline">\(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)\)</span> on a constant <span class="math inline">\(\alpha\)</span> using local weights <span class="math inline">\(h_x^{-1}K\left(\frac{x-X_i}{h_x}\right)\)</span>, i.e., <span class="math display">\[\begin{equation*}
 \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\alpha\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
 \end{equation*}\]</span> which delivers <span class="math inline">\(\hat\alpha=\hat f(y|x)\)</span> identical to that from the previous approach</p></li>
-<li class="fragment"><p>The local polynomial extension of this estimator is given by <span class="math display">\[\begin{equation*}
+<li class="fragment"><p>The local polynomial extension of this estimator <span class="citation" data-cites="fyt:1996">(<a href="#/references-scrollable" role="doc-biblioref" onclick="">Fan, Yao, and Tong 1996</a>)</span> is given by <span class="math display">\[\begin{equation*}
 \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
 \end{equation*}\]</span> which delivers <span class="math inline">\(\hat\alpha_0=\hat f(y|x)\)</span>, a <span class="math inline">\(p\)</span>-th order local polynomial estimator</p></li>
 </ul></section><section id="local-polynomial-conditional-kde-1" class="slide level2 center"><h2>Local Polynomial Conditional KDE</h2>
@@ -784,7 +780,7 @@ Figure&nbsp;3: Simulated data from <span class="math inline">\(N(0,1)\)</span> a
 \int \left(\hat f(y|x) - f(y|x)\right)^2\, dx = \int \hat f(y|x)^2\, dx - 2\int \hat f(y|x) f(y|x)\, dx + \int f(y|x)^2\, dy
 \end{equation*}\]</span></p></li>
 <li class="fragment"><p>The third term can be ignored since it does not depend on <span class="math inline">\(h_x\)</span> or <span class="math inline">\(h_y\)</span></p></li>
-<li class="fragment"><p>Replacing the first two terms with their sample counterparts and adjusting for bias, we can minimize ISE(<span class="math inline">\(h_x\)</span>,<span class="math inline">\(h_y\)</span>) with respect to <span class="math inline">\(h_x\)</span> and <span class="math inline">\(h_y\)</span></p></li>
+<li class="fragment"><p>Replacing the first two terms with their sample counterparts and adjusting for bias, and fixing the polynomial order, we can minimize ISE(<span class="math inline">\(h_x\)</span>,<span class="math inline">\(h_y\)</span>) with respect to <span class="math inline">\(h_x\)</span> and <span class="math inline">\(h_y\)</span></p></li>
 </ul></section><section id="conditional-kde---bandwidth-and-order-selection" class="slide level2 center"><h2>Conditional KDE - Bandwidth and Order Selection</h2>
 <ul>
 <li class="fragment"><p><span class="citation" data-cites="HALL_RACINE:2015">Hall and Racine (<a href="#/references-scrollable" role="doc-biblioref" onclick="">2015</a>)</span> consider local polynomial kernel regression where, jointly, the polynomial order and bandwidths are selected via cross-validation</p></li>

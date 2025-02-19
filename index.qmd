@@ -257,13 +257,7 @@ rug(x)
     \right.
     \end{equation*}
 
--   Here, $z=(x-X_i)/h_x$, $z_b=(b-x)/h_x$, $z_a=(a-x)/h_x$, $a<b$, and $G(z)=\int_{-\infty}^z K(t)\,dt$
-
-```{=html}
-<!--
-- Since $K(z)$ is a standard univariate kernel function, $G(z)$ is the CDF counterpart to the PDF $K(z)$ that we used to estimate $F(x)$
--->
-```
+-   Here, $z=(x-X_i)/h_x$, $z_b=(b-x)/h_x$, $z_a=(a-x)/h_x$, $a<b$, and $G(z)=\int_{-\infty}^z K(t)\,dt$ (for a Gaussian kernel this is the "doubly truncated Gaussian")
 
 -   The key to this kernel formulation lies in its *adaptability*:
 
@@ -272,7 +266,7 @@ rug(x)
 
 ## Unconditional KDE in R - CPS Age Distribution
 
-Let's consider an illustration where we estimate the distribution of ages for working age males from a random sample taken from the Current Population Survey (CPS) using the classical kernel and that of @RACINE_LI_WANG:2024 when bounds are *not* assumed to be known *a priori* (we use the empirical support $[\min(X),\max(X)]$)
+Let's consider an illustration where we estimate the age distribution for working age males from a random sample taken from the Current Population Survey (CPS) using the classical kernel and that of @RACINE_LI_WANG:2024 when bounds are *not* assumed to be known *a priori* (we use the empirical support $[\min(X),\max(X)]$)
 
 ::: {.callout-note appearance="simple"}
 ## Example (Canadian High School Graduate Age Distribution 21-65)
@@ -374,7 +368,7 @@ rug(x)
     \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\alpha\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
     \end{equation*} which delivers $\hat\alpha=\hat f(y|x)$ identical to that from the previous approach
 
--   The local polynomial extension of this estimator is given by \begin{equation*}
+-   The local polynomial extension of this estimator [@fyt:1996] is given by \begin{equation*}
     \hat \alpha = \operatorname{argmin}_{\alpha}\sum_{i=1}^n\left(h_y^{-1}K\left(\frac{y-Y_i}{h_y}\right)-\sum_{j=0}^p\alpha_j(x-X_i)^j\right)^2h_x^{-1}K\left(\frac{x-X_i}{h_x}\right),
     \end{equation*} which delivers $\hat\alpha_0=\hat f(y|x)$, a $p$-th order local polynomial estimator
 
@@ -404,7 +398,7 @@ rug(x)
 
 -   The third term can be ignored since it does not depend on $h_x$ or $h_y$
 
--   Replacing the first two terms with their sample counterparts and adjusting for bias, we can minimize ISE($h_x$,$h_y$) with respect to $h_x$ and $h_y$
+-   Replacing the first two terms with their sample counterparts and adjusting for bias, and fixing the polynomial order, we can minimize ISE($h_x$,$h_y$) with respect to $h_x$ and $h_y$
 
 ## Conditional KDE - Bandwidth and Order Selection
 
