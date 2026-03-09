@@ -59,7 +59,10 @@ format:
     ## 2. index-speaker.html: This is the file that you should present from.
     ## This file can remain on your computer and does not need to be published
     ## elsewhere.
-    multiplex: true
+    # multiplex: true
+    multiplex:
+      url: "https://multiplex.up.railway.app"
+      client-url: "https://multiplex.up.railway.app"    
     preview-links: auto
     self-contained-math: false
     show-notes: false
@@ -95,6 +98,76 @@ library(knitr)
 library(kableExtra)
 options(plot.par.mfrow=FALSE)
 library(pglm)
+
+sample_dirs <- function(root) {
+  dirs <- list.dirs(root, recursive = FALSE, full.names = TRUE)
+  dirs <- dirs[grepl("^n_[0-9]+$", basename(dirs))]
+  dirs[order(as.integer(sub("^n_", "", basename(dirs))))]
+}
+
+read_sample_matrix <- function(root, row_builder) {
+  dirs <- sample_dirs(root)
+  stopifnot(length(dirs) > 0L)
+  do.call(rbind, lapply(dirs, row_builder))
+}
+
+read_candidate_summary <- function(root) {
+  median.dat <- read_sample_matrix(root, function(dir) {
+    c(scan(file.path(dir, "n.dat"), quiet = TRUE),
+      scan(file.path(dir, "median_rmse_candidates.out"), quiet = TRUE),
+      scan(file.path(dir, "median_rmse_models.out"), quiet = TRUE)[1])
+  })
+
+  cbind(median.dat[, 1],
+        formatC(
+          sweep(
+            median.dat[, 2:ncol(median.dat), drop = FALSE],
+            1,
+            median.dat[, ncol(median.dat), drop = FALSE],
+            FUN = "/"
+          ),
+          format = "f",
+          digits = 2
+        ))
+}
+
+read_scale_summary <- function(root, stem) {
+  read_sample_matrix(root, function(dir) {
+    c(scan(file.path(dir, "n.dat"), quiet = TRUE),
+      apply(read.table(file.path(dir, paste0(stem, ".out")), header = FALSE), 2, median),
+      apply(read.table(file.path(dir, paste0(stem, "_hrl.out")), header = FALSE), 2, median),
+      apply(read.table(file.path(dir, paste0(stem, "_fyt.out")), header = FALSE), 2, median))
+  })
+}
+
+read_model_comparison <- function(root) {
+  median.dat <- read_sample_matrix(root, function(dir) {
+    c(scan(file.path(dir, "n.dat"), quiet = TRUE),
+      scan(file.path(dir, "median_rmse_models.out"), quiet = TRUE))
+  })
+
+  cbind(median.dat[, 1],
+        formatC(
+          sweep(
+            median.dat[, 2:4, drop = FALSE],
+            1,
+            median.dat[, 2, drop = FALSE],
+            FUN = "/"
+          ),
+          format = "f",
+          digits = 2
+        ))
+}
+
+candidate_col_names <- function(dat) {
+  c("n", paste0("p=", 0:(ncol(dat) - 3L)), "BKPA")
+}
+
+style_candidate_table <- function(dat, highlight_p) {
+  kable(dat, col.names = candidate_col_names(dat), digits = 2, align = "r") %>%
+    row_spec(nrow(dat), bold = TRUE, color = "lightgreen") %>%
+    column_spec(c(highlight_p + 2L, ncol(dat)), bold = TRUE, color = "green")
+}
 ```
 
 ## Overview of Talk
@@ -723,142 +796,14 @@ persp(x,y,dgp,theta=theta, phi=phi, main=latex2exp::TeX(r'($N(x^2,1/12)$)'),tick
 ```{r}
 #| echo: false
 #| cache: false
-p.max <- scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.beta.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2)) 
-
-p.max <- scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.beta.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2))
-
-p.max <- scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.beta.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2))
-
-p.max <- scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.beta.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2))
-
-p.max <- scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.norm.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2))
-
-p.max <- scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.norm.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2))
-
-p.max <- scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.norm.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2))
-
-p.max <- scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/degree_max.dat",quiet=TRUE)
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)[1]),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/median_rmse_candidates.out",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)[1]))
-
-rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)], 1, median.dat[,(p.max+3),drop=FALSE], FUN = '/'),format="f",digits=2))
-
+rmse.beta.ml.irr <- read_candidate_summary("../work_irr_empirical_bounds/3D_cvml/beta")
+rmse.beta.ml.quad <- read_candidate_summary("../work_quad_empirical_bounds/3D_cvml/beta")
+rmse.beta.ls.irr <- read_candidate_summary("../work_irr_empirical_bounds/3D_cvls/beta")
+rmse.beta.ls.quad <- read_candidate_summary("../work_quad_empirical_bounds/3D_cvls/beta")
+rmse.norm.ml.irr <- read_candidate_summary("../work_irr_empirical_bounds/3D_cvml/norm")
+rmse.norm.ml.quad <- read_candidate_summary("../work_quad_empirical_bounds/3D_cvml/norm")
+rmse.norm.ls.irr <- read_candidate_summary("../work_irr_empirical_bounds/3D_cvls/norm")
+rmse.norm.ls.quad <- read_candidate_summary("../work_quad_empirical_bounds/3D_cvls/norm")
 ```
 
 ## Candidate Model Comparison: Beta DGP
@@ -877,10 +822,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-beta-ml-irr
     #| tbl-cap: Relative RMSE Irrelevant ML
-    kable(rmse.beta.ml.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(2,8), bold = T, color = "green")
+    style_candidate_table(rmse.beta.ml.irr, highlight_p = 0)
     ```
 
     ### $B(1,2)$ LS
@@ -890,10 +832,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-beta-ls-irr
     #| tbl-cap: Relative RMSE Irrelevant LS  
-    kable(rmse.beta.ls.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(2,8), bold = T, color = "green")
+    style_candidate_table(rmse.beta.ls.irr, highlight_p = 0)
     ```
 
     ### $B(1+x^2,2-x^2)$ ML
@@ -903,10 +842,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-beta-ml-quad
     #| tbl-cap: Relative RMSE Quadratic ML
-    kable(rmse.beta.ml.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(4,8), bold = T, color = "green")
+    style_candidate_table(rmse.beta.ml.quad, highlight_p = 2)
     ```
 
     ### $B(1+x^2,2-x^2)$ LS
@@ -916,10 +852,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-beta-ls-quad
     #| tbl-cap: Relative RMSE Quadratic LS
-    kable(rmse.beta.ls.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(4,8), bold = T, color = "green")
+    style_candidate_table(rmse.beta.ls.quad, highlight_p = 2)
     ```
     :::
 
@@ -939,10 +872,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-norm-ml-irr
     #| tbl-cap: Relative RMSE Irrelevant ML
-    kable(rmse.norm.ml.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(2,8), bold = T, color = "green")
+    style_candidate_table(rmse.norm.ml.irr, highlight_p = 0)
     ```
 
     ### $N(0,1/12)$ LS
@@ -952,10 +882,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-norm-ls-irr
     #| tbl-cap: Relative RMSE Irrelevant LS
-    kable(rmse.norm.ls.irr,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(2,8), bold = T, color = "green")
+    style_candidate_table(rmse.norm.ls.irr, highlight_p = 0)
     ```
 
     ### $N(x^2,1/12)$ ML
@@ -965,10 +892,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-norm-ml-quad
     #| tbl-cap: Relative RMSE Quadratic ML
-    kable(rmse.norm.ml.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(4,8), bold = T, color = "green")
+    style_candidate_table(rmse.norm.ml.quad, highlight_p = 2)
     ```
 
     ### $N(x^2,1/12)$ LS
@@ -978,10 +902,7 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
     #| cache: false
     #| label: tbl-dgp-norm-ls-quad
     #| tbl-cap: Relative RMSE Quadratic LS
-    kable(rmse.norm.ls.quad,
-          col.names=c("n",paste("p=",0:p.max,.collapse=" ",sep=""),"BKPA"), digits=2,align='r') %>%
-      row_spec(4, bold = T, color = "lightgreen") %>%
-      column_spec(c(4,8), bold = T, color = "green")
+    style_candidate_table(rmse.norm.ls.quad, highlight_p = 2)
     ```
     :::
 
@@ -991,296 +912,32 @@ rmse.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:(p.max+3)]
 #| echo: false
 ## LS-CV summaries
 ## norm
-h.norm.cvls.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.norm.cvls.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_100/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_100/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_100/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_200/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_200/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_200/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_400/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_400/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_400/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_800/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_800/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/norm/n_800/sf_fyt.out",header=FALSE),2,median)))
-
-
-h.norm.cvls.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.norm.cvls.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_100/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_100/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_100/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_200/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_200/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_200/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_400/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_400/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_400/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_800/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_800/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/norm/n_800/sf_fyt.out",header=FALSE),2,median)))
-
-
+h.norm.cvls.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvls/norm", "h")
+sf.norm.cvls.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvls/norm", "sf")
+h.norm.cvls.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvls/norm", "h")
+sf.norm.cvls.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvls/norm", "sf")
 
 ## beta
-
-h.beta.cvls.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.beta.cvls.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_100/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_100/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_100/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_200/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_200/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_200/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_400/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_400/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_400/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_800/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_800/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvls/beta/n_800/sf_fyt.out",header=FALSE),2,median)))
-
-
-h.beta.cvls.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.beta.cvls.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_100/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_100/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_100/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_200/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_200/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_200/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_400/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_400/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_400/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_800/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_800/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvls/beta/n_800/sf_fyt.out",header=FALSE),2,median)))
-
-
+h.beta.cvls.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvls/beta", "h")
+sf.beta.cvls.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvls/beta", "sf")
+h.beta.cvls.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvls/beta", "h")
+sf.beta.cvls.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvls/beta", "sf")
 ```
 
 ```{r}
 #| echo: false
 ## ML-CV summaries 
 ## norm
-h.norm.cvml.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.norm.cvml.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_100/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_100/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_100/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_200/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_200/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_200/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_400/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_400/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_400/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_800/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_800/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/norm/n_800/sf_fyt.out",header=FALSE),2,median)))
-
-
-h.norm.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.norm.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_100/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_100/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_100/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_200/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_200/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_200/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_400/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_400/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_400/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_800/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_800/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/norm/n_800/sf_fyt.out",header=FALSE),2,median)))
-
+h.norm.cvml.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvml/norm", "h")
+sf.norm.cvml.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvml/norm", "sf")
+h.norm.cvml.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvml/norm", "h")
+sf.norm.cvml.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvml/norm", "sf")
 
 ## beta
-h.beta.cvml.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.beta.cvml.irr <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_100/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_100/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_100/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_200/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_200/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_200/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_400/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_400/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_400/sf_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_800/sf.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_800/sf_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_irr_empirical_bounds/3D_cvml/beta/n_800/sf_fyt.out",header=FALSE),2,median)))
-
-
-h.beta.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_100/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_100/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_100/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_200/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_200/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_200/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_400/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_400/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_400/h_fyt.out",header=FALSE),2,median)),
-                         c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_800/h.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_800/h_hrl.out",header=FALSE),2,median),
-                           apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_800/h_fyt.out",header=FALSE),2,median)))
-
-sf.beta.cvml.quad <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_100/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_100/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_100/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_200/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_200/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_200/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_400/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_400/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_400/sf_fyt.out",header=FALSE),2,median)),
-                          c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_800/sf.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_800/sf_hrl.out",header=FALSE),2,median),
-                            apply(read.table("../work_quad_empirical_bounds/3D_cvml/beta/n_800/sf_fyt.out",header=FALSE),2,median)))
-
-
+h.beta.cvml.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvml/beta", "h")
+sf.beta.cvml.irr <- read_scale_summary("../work_irr_empirical_bounds/3D_cvml/beta", "sf")
+h.beta.cvml.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvml/beta", "h")
+sf.beta.cvml.quad <- read_scale_summary("../work_quad_empirical_bounds/3D_cvml/beta", "sf")
 ```
 
 ## Scale Factor Summaries: Beta DGP
@@ -1381,97 +1038,14 @@ add_header_above(c(" "=1, "BKPA" = 2, "HRL" = 2, "FYT" = 2))
 #| echo: false
 #| cache: false
 ## HRL/FYT comparison
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.beta.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.beta.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.beta.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/beta/n_800/median_rmse_models.out",quiet=TRUE)))
-rmse.comp.beta.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ml.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvml/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ml.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-
-median.dat <- rbind(c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_irr_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ls.irr <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-
-median.dat <- rbind(c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_100/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_200/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_400/median_rmse_models.out",quiet=TRUE)),
-                    c(scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/n.dat",quiet=TRUE),
-                      scan("../work_quad_empirical_bounds/3D_cvls/norm/n_800/median_rmse_models.out",quiet=TRUE)))
-
-rmse.comp.norm.ls.quad <- cbind(median.dat[,1],formatC(sweep(median.dat[,2:4], 1, median.dat[,2,drop=FALSE], FUN = '/'),format="f",digits=2))
-    
+rmse.comp.beta.ml.irr <- read_model_comparison("../work_irr_empirical_bounds/3D_cvml/beta")
+rmse.comp.beta.ml.quad <- read_model_comparison("../work_quad_empirical_bounds/3D_cvml/beta")
+rmse.comp.beta.ls.irr <- read_model_comparison("../work_irr_empirical_bounds/3D_cvls/beta")
+rmse.comp.beta.ls.quad <- read_model_comparison("../work_quad_empirical_bounds/3D_cvls/beta")
+rmse.comp.norm.ml.irr <- read_model_comparison("../work_irr_empirical_bounds/3D_cvml/norm")
+rmse.comp.norm.ml.quad <- read_model_comparison("../work_quad_empirical_bounds/3D_cvml/norm")
+rmse.comp.norm.ls.irr <- read_model_comparison("../work_irr_empirical_bounds/3D_cvls/norm")
+rmse.comp.norm.ls.quad <- read_model_comparison("../work_quad_empirical_bounds/3D_cvls/norm")
 ```
 
 ## Comparison with HRL and FYT: Beta DGP
