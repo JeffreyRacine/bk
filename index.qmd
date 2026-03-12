@@ -713,7 +713,7 @@ plot(f.bkcde,x.eval=seq(min(x),max(x),length=25),y.eval=seq(min(y),100,length=25
 
 -   We present a range of simulations for the beta and Gaussian densities, $f(y|x)$, with x being irrelevant, i.e. $f(y|x)=f(y)$, or the mean of $f(y|x)$ being quadratic in $x$
 
--   We consider sample sizes of $n=100,200,400,800$
+-   We consider sample sizes of $n=400,800,1600$
 
 -   We conduct $M$ Monte Carlo replications for each scenario and compare
 
